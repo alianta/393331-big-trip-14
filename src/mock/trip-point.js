@@ -30,8 +30,9 @@ export const generateTripPoint = () => {
     dateTimeStart: null,
     dateTimeEnd: null,
     price: getRandomInteger(MIN_PRICE, MAX_PRICE),
-    options: null,
+    offers: null,
     destinationDetails: null,
     photos: null,
+    isFavorite: Boolean(getRandomInteger(0, 1)),
   };
 };
