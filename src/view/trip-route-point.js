@@ -21,7 +21,7 @@ export const createTripRoutePointElement = (point) => {
       <p class="event__duration">30M</p>
     </div>
     <p class="event__price">
-      &euro;&nbsp;<span class="event__price-value">20</span>
+      &euro;&nbsp;<span class="event__price-value">${price}</span>
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">

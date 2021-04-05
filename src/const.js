@@ -1,3 +1,5 @@
+export const MIN_PRICE = 1;
+export const MAX_PRICE = 2000;
 export const TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Transport', 'Drive', 'Flight', 'Check-in', 'Sightseeng', 'Restaurant'];
 export const DESTINATIONS = [
   'Amsterdam',

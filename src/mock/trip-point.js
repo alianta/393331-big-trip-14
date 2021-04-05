@@ -1,4 +1,4 @@
-import {DESTINATIONS, TYPES} from '../const.js';
+import {DESTINATIONS, TYPES, MIN_PRICE, MAX_PRICE} from '../const.js';
 import {getRandomInteger} from '../utils.js';
 
 /**
@@ -29,7 +29,7 @@ export const generateTripPoint = () => {
     destination: getRandomDestination(),
     dateTimeStart: null,
     dateTimeEnd: null,
-    price: null,
+    price: getRandomInteger(MIN_PRICE, MAX_PRICE),
     options: null,
     destinationDetails: null,
     photos: null,
