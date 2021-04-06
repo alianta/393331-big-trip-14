@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
+
 /**
  * Функция создания блока разметки дял точки маршрута
  * @param {class} point - объект, содержащий информацию о точке маршрута
  * @returns - строка, содержащая блок разметки для точки маршрута
  */
 export const createTripRoutePointElement = (point) => {
-  const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails, photos, isFavorite} = point;
+  const {type, destination, dateTimeStart, dateTimeEnd, price, offers, isFavorite} = point;
   const favoriteClassName = isFavorite ? 'event__favorite-btn--active' : '';
-  const startDateTime = dayjs(dateTimeStart).format('MMM D');
 
   return `<li class="trip-events__item">
   <div class="event">
@@ -29,11 +29,11 @@ export const createTripRoutePointElement = (point) => {
     </p>
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      <li class="event__offer">
-        <span class="event__offer-title">Order Uber</span>
+      ${offers.map((offer) => `<li class="event__offer">
+        <span class="event__offer-title">${offer.name}</span>
         &plus;&euro;&nbsp;
-        <span class="event__offer-price">20</span>
-      </li>
+        <span class="event__offer-price">${offer.price}</span>
+      </li>`).join('')}
     </ul>
     <button class="event__favorite-btn ${favoriteClassName}" type="button">
       <span class="visually-hidden">Add to favorite</span>
