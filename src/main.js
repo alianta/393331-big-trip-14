@@ -9,7 +9,7 @@ import {createTripRouteEditPointTemplate} from './view/trip-route-edit-point.js'
 import {createTripRouteAddPointTemplate} from './view/trip-route-add-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
 
-const POINT_COUNT = 3;
+const POINT_COUNT = 20;
 
 const siteHeaderElement = document.querySelector('.page-header');
 const siteNavigationElement = siteHeaderElement.querySelector('.trip-controls__navigation');
