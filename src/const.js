@@ -1,5 +1,9 @@
 export const MIN_PRICE = 1;
 export const MAX_PRICE = 2000;
+export const RANDOM_MIN_DAY = -10;
+export const RANDOM_MAX_DAY = 10;
+export const RANDOM_MIN_TIME = -1000;
+export const RANDOM_MAX_TIME = 1000;
 export const TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Transport', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
 export const DESTINATIONS = [
   'Amsterdam',

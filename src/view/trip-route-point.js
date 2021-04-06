@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 /**
  * Функция создания блока разметки дял точки маршрута
  * @param {class} point - объект, содержащий информацию о точке маршрута
@@ -6,19 +7,20 @@
 export const createTripRoutePointElement = (point) => {
   const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails, photos, isFavorite} = point;
   const favoriteClassName = isFavorite ? 'event__favorite-btn--active' : '';
+  const startDateTime = dayjs(dateTimeStart).format('MMM D');
 
   return `<li class="trip-events__item">
   <div class="event">
-    <time class="event__date" datetime="2019-03-18">MAR 18</time>
+    <time class="event__date" datetime="${dayjs(dateTimeStart).format('YYYY-MM-DD')}">${dayjs(dateTimeStart).format('MMM D')}</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
     </div>
     <h3 class="event__title">${type} ${destination}</h3>
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
+        <time class="event__start-time" datetime="${dayjs(dateTimeStart).format('YYYY-MM-DDThh:mm')}">${dayjs(dateTimeStart).format('hh:mm')}</time>
         &mdash;
-        <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+        <time class="event__end-time" datetime="${dayjs(dateTimeEnd).format('YYYY-MM-DDThh:mm')}">${dayjs(dateTimeEnd).format('hh:mm')}</time>
       </p>
       <p class="event__duration">30M</p>
     </div>
