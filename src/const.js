@@ -1,5 +1,5 @@
 export const MIN_PRICE = 1;
-export const MAX_PRICE = 2000;
+export const MAX_PRICE = 20000;
 export const RANDOM_MIN_DAY = -10;
 export const RANDOM_MAX_DAY = 10;
 export const RANDOM_MIN_TIME = -1000;
@@ -28,10 +28,31 @@ export const DESTINATION_DESCRIPTIONS = [
   'Nunc fermentum tortor ac porta dapibus.',
   'In rutrum ac purus sit amet tempus.',
 ];
-export const OFFER_NAMES = [
-  'Add luggage',
-  'Switch to comfort',
-  'Add meal',
-  'Choose seats',
-  'Travel by train',
+
+export const OFFER_LIST = [
+  {
+    type: 'luggage',
+    name: 'Add luggage',
+    price: 10000,
+  },
+  {
+    type: 'comfort',
+    name: 'Switch to comfort',
+    price: 1000,
+  },
+  {
+    type: 'meal',
+    name: 'Add meal',
+    price: 5000,
+  },
+  {
+    type: 'seats',
+    name: 'Choose seats',
+    price: 5,
+  },
+  {
+    type: 'train',
+    name: 'Travel by train',
+    price: 40,
+  },
 ];

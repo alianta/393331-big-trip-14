@@ -40,7 +40,7 @@ render(tripEventsElement, createTripRouteTemplate(), 'beforeend');
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
-render(tripEventsListElement, createTripRouteEditPointTemplate(), 'beforeend');
+render(tripEventsListElement, createTripRouteEditPointTemplate(generateTripPoint()), 'beforeend');
 render(tripEventsListElement, createTripRouteAddPointTemplate(), 'beforeend');
 
 for(let i = 0; i< POINT_COUNT; i++) {

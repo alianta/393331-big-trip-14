@@ -1,23 +1,23 @@
 import {getRandomInteger} from '../utils.js';
-import {OFFER_NAMES, MIN_PRICE, MAX_PRICE} from '../const.js';
-import {getRandomPointType} from './trip-point.js';
+import {OFFER_LIST} from '../const.js';
 
 /**
  * Функция генерация случайного названия опции точки маршрута
  * @returns - случайная дата и время
  */
-const getRandomOfferName = () => {
-  const randomIndex = getRandomInteger(0, OFFER_NAMES.length - 1);
-  return OFFER_NAMES[randomIndex];
+const getRandomOffer = () => {
+  const randomIndex = getRandomInteger(0, OFFER_LIST.length - 1);
+  return OFFER_LIST[randomIndex];
 };
 /**
  * Функция гереации дополнительно опции точки маршрута
  * @returns - объект с данными о дополнительной опции
  */
 export const generateOffer = () => {
+  const offer = getRandomOffer();
   return {
-    type: getRandomPointType(),
-    name: getRandomOfferName(),
-    price: getRandomInteger(MIN_PRICE, MAX_PRICE),
+    type: offer.type,
+    name: offer.name,
+    price: offer.price,
   };
 };
