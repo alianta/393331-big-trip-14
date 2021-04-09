@@ -9,6 +9,8 @@ export const MAX_OFFER_COUNT = 5;
 export const MIN_COUNT_PHOTOS = 1;
 export const MAX_COUNT_PHOTOS = 10;
 export const MAX_NUMBER_PHOTO = 2000;
+export const MIN_ROUTE_POINT_COUNT = 0;
+export const MAX_ROUTE_POINT_COUNT = 5;
 export const TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Transport', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
 export const DESTINATIONS = [
   'Amsterdam',
