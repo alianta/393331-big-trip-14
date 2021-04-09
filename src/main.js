@@ -6,7 +6,6 @@ import {createCostTemplate} from './view/cost.js';
 import {createTripRouteTemplate} from './view/trip-route.js';
 import {createTripRoutePointElement} from './view/trip-route-point.js';
 import {createTripRouteEditPointTemplate} from './view/trip-route-edit-point.js';
-import {createTripRouteAddPointTemplate} from './view/trip-route-add-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
 
 const POINT_COUNT = 20;
@@ -41,8 +40,8 @@ render(tripEventsElement, createTripRouteTemplate(), 'beforeend');
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
 render(tripEventsListElement, createTripRouteEditPointTemplate(generateTripPoint()), 'beforeend');
-render(tripEventsListElement, createTripRouteAddPointTemplate(), 'beforeend');
+//render(tripEventsListElement, createTripRouteAddPointTemplate(), 'beforeend');
 
-for(let i = 0; i< POINT_COUNT; i++) {
+for(let i = 0; i< POINT_COUNT-1; i++) {
   render(tripEventsListElement, createTripRoutePointElement(generateTripPoint()), 'beforeend');
 }
