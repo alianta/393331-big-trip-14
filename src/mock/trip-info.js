@@ -6,7 +6,7 @@ import {MIN_PRICE, MAX_PRICE, MIN_ROUTE_POINT_COUNT, MAX_ROUTE_POINT_COUNT} from
  */
 export const generateTripInfo = () => {
   return {
-    route: new Array(getRandomInteger(MIN_ROUTE_POINT_COUNT, MAX_ROUTE_POINT_COUNT)).fill().map(getRandomDestination),
+    trip: new Array(getRandomInteger(MIN_ROUTE_POINT_COUNT, MAX_ROUTE_POINT_COUNT)).fill().map(getRandomDestination),
     dateTimeStart: getRandomDayAndTime(),
     dateTimeEnd: getRandomDayAndTime(),
     totalPrice: getRandomInteger(MIN_PRICE, MAX_PRICE),

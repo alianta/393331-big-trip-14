@@ -2,12 +2,12 @@ import {createMenuTemplate} from './view/menu.js';
 import {createFiltersTemplate} from './view/filters.js';
 import {createSortingTemplate} from './view/sorting.js';
 import {createTripInfoTemplate} from './view/trip-info.js';
-import {createCostTemplate} from './view/cost.js';
 import {createTripRouteTemplate} from './view/trip-route.js';
 import {createTripRoutePointElement} from './view/trip-route-point.js';
 import {createTripRouteEditPointTemplate} from './view/trip-route-edit-point.js';
 import {createTripRouteAddPointTemplate} from './view/trip-route-add-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
+import {generateTripInfo} from './mock/trip-info.js';
 
 const POINT_COUNT = 20;
 
@@ -28,11 +28,8 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-render(tripMainElement, createTripInfoTemplate(), 'afterbegin');
+render(tripMainElement, createTripInfoTemplate(generateTripInfo()), 'afterbegin');
 
-const tripInfoElement = tripMainElement.querySelector('.trip-info');
-
-render(tripInfoElement, createCostTemplate(), 'beforeend');
 render(siteNavigationElement, createMenuTemplate(), 'beforeend');
 render(siteFiltersElement, createFiltersTemplate(), 'beforeend');
 render(tripEventsElement, createSortingTemplate(), 'beforeend');
