@@ -36,9 +36,6 @@ render(tripEventsElement, createTripRouteTemplate(), 'beforeend');
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
-//render(tripEventsListElement, createTripRouteEditPointTemplate(generateTripPoint()), 'beforeend');
-//render(tripEventsListElement, createTripRouteAddPointTemplate(generateTripPoint()), 'beforeend');
-
 for(let i = 0; i< tripRoute.length-1; i++) {
   if(i === 0) {
     render(tripEventsListElement, createTripRouteEditPointTemplate(tripRoute[i]), 'beforeend');
