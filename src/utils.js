@@ -60,3 +60,13 @@ export const generatePhoto = () => {
   const randomIndex = getRandomInteger(0, MAX_NUMBER_PHOTO);
   return `http://picsum.photos/248/152?r=${randomIndex}`;
 };
+
+/**
+ * Функция для отрисовки (вставки в DOM) компонентов
+ * @param {*} container - компонетен, в который необходимо вставть
+ * @param {*} template -элемент, который необходимо вставить
+ * @param {*} place - позицмя вставки (beforeBegin, afterBegin, beforeEnd, afterEnd)
+ */
+export const renderTemplate = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
