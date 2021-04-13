@@ -20,9 +20,27 @@ const tripMainElement = document.querySelector('.trip-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
 const renderPoint = (tripRouteList,point) => {
-  const routePoint = new TripRoutePoint(point).getElement();
-  const routeEditPoint = new TripRouteEditPoint(point).getElement();
-  render(tripRouteList, routePoint, RenderPosition.BEFOREEND);
+  const routePoint = new TripRoutePoint(point);
+  const routeEditPoint = new TripRouteEditPoint(point);
+
+  const openEditPointForm = () => {
+    tripRouteList.replaceChild(routeEditPoint.getElement(), routePoint.getElement());
+  };
+
+  const closeEditPointForm = () => {
+    tripRouteList.replaceChild(routePoint.getElement(), routeEditPoint.getElement());
+  };
+
+  routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    openEditPointForm();
+  });
+
+  routeEditPoint.getElement().querySelector('form').addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    closeEditPointForm();
+  });
+
+  render(tripRouteList, routePoint.getElement(), RenderPosition.BEFOREEND);
 };
 
 render(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
