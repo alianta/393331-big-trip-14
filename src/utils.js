@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {RANDOM_MIN_DAY, RANDOM_MAX_DAY, RANDOM_MIN_TIME, RANDOM_MAX_TIME, DESTINATIONS, TYPES, DESTINATION_DESCRIPTIONS, MAX_NUMBER_PHOTO} from './const.js';
+import {RANDOM_MIN_DAY, RANDOM_MAX_DAY, RANDOM_MIN_TIME, RANDOM_MAX_TIME, DESTINATIONS, TYPES, DESTINATION_DESCRIPTIONS, MAX_NUMBER_PHOTO, RenderPosition} from './const.js';
 /**
  * Функция из интернета по генерации случайного числа из диапазона
  * Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
@@ -69,4 +69,32 @@ export const generatePhoto = () => {
  */
 export const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
+};
+
+/**
+ * Функция вставки элемента в указанное место разметки
+ * @param {HTMLElement} container - элемент-родитель в которой необходимо вставить элемент
+ * @param {HTMLElement} element  - элемент, который необходимо вставить
+ * @param {string} place  - место всвки
+ */
+export const renderElement = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+/**
+ * Функция создания элемента html по заданной строке разметки
+ * @param {string} template  - строка разметки
+ * @returns  - элемент html
+ */
+export const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+  return newElement.firstChild;
 };
