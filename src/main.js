@@ -19,6 +19,12 @@ const siteMainElement = document.querySelector('.page-main');
 const tripMainElement = document.querySelector('.trip-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
+const renderPoint = (tripRouteList,point) => {
+  const routePoint = new TripRoutePoint(point).getElement();
+  const routeEditPoint = new TripRouteEditPoint(point).getElement();
+  render(tripRouteList, routePoint, RenderPosition.BEFOREEND);
+};
+
 render(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
 
 render(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
@@ -29,9 +35,5 @@ render(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
 for(let i = 0; i < tripRoute.length; i++) {
-  if(i === 0) {
-    render(tripEventsListElement, new TripRouteEditPoint(tripRoute[i]).getElement(),  RenderPosition.BEFOREEND);
-  } else {
-    render(tripEventsListElement, new TripRoutePoint(tripRoute[i]).getElement(), RenderPosition.BEFOREEND);
-  }
+  renderPoint(tripEventsListElement, tripRoute[i]);
 }
