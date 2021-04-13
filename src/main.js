@@ -2,7 +2,7 @@ import Menu from './view/menu.js';
 import Filters from './view/filters.js';
 import Sorting from './view/sorting.js';
 import {createTripInfoTemplate} from './view/trip-info.js';
-import {createTripRouteTemplate} from './view/trip-route.js';
+import TripRoute from './view/trip-route.js';
 import {createTripRoutePointElement} from './view/trip-route-point.js';
 import {createTripRouteEditPointTemplate} from './view/trip-route-edit-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
@@ -24,7 +24,7 @@ renderTemplate(tripMainElement, createTripInfoTemplate(generateTripInfo()), 'aft
 renderElement(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
 renderElement(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
 renderElement(tripEventsElement, new Sorting().getElement(), RenderPosition.BEFOREEND);
-renderTemplate(tripEventsElement, createTripRouteTemplate(), 'beforeend');
+renderElement(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
