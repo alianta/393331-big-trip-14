@@ -7,7 +7,7 @@ import TripRoutePoint from './view/trip-route-point.js';
 import TripRouteEditPoint from './view/trip-route-edit-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
 import {generateTripInfo} from './mock/trip-info.js';
-import {renderElement} from './utils.js';
+import {render} from './utils.js';
 import {RenderPosition} from './const.js';
 
 const POINT_COUNT = 20;
@@ -19,19 +19,19 @@ const siteMainElement = document.querySelector('.page-main');
 const tripMainElement = document.querySelector('.trip-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-renderElement(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
+render(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
 
-renderElement(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
-renderElement(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
-renderElement(tripEventsElement, new Sorting().getElement(), RenderPosition.BEFOREEND);
-renderElement(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND);
+render(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
+render(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new Sorting().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
 for(let i = 0; i < tripRoute.length; i++) {
   if(i === 0) {
-    renderElement(tripEventsListElement, new TripRouteEditPoint(tripRoute[i]).getElement(),  RenderPosition.BEFOREEND);
+    render(tripEventsListElement, new TripRouteEditPoint(tripRoute[i]).getElement(),  RenderPosition.BEFOREEND);
   } else {
-    renderElement(tripEventsListElement, new TripRoutePoint(tripRoute[i]).getElement(), RenderPosition.BEFOREEND);
+    render(tripEventsListElement, new TripRoutePoint(tripRoute[i]).getElement(), RenderPosition.BEFOREEND);
   }
 }

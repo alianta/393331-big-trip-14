@@ -77,7 +77,7 @@ export const renderTemplate = (container, template, place) => {
  * @param {HTMLElement} element  - элемент, который необходимо вставить
  * @param {string} place  - место всвки
  */
-export const renderElement = (container, element, place) => {
+export const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);
