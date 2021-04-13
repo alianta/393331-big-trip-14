@@ -1,5 +1,9 @@
 import {createElement} from '../utils.js';
 
+/**
+ * Функция создания блока разметки для блока фильтрации
+ * @returns - строка, содержащая блок разметки для блока фильтрации
+ */
 const createFiltersTemplate = () => {
   return `<form class="trip-filters" action="#" method="get">
   <div class="trip-filters__filter">
