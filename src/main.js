@@ -4,7 +4,7 @@ import Sorting from './view/sorting.js';
 import TripInfo from './view/trip-info.js';
 import TripRoute from './view/trip-route.js';
 import {createTripRoutePointElement} from './view/trip-route-point.js';
-import {createTripRouteEditPointTemplate} from './view/trip-route-edit-point.js';
+import TripRouteEditPoint from './view/trip-route-edit-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
 import {generateTripInfo} from './mock/trip-info.js';
 import {renderElement, renderTemplate} from './utils.js';
@@ -30,7 +30,7 @@ const tripEventsListElement = tripEventsElement.querySelector('.trip-events__lis
 
 for(let i = 0; i < tripRoute.length; i++) {
   if(i === 0) {
-    renderTemplate(tripEventsListElement, createTripRouteEditPointTemplate(tripRoute[i]), 'beforeend');
+    renderElement(tripEventsListElement, new TripRouteEditPoint().getElement(tripRoute[i]),  RenderPosition.BEFOREEND);
   } else {
     renderTemplate(tripEventsListElement, createTripRoutePointElement(tripRoute[i]), 'beforeend');
   }
