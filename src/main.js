@@ -19,7 +19,7 @@ const siteMainElement = document.querySelector('.page-main');
 const tripMainElement = document.querySelector('.trip-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-renderElement(tripMainElement, new TripInfo().getElement(generateTripInfo()), RenderPosition.AFTERBEGIN);
+renderElement(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
 
 renderElement(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
 renderElement(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
@@ -30,8 +30,8 @@ const tripEventsListElement = tripEventsElement.querySelector('.trip-events__lis
 
 for(let i = 0; i < tripRoute.length; i++) {
   if(i === 0) {
-    renderElement(tripEventsListElement, new TripRouteEditPoint().getElement(tripRoute[i]),  RenderPosition.BEFOREEND);
+    renderElement(tripEventsListElement, new TripRouteEditPoint(tripRoute[i]).getElement(),  RenderPosition.BEFOREEND);
   } else {
-    renderElement(tripEventsListElement, new TripRoutePoint().getElement(tripRoute[i]), RenderPosition.BEFOREEND);
+    renderElement(tripEventsListElement, new TripRoutePoint(tripRoute[i]).getElement(), RenderPosition.BEFOREEND);
   }
 }

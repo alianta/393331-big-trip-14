@@ -50,17 +50,18 @@ const createTripRoutePointElement = (point) => {
 };
 
 export default class TripRoutePoint {
-  constructor() {
+  constructor(point) {
+    this._point = point;
     this._element = null;
   }
 
-  getTemplate(point) {
-    return createTripRoutePointElement(point);
+  getTemplate() {
+    return createTripRoutePointElement(this._point);
   }
 
-  getElement(point) {
+  getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate(point));
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;

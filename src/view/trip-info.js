@@ -49,17 +49,18 @@ const createTripInfoTemplate = (tripInfo) => {
 };
 
 export default class TripInfo {
-  constructor() {
+  constructor(tripInfo) {
+    this._tripInfo = tripInfo;
     this._element = null;
   }
 
-  getTemplate(tripInfo) {
-    return createTripInfoTemplate(tripInfo);
+  getTemplate() {
+    return createTripInfoTemplate(this._tripInfo);
   }
 
-  getElement(tripInfo) {
+  getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate(tripInfo));
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
