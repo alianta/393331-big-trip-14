@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
+import {createElement} from '../utils.js';
 
 /**
  * Функция создания блока разметки для точки маршрута
  * @param {class} point - объект, содержащий информацию о точке маршрута
  * @returns - строка, содержащая блок разметки для точки маршрута
  */
-export const createTripRoutePointElement = (point) => {
+const createTripRoutePointElement = (point) => {
   const {type, destination, dateTimeStart, dateTimeEnd, price, offers, isFavorite} = point;
   const favoriteClassName = isFavorite ? 'event__favorite-btn--active' : '';
 
@@ -47,3 +48,25 @@ export const createTripRoutePointElement = (point) => {
   </div>
 </li>`;
 };
+
+export default class TripRoutePoint {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate(point) {
+    return createTripRoutePointElement(point);
+  }
+
+  getElement(point) {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate(point));
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
