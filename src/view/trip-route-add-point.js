@@ -2,13 +2,14 @@ import dayjs from 'dayjs';
 import {DESTINATIONS} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
+import {createElement} from '../utils.js';
 
 /**
  * Функция создания блока разметки для блока создания точки маршрута
  * @param {object} point - объект с данными о точке маршрута
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
-export const createTripRouteAddPointTemplate = (point) => {
+const createTripRouteAddPointTemplate = (point) => {
   const {type, destination, dateTimeStart, dateTimeEnd, offers, destinationDetails} = point;
 
   return `<li class="trip-events__item">
@@ -81,3 +82,26 @@ export const createTripRouteAddPointTemplate = (point) => {
   </form>
 </li>`;
 };
+
+export default class TripRouteAddPoint {
+  constructor(point) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripRouteAddPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

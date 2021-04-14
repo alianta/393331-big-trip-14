@@ -1,12 +1,14 @@
-import {createMenuTemplate} from './view/menu.js';
-import {createFiltersTemplate} from './view/filters.js';
-import {createSortingTemplate} from './view/sorting.js';
-import {createTripInfoTemplate} from './view/trip-info.js';
-import {createTripRouteTemplate} from './view/trip-route.js';
-import {createTripRoutePointElement} from './view/trip-route-point.js';
-import {createTripRouteEditPointTemplate} from './view/trip-route-edit-point.js';
+import Menu from './view/menu.js';
+import Filters from './view/filters.js';
+import Sorting from './view/sorting.js';
+import TripInfo from './view/trip-info.js';
+import TripRoute from './view/trip-route.js';
+import TripRoutePoint from './view/trip-route-point.js';
+import TripRouteEditPoint from './view/trip-route-edit-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
 import {generateTripInfo} from './mock/trip-info.js';
+import {render} from './utils.js';
+import {RenderPosition} from './const.js';
 
 const POINT_COUNT = 20;
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
@@ -17,29 +19,39 @@ const siteMainElement = document.querySelector('.page-main');
 const tripMainElement = document.querySelector('.trip-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-/**
- * Функция для отрисовки (вставки в DOM) компонентов
- * @param {*} container - компонетен, в который необходимо вставть
- * @param {*} template -элемент, который необходимо вставить
- * @param {*} place - позицмя вставки (beforeBegin, afterBegin, beforeEnd, afterEnd)
- */
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
+const renderPoint = (tripRouteList,point) => {
+  const routePoint = new TripRoutePoint(point);
+  const routeEditPoint = new TripRouteEditPoint(point);
+
+  const openEditPointForm = () => {
+    tripRouteList.replaceChild(routeEditPoint.getElement(), routePoint.getElement());
+  };
+
+  const closeEditPointForm = () => {
+    tripRouteList.replaceChild(routePoint.getElement(), routeEditPoint.getElement());
+  };
+
+  routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    openEditPointForm();
+  });
+
+  routeEditPoint.getElement().querySelector('form').addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    closeEditPointForm();
+  });
+
+  render(tripRouteList, routePoint.getElement(), RenderPosition.BEFOREEND);
 };
 
-render(tripMainElement, createTripInfoTemplate(generateTripInfo()), 'afterbegin');
+render(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
 
-render(siteNavigationElement, createMenuTemplate(), 'beforeend');
-render(siteFiltersElement, createFiltersTemplate(), 'beforeend');
-render(tripEventsElement, createSortingTemplate(), 'beforeend');
-render(tripEventsElement, createTripRouteTemplate(), 'beforeend');
+render(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
+render(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new Sorting().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
 
 for(let i = 0; i < tripRoute.length; i++) {
-  if(i === 0) {
-    render(tripEventsListElement, createTripRouteEditPointTemplate(tripRoute[i]), 'beforeend');
-  } else {
-    render(tripEventsListElement, createTripRoutePointElement(tripRoute[i]), 'beforeend');
-  }
+  renderPoint(tripEventsListElement, tripRoute[i]);
 }

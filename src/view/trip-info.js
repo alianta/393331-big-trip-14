@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {createElement} from '../utils.js';
 
 /**
  * Функция генерации общей информации о точках маршрута
@@ -33,7 +34,7 @@ const createTripPeriod = (dateTimeStart, dateTimeEnd) => {
  * @param {object} tripInfo - объект содержащий данные с общей информацией и маршруте
  * @returns - строка, содержащая разметку для блока с общей информацией и маршруте
  */
-export const createTripInfoTemplate = (tripInfo) => {
+const createTripInfoTemplate = (tripInfo) => {
   const {trip, dateTimeStart, dateTimeEnd, totalPrice} = tripInfo;
   return `<section class="trip-main__trip-info  trip-info">
   <div class="trip-info__main">
@@ -46,3 +47,26 @@ export const createTripInfoTemplate = (tripInfo) => {
   </p>
 </section>`;
 };
+
+export default class TripInfo {
+  constructor(tripInfo) {
+    this._tripInfo = tripInfo;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripInfoTemplate(this._tripInfo);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
