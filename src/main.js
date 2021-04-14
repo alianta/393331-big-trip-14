@@ -61,15 +61,13 @@ const renderPoint = (tripRouteList,point) => {
   render(tripRouteList, routePoint.getElement(), RenderPosition.BEFOREEND);
 };
 
+render(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
+render(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
 
 if(tripRoute.length === 0) {
-  render(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
-  render(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
   render(tripEventsElement, new TripEmpty().getElement(), RenderPosition.BEFOREEND);
 } else {
   render(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
-  render(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
-  render(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
   render(tripEventsElement, new Sorting().getElement(), RenderPosition.BEFOREEND);
   render(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND);
 
@@ -79,4 +77,3 @@ if(tripRoute.length === 0) {
     renderPoint(tripEventsListElement, tripRoute[i]);
   }
 }
-
