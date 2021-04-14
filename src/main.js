@@ -31,13 +31,23 @@ const renderPoint = (tripRouteList,point) => {
     tripRouteList.replaceChild(routePoint.getElement(), routeEditPoint.getElement());
   };
 
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      closeEditPointForm();
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
   routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
     openEditPointForm();
+    document.addEventListener('keydown', onEscKeyDown);
   });
 
   routeEditPoint.getElement().querySelector('form').addEventListener('submit', (evt) => {
     evt.preventDefault();
     closeEditPointForm();
+    document.removeEventListener('keydown', onEscKeyDown);
   });
 
   render(tripRouteList, routePoint.getElement(), RenderPosition.BEFOREEND);
