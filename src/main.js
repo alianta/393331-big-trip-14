@@ -44,6 +44,12 @@ const renderPoint = (tripRouteList,point) => {
     document.addEventListener('keydown', onEscKeyDown);
   });
 
+  routeEditPoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', (evt) => {
+    evt.preventDefault();
+    closeEditPointForm();
+    document.removeEventListener('keydown', onEscKeyDown);
+  });
+
   routeEditPoint.getElement().querySelector('form').addEventListener('submit', (evt) => {
     evt.preventDefault();
     closeEditPointForm();
