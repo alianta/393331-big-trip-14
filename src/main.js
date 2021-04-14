@@ -9,6 +9,8 @@ import {generateTripPoint} from './mock/trip-point.js';
 import {generateTripInfo} from './mock/trip-info.js';
 import {render} from './utils.js';
 import {RenderPosition} from './const.js';
+import TripEmpty from './view/trip-empty.js';
+
 
 const POINT_COUNT = 20;
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
@@ -31,27 +33,47 @@ const renderPoint = (tripRouteList,point) => {
     tripRouteList.replaceChild(routePoint.getElement(), routeEditPoint.getElement());
   };
 
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      closeEditPointForm();
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
   routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
     openEditPointForm();
+    document.addEventListener('keydown', onEscKeyDown);
+  });
+
+  routeEditPoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', (evt) => {
+    evt.preventDefault();
+    closeEditPointForm();
+    document.removeEventListener('keydown', onEscKeyDown);
   });
 
   routeEditPoint.getElement().querySelector('form').addEventListener('submit', (evt) => {
     evt.preventDefault();
     closeEditPointForm();
+    document.removeEventListener('keydown', onEscKeyDown);
   });
 
   render(tripRouteList, routePoint.getElement(), RenderPosition.BEFOREEND);
 };
 
-render(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
-
 render(siteNavigationElement, new Menu().getElement(), RenderPosition.BEFOREEND);
 render(siteFiltersElement, new Filters().getElement(), RenderPosition.BEFOREEND);
-render(tripEventsElement, new Sorting().getElement(), RenderPosition.BEFOREEND);
-render(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND);
 
-const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
+if(tripRoute.length === 0) {
+  render(tripEventsElement, new TripEmpty().getElement(), RenderPosition.BEFOREEND);
+} else {
+  render(tripMainElement, new TripInfo(generateTripInfo()).getElement(), RenderPosition.AFTERBEGIN);
+  render(tripEventsElement, new Sorting().getElement(), RenderPosition.BEFOREEND);
+  render(tripEventsElement, new TripRoute().getElement(), RenderPosition.BEFOREEND);
 
-for(let i = 0; i < tripRoute.length; i++) {
-  renderPoint(tripEventsListElement, tripRoute[i]);
+  const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
+
+  for(let i = 0; i < tripRoute.length; i++) {
+    renderPoint(tripEventsListElement, tripRoute[i]);
+  }
 }
