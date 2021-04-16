@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import {DESTINATIONS} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 
 /**
  * Функция создания блока разметки для блока создания точки маршрута
@@ -83,25 +83,14 @@ const createTripRouteAddPointTemplate = (point) => {
 </li>`;
 };
 
-export default class TripRouteAddPoint {
+export default class TripRouteAddPoint extends AbstractView{
   constructor(point) {
+    super();
     this._point = point;
     this._element = null;
   }
 
   getTemplate() {
     return createTripRouteAddPointTemplate(this._point);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
