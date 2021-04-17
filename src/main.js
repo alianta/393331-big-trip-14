@@ -7,7 +7,7 @@ import TripRoutePoint from './view/trip-route-point.js';
 import TripRouteEditPoint from './view/trip-route-edit-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
 import {generateTripInfo} from './mock/trip-info.js';
-import {render} from './utils.js';
+import {render, replace} from './utils/render.js';
 import {RenderPosition} from './const.js';
 import TripEmpty from './view/trip-empty.js';
 
@@ -26,11 +26,11 @@ const renderPoint = (tripRouteList,point) => {
   const routeEditPoint = new TripRouteEditPoint(point);
 
   const openEditPointForm = () => {
-    tripRouteList.replaceChild(routeEditPoint.getElement(), routePoint.getElement());
+    replace(routeEditPoint, routePoint);
   };
 
   const closeEditPointForm = () => {
-    tripRouteList.replaceChild(routePoint.getElement(), routeEditPoint.getElement());
+    replace(routePoint, routeEditPoint);
   };
 
   const onEscKeyDown = (evt) => {
@@ -40,20 +40,17 @@ const renderPoint = (tripRouteList,point) => {
       document.removeEventListener('keydown', onEscKeyDown);
     }
   };
-
-  routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  routePoint.setEditClickHandler(() => {
     openEditPointForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  routeEditPoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', (evt) => {
-    evt.preventDefault();
+  routeEditPoint.setEditClickHandler(() => {
     closeEditPointForm();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  routeEditPoint.getElement().querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  routeEditPoint.setFormSubmitHandler(() => {
     closeEditPointForm();
     document.removeEventListener('keydown', onEscKeyDown);
   });

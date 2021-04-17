@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import {DESTINATIONS} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 /**
  * Функция создания блока разметки для блока редактирования точки маршрута
  * @param {object} point - объект с данными о точке маршрута
@@ -80,25 +80,32 @@ const createTripRouteEditPointTemplate = (point) => {
 };
 
 
-export default class TripRouteEditPoint {
+export default class TripRouteEditPoint extends AbstractView{
   constructor(point) {
+    super();
     this._point = point;
     this._element = null;
+    this._editClickHandler = this._editClickHandler.bind(this);
+    this._formSubmit = this._formSubmit.bind(this);
   }
 
   getTemplate() {
     return createTripRouteEditPointTemplate(this._point);
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
-
-  removeElement() {
-    this._element = null;
+  _formSubmit(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmit);
   }
 }
