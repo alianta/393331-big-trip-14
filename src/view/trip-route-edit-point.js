@@ -85,9 +85,27 @@ export default class TripRouteEditPoint extends AbstractView{
     super();
     this._point = point;
     this._element = null;
+    this._editClickHandler = this._editClickHandler.bind(this);
+    this._formSubmit = this._formSubmit.bind(this);
   }
 
   getTemplate() {
     return createTripRouteEditPointTemplate(this._point);
+  }
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+  _formSubmit(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmit);
   }
 }

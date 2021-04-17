@@ -40,24 +40,17 @@ const renderPoint = (tripRouteList,point) => {
       document.removeEventListener('keydown', onEscKeyDown);
     }
   };
-
-  /*routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
-    openEditPointForm();
-    document.addEventListener('keydown', onEscKeyDown);
-  });*/
   routePoint.setEditClickHandler(() => {
     openEditPointForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  routeEditPoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', (evt) => {
-    evt.preventDefault();
+  routeEditPoint.setEditClickHandler(() => {
     closeEditPointForm();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  routeEditPoint.getElement().querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  routeEditPoint.setFormSubmitHandler(() => {
     closeEditPointForm();
     document.removeEventListener('keydown', onEscKeyDown);
   });
