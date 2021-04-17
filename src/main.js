@@ -7,7 +7,7 @@ import TripRoutePoint from './view/trip-route-point.js';
 import TripRouteEditPoint from './view/trip-route-edit-point.js';
 import {generateTripPoint} from './mock/trip-point.js';
 import {generateTripInfo} from './mock/trip-info.js';
-import {render} from './utils.js';
+import {render, replace} from './utils/render.js';
 import {RenderPosition} from './const.js';
 import TripEmpty from './view/trip-empty.js';
 
@@ -26,11 +26,11 @@ const renderPoint = (tripRouteList,point) => {
   const routeEditPoint = new TripRouteEditPoint(point);
 
   const openEditPointForm = () => {
-    tripRouteList.replaceChild(routeEditPoint.getElement(), routePoint.getElement());
+    replace(routeEditPoint, routePoint);
   };
 
   const closeEditPointForm = () => {
-    tripRouteList.replaceChild(routePoint.getElement(), routeEditPoint.getElement());
+    replace(routePoint, routeEditPoint);
   };
 
   const onEscKeyDown = (evt) => {

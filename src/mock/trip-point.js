@@ -1,7 +1,7 @@
 import {MIN_PRICE, MAX_PRICE, MIN_OFFER_COUNT, MAX_OFFER_COUNT, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS} from '../const.js';
-import {getRandomInteger, getRandomDayAndTime, getRandomDestination, getRandomPointType, getRandomDestinationDescription, generatePhoto} from '../utils.js';
+import {getRandomPointType, getRandomDestination, getRandomDestinationDescription, generatePhoto} from '../utils/trip.js';
+import {getRandomDayAndTime, getRandomInteger} from '../utils/common.js';
 import {generateOffer} from './offer.js';
-
 
 /**
  * Функция геренации данных точки маррута
