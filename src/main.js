@@ -41,7 +41,11 @@ const renderPoint = (tripRouteList,point) => {
     }
   };
 
-  routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  /*routePoint.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    openEditPointForm();
+    document.addEventListener('keydown', onEscKeyDown);
+  });*/
+  routePoint.setEditClickHandler(() => {
     openEditPointForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
