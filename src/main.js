@@ -10,6 +10,7 @@ import {generateTripInfo} from './mock/trip-info.js';
 import {render, replace} from './utils/render.js';
 import {RenderPosition} from './const.js';
 import TripEmpty from './view/trip-empty.js';
+import Trip from './presenter/trip.js';
 
 
 const POINT_COUNT = 20;
@@ -21,6 +22,10 @@ const siteMainElement = document.querySelector('.page-main');
 const tripMainElement = document.querySelector('.trip-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
+
+const tripPresener = new Trip(tripEventsElement,siteHeaderElement);
+tripPresener.init(tripRoute);
+/*
 const renderPoint = (tripRouteList,point) => {
   const routePoint = new TripRoutePoint(point);
   const routeEditPoint = new TripRouteEditPoint(point);
@@ -74,3 +79,4 @@ if(tripRoute.length === 0) {
     renderPoint(tripEventsListElement, tripRoute[i]);
   }
 }
+*/
