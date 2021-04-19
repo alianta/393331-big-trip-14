@@ -10,6 +10,7 @@ import TripRoutePoint from '../view/trip-route-point.js';
 import TripRouteEditPoint from '../view/trip-route-edit-point.js';
 import Menu from '../view/menu.js';
 import Filters from '../view/filters.js';
+import PointPresenter from './point.js';
 
 export default class Trip {
   constructor(tripContainer, headerContainer) {
@@ -43,7 +44,7 @@ export default class Trip {
   }
 
   _renderPoint(listContainer, point) {
-    const routePoint = new TripRoutePoint(point);
+   /* const routePoint = new TripRoutePoint(point);
     const routeEditPoint = new TripRouteEditPoint(point);
     const openEditPointForm = () => {
       replace(routeEditPoint, routePoint);
@@ -70,7 +71,10 @@ export default class Trip {
       closeEditPointForm();
       document.removeEventListener('keydown', onEscKeyDown);
     });
-    render(listContainer, routePoint, RenderPosition.BEFOREEND);
+    render(listContainer, routePoint, RenderPosition.BEFOREEND);*/
+
+    const pointPresenter = new PointPresenter(listContainer);
+    pointPresenter.init(point);
   }
 
   _renderPoints() {

@@ -1,5 +1,5 @@
 import {generateTripPoint} from './mock/trip-point.js';
-import Trip from './presenter/trip.js';
+import TripPresenter from './presenter/trip.js';
 
 const POINT_COUNT = 20;
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
@@ -8,5 +8,5 @@ const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
 
-const tripPresener = new Trip(tripEventsElement,siteHeaderElement);
+const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement);
 tripPresener.init(tripRoute);
