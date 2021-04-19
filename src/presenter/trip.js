@@ -5,9 +5,7 @@ import TripEmpty from '../view/trip-empty.js';
 import {RenderPosition} from '../const.js';
 import TripInfo from '../view/trip-info.js';
 import {generateTripInfo} from '../mock/trip-info.js';
-import {render, replace} from '../utils/render.js';
-import TripRoutePoint from '../view/trip-route-point.js';
-import TripRouteEditPoint from '../view/trip-route-edit-point.js';
+import {render} from '../utils/render.js';
 import Menu from '../view/menu.js';
 import Filters from '../view/filters.js';
 import PointPresenter from './point.js';
@@ -44,35 +42,6 @@ export default class Trip {
   }
 
   _renderPoint(listContainer, point) {
-   /* const routePoint = new TripRoutePoint(point);
-    const routeEditPoint = new TripRouteEditPoint(point);
-    const openEditPointForm = () => {
-      replace(routeEditPoint, routePoint);
-    };
-    const closeEditPointForm = () => {
-      replace(routePoint, routeEditPoint);
-    };
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        closeEditPointForm();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-    routePoint.setEditClickHandler(() => {
-      openEditPointForm();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-    routeEditPoint.setEditClickHandler(() => {
-      closeEditPointForm();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-    routeEditPoint.setFormSubmitHandler(() => {
-      closeEditPointForm();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-    render(listContainer, routePoint, RenderPosition.BEFOREEND);*/
-
     const pointPresenter = new PointPresenter(listContainer);
     pointPresenter.init(point);
   }
