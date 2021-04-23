@@ -43,6 +43,11 @@ export default class Point {
     remove(prevPointEditComponent);
   }
 
+  destroy() {
+    remove(this._pointComponent);
+    remove(this._pointEditComponent);
+  }
+
   _handleEditClick() {
     this._replaceCardToForm();
   }
