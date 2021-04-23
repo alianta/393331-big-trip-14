@@ -9,6 +9,8 @@ import {render} from '../utils/render.js';
 import Menu from '../view/menu.js';
 import Filters from '../view/filters.js';
 import PointPresenter from './point.js';
+import {updateItem} from '../utils/common.js';
+
 
 export default class Trip {
   constructor(tripContainer, headerContainer) {
@@ -22,6 +24,9 @@ export default class Trip {
     this._tripInfoComponent = new TripInfo(generateTripInfo());
     this._filterComponent = new Filters();
     this._menuComponent = new Menu();
+
+    this._handlePointChange = this._handlePointChange.bind(this);
+
     this._filterContainer = this._headerContainer.querySelector('.trip-controls__filters');
     this._navigationContainer = this._headerContainer.querySelector('.trip-controls__navigation');
     this._tripMainContainer = headerContainer.querySelector('.trip-main');
@@ -32,6 +37,11 @@ export default class Trip {
     render(this._navigationContainer, this._menuComponent, RenderPosition.BEFOREEND);
     render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
     this._renderTrip();
+  }
+
+  _handlePointChange(updatedPoint) {
+    this._tripPoints = updateItem(this._tripPoints, updatedPoint);
+    this._pointPresenter[updatedPoint.id].init(updatedPoint);
   }
 
   _renderSort() {

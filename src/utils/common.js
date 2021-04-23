@@ -23,3 +23,17 @@ export const getRandomDayAndTime = () => {
   const randomTime = getRandomInteger(RANDOM_MIN_TIME, RANDOM_MAX_TIME);
   return dayjs().add(randomDate, 'day').add(randomTime, 'minute').toDate();
 };
+
+export const updateItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1),
+  ];
+};
