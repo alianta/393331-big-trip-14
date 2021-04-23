@@ -14,6 +14,7 @@ export default class Trip {
   constructor(tripContainer, headerContainer) {
     this._tripContainer = tripContainer;
     this._headerContainer = headerContainer;
+    this._pointPresenter = {};
 
     this._sortingComponent = new Sorting();
     this._tripRouteComponent = new TripRoute();
@@ -44,6 +45,7 @@ export default class Trip {
   _renderPoint(listContainer, point) {
     const pointPresenter = new PointPresenter(listContainer);
     pointPresenter.init(point);
+    this._pointPresenter[point.id] = pointPresenter;
   }
 
   _renderPoints() {
