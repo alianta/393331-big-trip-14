@@ -82,4 +82,9 @@ export default class Trip {
     this._renderTripRouteBlock();
     this._renderPoints();
   }
+
+  _clearPointList() {
+    Object.values(this._pointPresenter).forEach((presenter) => presenter.destroy());
+    this._pointPresenter = {};
+  }
 }
