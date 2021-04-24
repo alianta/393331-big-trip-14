@@ -53,14 +53,13 @@ export default class Trip {
   }
 
   _renderPoint(listContainer, point) {
-    const pointPresenter = new PointPresenter(listContainer);
+    const pointPresenter = new PointPresenter(listContainer, this._handlePointChange);
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;
   }
 
   _renderPoints() {
-    const tripEventsListElement = this._tripContainer.querySelector('.trip-events__list');
-    this._tripPoints.forEach((point) => this._renderPoint(tripEventsListElement, point));
+    this._tripPoints.forEach((point) => this._renderPoint(this._tripRouteComponent, point));
   }
 
   _renderEmptyTrip() {
