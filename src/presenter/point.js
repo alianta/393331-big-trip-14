@@ -3,12 +3,20 @@ import TripRouteEditPoint from '../view/trip-route-edit-point.js';
 import {render, replace, remove} from '../utils/render.js';
 import {RenderPosition} from '../const.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
 export default class Point {
-  constructor(container, changeData) {
+  constructor(container, changeData, changeMode) {
     this._listContainer = container;
+    this._changeData = changeData;
+    this._changeMode = changeMode;
+
     this._pointComponent = null;
     this._pointEditComponent = null;
-    this._changeData = changeData;
+    this._mode = Mode.DEFAULT;
 
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
@@ -34,11 +42,11 @@ export default class Point {
       return;
     }
 
-    if (this._listContainer.getElement().contains(prevPointComponent.getElement())) {
+    if (this._mode === Mode.DEFAULT) {
       replace(this._pointComponent, prevPointComponent);
     }
 
-    if (this._listContainer.getElement().contains(prevPointEditComponent.getElement())) {
+    if (this._mode === Mode.EDITING){
       replace(this._pointEditComponent, prevPointEditComponent);
     }
 
@@ -69,14 +77,24 @@ export default class Point {
       ),
     );
   }
+
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceFormToCard();
+    }
+  }
+
   _replaceCardToForm() {
     replace(this._pointEditComponent, this._pointComponent);
     document.addEventListener('keydown', this._escKeyDownHandler);
+    this._changeMode();
+    this._mode = Mode.EDITING;
   }
 
   _replaceFormToCard() {
     replace(this._pointComponent, this._pointEditComponent);
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._mode = Mode.DEFAULT;
   }
   _escKeyDownHandler(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
