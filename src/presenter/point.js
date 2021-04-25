@@ -1,0 +1,105 @@
+import TripRoutePoint from '../view/trip-route-point.js';
+import TripRouteEditPoint from '../view/trip-route-edit-point.js';
+import {render, replace, remove} from '../utils/render.js';
+import {RenderPosition} from '../const.js';
+
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
+export default class Point {
+  constructor(container, changeData, changeMode) {
+    this._listContainer = container;
+    this._changeData = changeData;
+    this._changeMode = changeMode;
+
+    this._pointComponent = null;
+    this._pointEditComponent = null;
+    this._mode = Mode.DEFAULT;
+
+    this._handleEditClick = this._handleEditClick.bind(this);
+    this._handleFormSubmit = this._handleFormSubmit.bind(this);
+    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+  }
+  init(point) {
+    this._point = point;
+
+    const prevPointComponent = this._pointComponent;
+    const prevPointEditComponent = this._pointEditComponent;
+
+    this._pointComponent = new TripRoutePoint(point);
+    this._pointEditComponent = new TripRouteEditPoint(point);
+
+    this._pointComponent.setEditClickHandler(this._handleEditClick);
+    this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
+    this._pointEditComponent.setEditClickHandler(this._handleFormSubmit);
+    this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+
+    if (prevPointComponent === null || prevPointEditComponent === null) {
+      render(this._listContainer, this._pointComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._mode === Mode.DEFAULT) {
+      replace(this._pointComponent, prevPointComponent);
+    }
+
+    if (this._mode === Mode.EDITING){
+      replace(this._pointEditComponent, prevPointEditComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevPointEditComponent);
+  }
+
+  destroy() {
+    remove(this._pointComponent);
+    remove(this._pointEditComponent);
+  }
+
+  _handleEditClick() {
+    this._replaceCardToForm();
+  }
+
+  _handleFormSubmit() {
+    this._replaceFormToCard();
+  }
+  _handleFavoriteClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._point,
+        {
+          isFavorite: !this._point.isFavorite,
+        },
+      ),
+    );
+  }
+
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceFormToCard();
+    }
+  }
+
+  _replaceCardToForm() {
+    replace(this._pointEditComponent, this._pointComponent);
+    document.addEventListener('keydown', this._escKeyDownHandler);
+    this._changeMode();
+    this._mode = Mode.EDITING;
+  }
+
+  _replaceFormToCard() {
+    replace(this._pointComponent, this._pointEditComponent);
+    document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._mode = Mode.DEFAULT;
+  }
+  _escKeyDownHandler(evt) {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      this._replaceFormToCard();
+    }
+  }
+}

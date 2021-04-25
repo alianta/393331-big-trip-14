@@ -2,6 +2,7 @@ import {MIN_PRICE, MAX_PRICE, MIN_OFFER_COUNT, MAX_OFFER_COUNT, MIN_COUNT_PHOTOS
 import {getRandomPointType, getRandomDestination, getRandomDestinationDescription, generatePhoto} from '../utils/trip.js';
 import {getRandomDayAndTime, getRandomInteger} from '../utils/common.js';
 import {generateOffer} from './offer.js';
+import {nanoid} from 'nanoid';
 
 /**
  * Функция геренации данных точки маррута
@@ -9,6 +10,7 @@ import {generateOffer} from './offer.js';
  */
 export const generateTripPoint = () => {
   return {
+    id: nanoid(),
     type: getRandomPointType(),
     destination: getRandomDestination(),
     dateTimeStart: getRandomDayAndTime(),
