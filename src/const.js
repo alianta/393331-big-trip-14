@@ -63,3 +63,11 @@ export const RenderPosition = {
   AFTERBEGIN: 'afterbegin',
   BEFOREEND: 'beforeend',
 };
+
+export const SortTypes = {
+  DAY: 'sort-day',
+  EEVENT: 'sort-event',
+  TIME: 'sort-time',
+  PRICE: 'sort-price',
+  OFFER: 'sort-offer',
+};
