@@ -66,7 +66,7 @@ export const RenderPosition = {
 
 export const SortTypes = {
   DAY: 'sort-day',
-  EEVENT: 'sort-event',
+  EVENT: 'sort-event',
   TIME: 'sort-time',
   PRICE: 'sort-price',
   OFFER: 'sort-offer',

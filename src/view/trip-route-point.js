@@ -23,7 +23,7 @@ const createTripRoutePointElement = (point) => {
         &mdash;
         <time class="event__end-time" datetime="${dayjs(dateTimeEnd).format('YYYY-MM-DDThh:mm')}">${dayjs(dateTimeEnd).format('hh:mm')}</time>
       </p>
-      <p class="event__duration">30M</p>
+      <p class="event__duration">${dayjs(dateTimeEnd - dateTimeStart).format('hh:mm')}</p>
     </div>
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${price}</span>
