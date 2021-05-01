@@ -55,8 +55,6 @@ export default class Trip {
       default:
         this._tripPoints = this._sourcedTripPoints.slice();
     }
-
-    this._currentSortType = sortType;
   }
   _handleModeChange() {
     Object
@@ -75,6 +73,7 @@ export default class Trip {
     }
 
     this._sortTripPointsAndSaveCurrentSortType(sortType);
+    this._currentSortType = sortType;
     this._clearPointList();
     this._renderPoints();
   }
