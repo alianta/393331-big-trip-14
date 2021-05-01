@@ -46,7 +46,9 @@ export default class Sorting extends AbstractView{
   }
 
   _sortTypeChangeHandler(evt) {
-    evt.preventDefault();
+    if (evt.target.tagName !== 'LABEL') {
+      return;
+    }
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
 
