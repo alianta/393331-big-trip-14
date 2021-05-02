@@ -4,7 +4,7 @@ import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 
 const createPointDuration = (dateTimeStart, dateTimeEnd) => {
-  const duration = dayjs.duration(dayjs(dateTimeStart).diff(dayjs(dateTimeEnd)));
+  const duration = dayjs.duration(dayjs(dateTimeEnd).diff(dayjs(dateTimeStart)));
   const durationDaysTemplate = (duration.days()==0) ? '' : duration.days() + 'D ';
   const durationHoursTemplate = (duration.hours()==0) ? '' : duration.hours() + 'H ';
   const durationMinutesTemplate = (duration.minutes()==0) ? '' : duration.minutes() + 'M';
