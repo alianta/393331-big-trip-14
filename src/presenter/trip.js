@@ -44,7 +44,7 @@ export default class Trip {
     this._renderTrip();
   }
 
-  _sortTripPointsAndSaveCurrentSortType(sortType) {
+  _sortTripPoints(sortType) {
     switch (sortType) {
       case SortTypes.TIME:
         this._tripPoints.sort(sortTime);
@@ -72,7 +72,7 @@ export default class Trip {
       return;
     }
 
-    this._sortTripPointsAndSaveCurrentSortType(sortType);
+    this._sortTripPoints(sortType);
     this._currentSortType = sortType;
     this._clearPointList();
     this._renderPoints();
