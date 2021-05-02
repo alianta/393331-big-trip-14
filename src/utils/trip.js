@@ -42,5 +42,5 @@ export const sortTime = (pointA, pointB) => {
 };
 
 export const sortPrice = (pointA, pointB) => {
-  return pointA.price < pointB.price;
+  return pointB.price - pointA.price;
 };
