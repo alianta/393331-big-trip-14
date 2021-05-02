@@ -1,6 +1,15 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 
+const createPointDuration = (dateTimeStart, dateTimeEnd) => {
+  const duration = dayjs.duration(dayjs(dateTimeEnd).diff(dayjs(dateTimeStart)));
+  const durationDaysTemplate = (duration.days()==0) ? '' : duration.days() + 'D ';
+  const durationHoursTemplate = (duration.hours()==0) ? '' : duration.hours() + 'H ';
+  const durationMinutesTemplate = (duration.minutes()==0) ? '' : duration.minutes() + 'M';
+  return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
+};
 /**
  * Функция создания блока разметки для точки маршрута
  * @param {class} point - объект, содержащий информацию о точке маршрута
@@ -23,7 +32,7 @@ const createTripRoutePointElement = (point) => {
         &mdash;
         <time class="event__end-time" datetime="${dayjs(dateTimeEnd).format('YYYY-MM-DDThh:mm')}">${dayjs(dateTimeEnd).format('hh:mm')}</time>
       </p>
-      <p class="event__duration">30M</p>
+      <p class="event__duration">${createPointDuration(dateTimeStart,dateTimeEnd)}</p>
     </div>
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${price}</span>
