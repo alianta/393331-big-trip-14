@@ -2,7 +2,8 @@ import dayjs from 'dayjs';
 import {DESTINATIONS} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
-import AbstractView from './abstract.js';
+import SmartView from './smart.js';
+
 /**
  * Функция создания блока разметки для блока редактирования точки маршрута
  * @param {object} point - объект с данными о точке маршрута
@@ -80,7 +81,7 @@ const createTripRouteEditPointTemplate = (point) => {
 };
 
 
-export default class TripRouteEditPoint extends AbstractView{
+export default class TripRouteEditPoint extends SmartView{
   constructor(point) {
     super();
     this._point = point;
@@ -92,6 +93,10 @@ export default class TripRouteEditPoint extends AbstractView{
   getTemplate() {
     return createTripRouteEditPointTemplate(this._point);
   }
+
+  restoreHandlers() {
+  }
+
   _editClickHandler(evt) {
     evt.preventDefault();
     this._callback.editClick();
