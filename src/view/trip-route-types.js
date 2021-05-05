@@ -7,11 +7,11 @@ import {TYPES} from '../const.js';
  */
 export const createTripRouteTypesTemplate = (currentType) => {
   return TYPES.map((type) => {
-    const isChecked = (type === currentType)? 'checked':'';
-    type = type.toLowerCase();
+    const isChecked = (type.name === currentType)? 'checked':'';
+    type.name = type.name.toLowerCase();
     return `<div class="event__type-item">
-      <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
-      <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
+      <input id="event-type-${type.name}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.name}" ${isChecked}>
+      <label class="event__type-label  event__type-label--${type.name}" for="event-type-${type.name}-1">${type.name}</label>
     </div>`;
   }).join('');
 };
