@@ -113,7 +113,7 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   _changePointTypeHandler (evt) {
-    if(event.target.tagName == 'INPUT'){
+    if(evt.target.tagName === 'INPUT'){
       this.updateData({
         type: evt.target.value,
         offers:new Array(getRandomInteger(MIN_OFFER_COUNT, MAX_OFFER_COUNT)).fill().map(generateOffer),
