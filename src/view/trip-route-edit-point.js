@@ -107,10 +107,10 @@ export default class TripRouteEditPoint extends SmartView{
     this._dateTimeEndChangeHandler = this._dateTimeEndChangeHandler.bind(this);
 
     this._setInnerHandlers();
-    this._setDatepicker();
+    this._initDatepickers();
   }
 
-  _setDatepicker() {
+  _initDatepickers() {
     if (this._datepicker) {
       this._datepicker.destroy();
       this._datepicker = null;
@@ -182,7 +182,7 @@ export default class TripRouteEditPoint extends SmartView{
 
   restoreHandlers() {
     this._setInnerHandlers();
-    this._setDatepicker();
+    this._initDatepickers();
     this.setEditClickHandler(this._callback.editClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
