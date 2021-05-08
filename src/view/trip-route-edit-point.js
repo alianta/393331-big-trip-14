@@ -96,7 +96,8 @@ export default class TripRouteEditPoint extends SmartView{
     super();
     this._data = point;
     this._element = null;
-    this._datepicker = null;
+    this._datepickerOnDateStart = null;
+    this._datepickerOnDateEnd = null;
 
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmit = this._formSubmit.bind(this);
@@ -111,12 +112,16 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   _initDatepickers() {
-    if (this._datepicker) {
-      this._datepicker.destroy();
-      this._datepicker = null;
+    if (this._datepickerOnDateStart) {
+      this._datepickerOnDateStart.destroy();
+      this._datepickerOnDateStart = null;
+    }
+    if (this._datepickerOnDateEnd) {
+      this._datepickerOnDateEnd.destroy();
+      this._datepickerOnDateEnd = null;
     }
 
-    this._datepicker = flatpickr(
+    this._datepickerOnDateStart = flatpickr(
       this.getElement().querySelector('#event-start-time-1'),
       {
         enableTime: true,
@@ -125,7 +130,7 @@ export default class TripRouteEditPoint extends SmartView{
         onClose: this._dateTimeStartChangeHandler,
       },
     );
-    this._datepicker = flatpickr(
+    this._datepickerOnDateEnd = flatpickr(
       this.getElement().querySelector('#event-end-time-1'),
       {
         enableTime: true,
