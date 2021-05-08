@@ -96,13 +96,56 @@ export default class TripRouteEditPoint extends SmartView{
     super();
     this._data = point;
     this._element = null;
+    this._datepicker = null;
+
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmit = this._formSubmit.bind(this);
 
     this._changePointTypeHandler = this._changePointTypeHandler.bind(this);
     this._changeDestenationHandler = this._changeDestenationHandler.bind(this);
+    this._dateTimeStartChangeHandler = this._dateTimeStartChangeHandler.bind(this);
+    this._dateTimeEndChangeHandler = this._dateTimeEndChangeHandler.bind(this);
 
     this._setInnerHandlers();
+    this._setDatepicker();
+  }
+
+  _setDatepicker() {
+    if (this._datepicker) {
+      this._datepicker.destroy();
+      this._datepicker = null;
+    }
+
+    this._datepicker = flatpickr(
+      this.getElement().querySelector('#event-start-time-1'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.dateTimeStart,
+        onClose: this._dateTimeStartChangeHandler,
+      },
+    );
+    this._datepicker = flatpickr(
+      this.getElement().querySelector('#event-end-time-1'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.dateTimeEnd,
+        onClose: this._dateTimeEndChangeHandler,
+      },
+    );
+  }
+
+  _dateTimeStartChangeHandler([userDate]) {
+    this.updateData({
+      dateTimeStart: userDate,
+    });
+  }
+
+  _dateTimeEndChangeHandler([userDate]) {
+    this.updateData({
+      dateTimeEnd: userDate,
+    });
   }
 
   _setInnerHandlers() {
@@ -139,6 +182,7 @@ export default class TripRouteEditPoint extends SmartView{
 
   restoreHandlers() {
     this._setInnerHandlers();
+    this._setDatepicker();
     this.setEditClickHandler(this._callback.editClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
