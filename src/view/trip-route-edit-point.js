@@ -6,6 +6,8 @@ import SmartView from './smart.js';
 import {getRandomDestinationDescription, generatePhoto} from '../utils/trip.js';
 import {getRandomInteger} from '../utils/common.js';
 import {generateOffer} from '../mock/offer.js';
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 /**
  * Функция создания блока разметки для блока редактирования точки маршрута
