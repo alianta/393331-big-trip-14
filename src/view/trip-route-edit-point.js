@@ -1,8 +1,12 @@
 import dayjs from 'dayjs';
-import {DESTINATIONS} from '../const.js';
+import {DESTINATIONS, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS, MIN_OFFER_COUNT, MAX_OFFER_COUNT} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
-import AbstractView from './abstract.js';
+import SmartView from './smart.js';
+import {getRandomDestinationDescription, generatePhoto} from '../utils/trip.js';
+import {getRandomInteger} from '../utils/common.js';
+import {generateOffer} from '../mock/offer.js';
+
 /**
  * Функция создания блока разметки для блока редактирования точки маршрута
  * @param {object} point - объект с данными о точке маршрута
@@ -73,6 +77,11 @@ const createTripRouteEditPointTemplate = (point) => {
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destinationDetails.description}</p>
+        <div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${destinationDetails.photos.map((photo) => `<img class="event__photo" src="${photo}" alt="Event photo">`).join('')}
+        </div>
+      </div>
       </section>
     </section>
   </form>
@@ -80,18 +89,58 @@ const createTripRouteEditPointTemplate = (point) => {
 };
 
 
-export default class TripRouteEditPoint extends AbstractView{
+export default class TripRouteEditPoint extends SmartView{
   constructor(point) {
     super();
-    this._point = point;
+    this._data = point;
     this._element = null;
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmit = this._formSubmit.bind(this);
+
+    this._changePointTypeHandler = this._changePointTypeHandler.bind(this);
+    this._changeDestenationHandler = this._changeDestenationHandler.bind(this);
+
+    this._setInnerHandlers();
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector('.event__type-list')
+      .addEventListener('click',this._changePointTypeHandler);
+    this.getElement()
+      .querySelector('#event-destination-1')
+      .addEventListener('change',this._changeDestenationHandler);
+  }
+
+  _changePointTypeHandler (evt) {
+    if(evt.target.tagName === 'INPUT'){
+      this.updateData({
+        type: evt.target.value,
+        offers:new Array(getRandomInteger(MIN_OFFER_COUNT, MAX_OFFER_COUNT)).fill().map(generateOffer),
+      });
+    }
+  }
+
+  _changeDestenationHandler (evt) {
+    this.updateData({
+      destination: evt.target.value,
+      destinationDetails: {
+        description: getRandomDestinationDescription(),
+        photos: new Array(getRandomInteger(MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS)).fill().map(generatePhoto),
+      },
+    });
   }
 
   getTemplate() {
-    return createTripRouteEditPointTemplate(this._point);
+    return createTripRouteEditPointTemplate(this._data);
   }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setEditClickHandler(this._callback.editClick);
+    this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
   _editClickHandler(evt) {
     evt.preventDefault();
     this._callback.editClick();

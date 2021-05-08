@@ -17,7 +17,7 @@ export const getRandomDestination = () => {
  */
 export const getRandomPointType = () => {
   const randomIndex = getRandomInteger(0, TYPES.length - 1);
-  return TYPES[randomIndex];
+  return TYPES[randomIndex].name;
 };
 
 /**

@@ -11,7 +11,48 @@ export const MAX_COUNT_PHOTOS = 10;
 export const MAX_NUMBER_PHOTO = 2000;
 export const MIN_ROUTE_POINT_COUNT = 2;
 export const MAX_ROUTE_POINT_COUNT = 5;
-export const TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Transport', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
+export const TYPES = [
+  {
+    name: 'Taxi',
+    offerTypeNames: ['comfort', 'luggage', 'meal', 'seats', 'train'],
+  },
+  {
+    name: 'Bus',
+    offerTypeNames: ['comfort', 'meal', 'seats', 'train'],
+  },
+  {
+    name: 'Train',
+    offerTypeNames: ['comfort', 'luggage', 'train'],
+  },
+  {
+    name: 'Ship',
+    offerTypeNames: ['meal', 'seats'],
+  },
+  {
+    name: 'Transport',
+    offerTypeNames: ['comfort', 'seats', 'train'],
+  },
+  {
+    name: 'Drive',
+    offerTypeNames: ['luggage', 'seats'],
+  },
+  {
+    name: 'Flight',
+    offerTypeNames: ['meal', 'seats'],
+  },
+  {
+    name: 'Check-in',
+    offerTypeNames: ['comfort', 'luggage', 'meal'],
+  },
+  {
+    name: 'Sightseeing',
+    offerTypeNames: ['comfort', 'meal'],
+  },
+  {
+    name: 'Restaurant',
+    offerTypeNames: ['comfort', 'meal', 'seats'],
+  },
+];
 export const DESTINATIONS = [
   'Amsterdam',
   'Geneva',
