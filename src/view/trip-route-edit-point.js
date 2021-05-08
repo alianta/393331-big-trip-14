@@ -6,6 +6,8 @@ import SmartView from './smart.js';
 import {getRandomDestinationDescription, generatePhoto} from '../utils/trip.js';
 import {getRandomInteger} from '../utils/common.js';
 import {generateOffer} from '../mock/offer.js';
+import flatpickr from 'flatpickr';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 /**
  * Функция создания блока разметки для блока редактирования точки маршрута
@@ -94,13 +96,61 @@ export default class TripRouteEditPoint extends SmartView{
     super();
     this._data = point;
     this._element = null;
+    this._datepickerOnDateStart = null;
+    this._datepickerOnDateEnd = null;
+
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmit = this._formSubmit.bind(this);
 
     this._changePointTypeHandler = this._changePointTypeHandler.bind(this);
     this._changeDestenationHandler = this._changeDestenationHandler.bind(this);
+    this._dateTimeStartChangeHandler = this._dateTimeStartChangeHandler.bind(this);
+    this._dateTimeEndChangeHandler = this._dateTimeEndChangeHandler.bind(this);
 
     this._setInnerHandlers();
+    this._initDatepickers();
+  }
+
+  _initDatepickers() {
+    if (this._datepickerOnDateStart) {
+      this._datepickerOnDateStart.destroy();
+      this._datepickerOnDateStart = null;
+    }
+    if (this._datepickerOnDateEnd) {
+      this._datepickerOnDateEnd.destroy();
+      this._datepickerOnDateEnd = null;
+    }
+
+    this._datepickerOnDateStart = flatpickr(
+      this.getElement().querySelector('#event-start-time-1'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.dateTimeStart,
+        onClose: this._dateTimeStartChangeHandler,
+      },
+    );
+    this._datepickerOnDateEnd = flatpickr(
+      this.getElement().querySelector('#event-end-time-1'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.dateTimeEnd,
+        onClose: this._dateTimeEndChangeHandler,
+      },
+    );
+  }
+
+  _dateTimeStartChangeHandler([userDate]) {
+    this.updateData({
+      dateTimeStart: userDate,
+    });
+  }
+
+  _dateTimeEndChangeHandler([userDate]) {
+    this.updateData({
+      dateTimeEnd: userDate,
+    });
   }
 
   _setInnerHandlers() {
@@ -137,6 +187,7 @@ export default class TripRouteEditPoint extends SmartView{
 
   restoreHandlers() {
     this._setInnerHandlers();
+    this._initDatepickers();
     this.setEditClickHandler(this._callback.editClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
