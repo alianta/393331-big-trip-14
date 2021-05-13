@@ -14,7 +14,8 @@ import {sortTime, sortPrice} from '../utils/trip.js';
 
 
 export default class Trip {
-  constructor(tripContainer, headerContainer) {
+  constructor(tripContainer, headerContainer, pointsModel) {
+    this._pointsModel = pointsModel;
     this._tripContainer = tripContainer;
     this._headerContainer = headerContainer;
     this._pointPresenter = {};
@@ -42,6 +43,10 @@ export default class Trip {
     render(this._navigationContainer, this._menuComponent, RenderPosition.BEFOREEND);
     render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
     this._renderTrip();
+  }
+
+  _getPoins() {
+    return this._pointsModel._getPoins();
   }
 
   _sortTripPoints(sortType) {

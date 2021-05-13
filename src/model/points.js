@@ -13,4 +13,8 @@ export default class Points extends Observer {
   getPoints() {
     return this._points;
   }
+
+  updatePoint() {
+    //обновалние конкретной строчки маршрута - не понятно как - дописать
+  }
 }
