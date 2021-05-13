@@ -2,6 +2,7 @@ import TripRoutePoint from '../view/trip-route-point.js';
 import TripRouteEditPoint from '../view/trip-route-edit-point.js';
 import {render, replace, remove} from '../utils/render.js';
 import {RenderPosition} from '../const.js';
+import {UserAction, UpdateType} from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -63,11 +64,18 @@ export default class Point {
     this._replaceCardToForm();
   }
 
-  _handleFormSubmit() {
+  _handleFormSubmit(point) {
+    this._changeData(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
     this._replaceFormToCard();
   }
   _handleFavoriteClick() {
     this._changeData(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
       Object.assign(
         {},
         this._point,

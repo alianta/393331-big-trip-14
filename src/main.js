@@ -13,4 +13,4 @@ const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
 
 const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, pointsModel);
-tripPresener.init(tripRoute);
+tripPresener.init();
