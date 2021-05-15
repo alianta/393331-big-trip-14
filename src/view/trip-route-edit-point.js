@@ -100,7 +100,8 @@ export default class TripRouteEditPoint extends SmartView{
     this._datepickerOnDateEnd = null;
 
     this._editClickHandler = this._editClickHandler.bind(this);
-    this._formSubmit = this._formSubmit.bind(this);
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
 
     this._changePointTypeHandler = this._changePointTypeHandler.bind(this);
     this._changeDestenationHandler = this._changeDestenationHandler.bind(this);
@@ -185,20 +186,30 @@ export default class TripRouteEditPoint extends SmartView{
     return createTripRouteEditPointTemplate(this._data);
   }
 
+  removeElement() {
+    super.removeElement();
+
+    if (this._datepicker) {
+      this._datepicker.destroy();
+      this._datepicker = null;
+    }
+  }
+
   restoreHandlers() {
     this._setInnerHandlers();
     this._initDatepickers();
     this.setEditClickHandler(this._callback.editClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   _editClickHandler(evt) {
     evt.preventDefault();
     this._callback.editClick();
   }
-  _formSubmit(evt) {
+  _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(this._data);
   }
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
@@ -206,6 +217,16 @@ export default class TripRouteEditPoint extends SmartView{
   }
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
-    this.getElement().querySelector('form').addEventListener('submit', this._formSubmit);
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
   }
 }

@@ -23,6 +23,7 @@ export default class Point {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
   init(point) {
     this._point = point;
@@ -35,8 +36,9 @@ export default class Point {
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._pointEditComponent.setEditClickHandler(this._handleEditClick);
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._pointEditComponent.setEditClickHandler(this._handleEditClick);
+    this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
       render(this._listContainer, this._pointComponent, RenderPosition.BEFOREEND);
@@ -68,14 +70,29 @@ export default class Point {
     }
   }
 
-  _handleFormSubmit(point) {
+  _handleFormSubmit(update) {
+    const isNoUpdate = JSON.stringify(this._point) === JSON.stringify(update);
+
+    if(isNoUpdate){
+      this._replaceFormToCard();
+    } else {
+      this._changeData(
+        UserAction.UPDATE_POINT,
+        UpdateType.PATCH,
+        update,
+      );
+      this._replaceFormToCard();
+    }
+  }
+
+  _handleDeleteClick(point) {
     this._changeData(
-      UserAction.UPDATE_POINT,
-      UpdateType.MINOR,
+      UserAction.DELETE_POINT,
+      UpdateType.MAJOR,
       point,
     );
-    this._replaceFormToCard();
   }
+
   _handleFavoriteClick() {
     this._changeData(
       UserAction.UPDATE_POINT,
