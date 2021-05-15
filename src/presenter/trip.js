@@ -5,7 +5,7 @@ import TripEmpty from '../view/trip-empty.js';
 import {RenderPosition, SortTypes, UpdateType, UserAction} from '../const.js';
 import TripInfo from '../view/trip-info.js';
 import {generateTripInfo} from '../mock/trip-info.js';
-import {render} from '../utils/render.js';
+import {render, remove} from '../utils/render.js';
 import Menu from '../view/menu.js';
 import Filters from '../view/filters.js';
 import PointPresenter from './point.js';
@@ -46,7 +46,7 @@ export default class Trip {
     this._renderTrip();
   }
 
-  _getPoins() {
+  _getPoints() {
     switch (this._currentSortType) {
       case SortTypes.TIME:
         return this._pointsModel.getPoints().slice().sort(sortTime);
@@ -79,14 +79,13 @@ export default class Trip {
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
         this._pointPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this._clearTrip({resetSortType: true});
+        this._renderTrip();
         break;
     }
   }
@@ -98,13 +97,26 @@ export default class Trip {
     }
 
     this._currentSortType = sortType;
-    this._clearPointList();
-    this._renderPoints(this._getPoins());
+    this._clearTrip();
+    this._renderPoints(this._getPoints());
   }
 
   _renderSort() {
     render(this._tripContainer, this._sortingComponent, RenderPosition.BEFOREEND);
     this._sortingComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+  }
+
+  _clearTrip({resetSortType = false} = {}) {
+    Object
+      .values(this._pointPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._pointPresenter = {};
+
+    remove(this._tripEmptyComponent);
+
+    if (resetSortType) {
+      this._currentSortType = SortTypes.DAY;
+    }
   }
 
   _renderTripInformation() {
@@ -130,7 +142,7 @@ export default class Trip {
   }
 
   _renderTrip() {
-    if(this._getPoins().length === 0) {
+    if(this._getPoints().length === 0) {
       this._renderEmptyTrip();
       return;
     }
