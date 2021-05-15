@@ -2,7 +2,7 @@
 import Sorting from '../view/sorting.js';
 import TripRoute from '../view/trip-route.js';
 import TripEmpty from '../view/trip-empty.js';
-import {RenderPosition, SortTypes, UpdateType, UserAction} from '../const.js';
+import {RenderPosition, SortType, UpdateType, UserAction} from '../const.js';
 import TripInfo from '../view/trip-info.js';
 import {generateTripInfo} from '../mock/trip-info.js';
 import {render, remove} from '../utils/render.js';
@@ -18,7 +18,7 @@ export default class Trip {
     this._tripContainer = tripContainer;
     this._headerContainer = headerContainer;
     this._pointPresenter = {};
-    this._currentSortType = SortTypes.DAY;
+    this._currentSortType = SortType.DAY;
 
     this._sortingComponent = new Sorting();
     this._tripRouteComponent = new TripRoute();
@@ -48,9 +48,9 @@ export default class Trip {
 
   _getPoints() {
     switch (this._currentSortType) {
-      case SortTypes.TIME:
+      case SortType.TIME:
         return this._pointsModel.getPoints().slice().sort(sortTime);
-      case SortTypes.PRICE:
+      case SortType.PRICE:
         return this._pointsModel.getPoints().slice().sort(sortPrice);
     }
     return this._pointsModel.getPoints();
@@ -112,7 +112,7 @@ export default class Trip {
     remove(this._tripEmptyComponent);
 
     if (resetSortType) {
-      this._currentSortType = SortTypes.DAY;
+      this._currentSortType = SortType.DAY;
     }
   }
 
