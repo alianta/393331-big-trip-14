@@ -105,7 +105,7 @@ export const RenderPosition = {
   BEFOREEND: 'beforeend',
 };
 
-export const SortTypes = {
+export const SortType = {
   DAY: 'sort-day',
   EVENT: 'sort-event',
   TIME: 'sort-time',
@@ -122,4 +122,10 @@ export const UserAction = {
 export const UpdateType = {
   PATCH: 'PATCH',
   MAJOR: 'MAJOR',
+};
+
+export const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past',
 };
