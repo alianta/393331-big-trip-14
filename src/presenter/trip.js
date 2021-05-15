@@ -9,7 +9,6 @@ import {render} from '../utils/render.js';
 import Menu from '../view/menu.js';
 import Filters from '../view/filters.js';
 import PointPresenter from './point.js';
-//import {updateItem} from '../utils/common.js';
 import {sortTime, sortPrice} from '../utils/trip.js';
 
 
@@ -28,7 +27,6 @@ export default class Trip {
     this._filterComponent = new Filters();
     this._menuComponent = new Menu();
 
-    //this._handlePointChange = this._handlePointChange.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
@@ -43,8 +41,6 @@ export default class Trip {
   }
 
   init() {
-    // this._tripPoints = tripPoints.slice();
-    //this._sourcedTripPoints = tripPoints.slice();
     render(this._navigationContainer, this._menuComponent, RenderPosition.BEFOREEND);
     render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
     this._renderTrip();
@@ -101,10 +97,9 @@ export default class Trip {
       return;
     }
 
-    //this._sortTripPoints(sortType);
     this._currentSortType = sortType;
     this._clearPointList();
-    this._renderPoints();
+    this._renderPoints(this._getPoins());
   }
 
   _renderSort() {
@@ -117,14 +112,12 @@ export default class Trip {
   }
 
   _renderPoint(listContainer, point) {
-    //const pointPresenter = new PointPresenter(listContainer, this._handlePointChange, this._handleModeChange);
     const pointPresenter = new PointPresenter(listContainer, this._handleViewAction, this._handleModeChange);
     pointPresenter.init(point);
     this._pointPresenter[point.id] = pointPresenter;
   }
 
   _renderPoints(points) {
-    //this._tripPoints.forEach((point) => this._renderPoint(this._tripRouteComponent, point));
     points.forEach((point) => this._renderPoint(this._tripRouteComponent, point));
   }
 
