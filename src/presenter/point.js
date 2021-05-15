@@ -35,7 +35,7 @@ export default class Point {
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._pointEditComponent.setEditClickHandler(this._handleFormSubmit);
+    this._pointEditComponent.setEditClickHandler(this._handleEditClick);
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -61,7 +61,11 @@ export default class Point {
   }
 
   _handleEditClick() {
-    this._replaceCardToForm();
+    if(this._mode === 'DEFAULT') {
+      this._replaceCardToForm();
+    } else {
+      this._replaceFormToCard();
+    }
   }
 
   _handleFormSubmit(point) {
