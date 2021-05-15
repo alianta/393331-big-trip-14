@@ -81,15 +81,12 @@ export default class Trip {
       case UpdateType.PATCH:
         this._pointPresenter[data.id].init(data);
         break;
-      case UpdateType.MINOR:
-        break;
       case UpdateType.MAJOR:
         this._clearTrip({resetSortType: true});
         this._renderTrip();
         break;
     }
   }
-
 
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
@@ -151,10 +148,5 @@ export default class Trip {
     this._renderSort();
     this._renderTripRouteBlock();
     this._renderPoints(this._pointsModel.getPoints());
-  }
-
-  _clearPointList() {
-    Object.values(this._pointPresenter).forEach((presenter) => presenter.destroy());
-    this._pointPresenter = {};
   }
 }
