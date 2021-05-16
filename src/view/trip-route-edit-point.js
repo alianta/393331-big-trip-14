@@ -202,6 +202,7 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   _priceInputHandler(evt) {
+    evt.target.value = evt.target.value.replace(/\D/, '');
     evt.preventDefault();
     this.updateData({
       price: evt.target.value,
