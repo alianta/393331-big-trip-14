@@ -78,7 +78,7 @@ export default class Point {
     } else {
       this._changeData(
         UserAction.UPDATE_POINT,
-        UpdateType.PATCH,
+        UpdateType.MAJOR,
         update,
       );
       this._replaceFormToCard();

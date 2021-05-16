@@ -43,8 +43,8 @@ export default class PointNew {
 
   _handleFormSubmit(task) {
     this._changeData(
-      UserAction.ADD_TASK,
-      UpdateType.PATCH,
+      UserAction.ADD_POINT,
+      UpdateType.MAJOR,
       Object.assign({id: nanoid()}, task),
     );
     this.destroy();
