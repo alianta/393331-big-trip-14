@@ -9,11 +9,12 @@ import {render, remove} from '../utils/render.js';
 import Menu from '../view/menu.js';
 import PointPresenter from './point.js';
 import {sortTime, sortPrice} from '../utils/trip.js';
-
+import {filter} from '../utils/filter.js';
 
 export default class Trip {
-  constructor(tripContainer, headerContainer, pointsModel) {
+  constructor(tripContainer, headerContainer, pointsModel, filterModel) {
     this._pointsModel = pointsModel;
+    this._filterModel = filterModel;
     this._tripContainer = tripContainer;
     this._headerContainer = headerContainer;
     this._pointPresenter = {};
@@ -35,6 +36,7 @@ export default class Trip {
     this._tripMainContainer = headerContainer.querySelector('.trip-main');
 
     this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -43,13 +45,17 @@ export default class Trip {
   }
 
   _getPoints() {
+    const filterType = this._filterModel.getFilter();
+    const points = this._pointsModel.getPoints();
+    const filtredPoints = filter[filterType](points);
+
     switch (this._currentSortType) {
       case SortType.TIME:
-        return this._pointsModel.getPoints().slice().sort(sortTime);
+        return filtredPoints.sort(sortTime);
       case SortType.PRICE:
-        return this._pointsModel.getPoints().slice().sort(sortPrice);
+        return filtredPoints.sort(sortPrice);
     }
-    return this._pointsModel.getPoints();
+    return filtredPoints;
   }
 
   _handleModeChange() {
@@ -143,6 +149,6 @@ export default class Trip {
     this._renderTripInformation();
     this._renderSort();
     this._renderTripRouteBlock();
-    this._renderPoints(this._pointsModel.getPoints());
+    this._renderPoints(this._getPoints());
   }
 }

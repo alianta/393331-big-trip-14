@@ -13,7 +13,7 @@ const siteHeaderElement = document.querySelector('.page-header');
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
-const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, pointsModel);
+const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, pointsModel, filterModel);
 tripPresener.init();
 const filterContainer = document.querySelector('.trip-controls__filters');
 const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
