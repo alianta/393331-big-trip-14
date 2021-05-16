@@ -122,6 +122,7 @@ export default class TripRouteEditPoint extends SmartView{
     this._changeDestenationHandler = this._changeDestenationHandler.bind(this);
     this._dateTimeStartChangeHandler = this._dateTimeStartChangeHandler.bind(this);
     this._dateTimeEndChangeHandler = this._dateTimeEndChangeHandler.bind(this);
+    this._priceInputHandler = this._priceInputHandler.bind(this);
 
     this._setInnerHandlers();
     this._initDatepickers();
@@ -176,6 +177,9 @@ export default class TripRouteEditPoint extends SmartView{
     this.getElement()
       .querySelector('#event-destination-1')
       .addEventListener('change',this._changeDestenationHandler);
+    this.getElement()
+      .querySelector('#event-price-1')
+      .addEventListener('input', this._priceInputHandler);
   }
 
   _changePointTypeHandler (evt) {
@@ -195,6 +199,13 @@ export default class TripRouteEditPoint extends SmartView{
         photos: new Array(getRandomInteger(MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS)).fill().map(generatePhoto),
       },
     });
+  }
+
+  _priceInputHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      price: evt.target.value,
+    }, true);
   }
 
   getTemplate() {
