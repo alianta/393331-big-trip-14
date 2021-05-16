@@ -1,5 +1,5 @@
 
-import Sorting from '../view/sorting.js';
+import SortView from '../view/sorting.js';
 import TripRoute from '../view/trip-route.js';
 import TripEmpty from '../view/trip-empty.js';
 import {RenderPosition, SortType, UpdateType, UserAction} from '../const.js';
@@ -20,7 +20,6 @@ export default class Trip {
     this._pointPresenter = {};
     this._currentSortType = SortType.DAY;
 
-    this._sortingComponent = new Sorting();
     this._tripRouteComponent = new TripRoute();
     this._tripEmptyComponent = new TripEmpty();
     this._tripInfoComponent = new TripInfo(generateTripInfo());
@@ -97,12 +96,18 @@ export default class Trip {
 
     this._currentSortType = sortType;
     this._clearTrip();
+    this._renderSort();
     this._renderPoints(this._getPoints());
   }
 
   _renderSort() {
-    render(this._tripContainer, this._sortingComponent, RenderPosition.BEFOREEND);
+    if (this._sortingComponent !== null) {
+      this._sortingComponent = null;
+    }
+    this._sortingComponent = new SortView(this._currentSortType);
     this._sortingComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+
+    render(this._tripContainer, this._sortingComponent, RenderPosition.AFTERBEGIN);
   }
 
   _clearTrip({resetSortType = false} = {}) {
@@ -112,6 +117,7 @@ export default class Trip {
     this._pointPresenter = {};
 
     remove(this._tripEmptyComponent);
+    remove(this._sortingComponent);
 
     if (resetSortType) {
       this._currentSortType = SortType.DAY;
