@@ -192,6 +192,11 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   _changeDestenationHandler (evt) {
+    if(!DESTINATIONS.includes(evt.target.value)) {
+      evt.target.value = '';
+      return;
+    }
+
     this.updateData({
       destination: evt.target.value,
       destinationDetails: {
