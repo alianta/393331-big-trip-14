@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {DESTINATIONS, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS, MIN_OFFER_COUNT, MAX_OFFER_COUNT} from '../const.js';
+import {DESTINATIONS, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS, MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
 import SmartView from './smart.js';
@@ -9,12 +9,27 @@ import {generateOffer} from '../mock/offer.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
+
+const BLANK_POINT = {
+  type: TYPES[0].name,
+  destination: '',
+  dateTimeStart: dayjs().toDate(),
+  dateTimeEnd: dayjs().toDate(),
+  price: '',
+  offers: new Array(0),
+  destinationDetails: {
+    description: '',
+    photos: new Array(0),
+  },
+  isFavorite: false,
+};
+
 /**
  * Функция создания блока разметки для блока редактирования точки маршрута
  * @param {object} point - объект с данными о точке маршрута
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
-const createTripRouteEditPointTemplate = (point) => {
+const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
   const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails} = point;
 
   return `<li class="trip-events__item">
@@ -72,7 +87,7 @@ const createTripRouteEditPointTemplate = (point) => {
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
-          ${createTripRouteOfferTemplate(offers)}
+          ${(offers)? createTripRouteOfferTemplate(offers):''}
         </div>
       </section>
 
@@ -92,7 +107,7 @@ const createTripRouteEditPointTemplate = (point) => {
 
 
 export default class TripRouteEditPoint extends SmartView{
-  constructor(point) {
+  constructor(point = BLANK_POINT) {
     super();
     this._data = point;
     this._element = null;
