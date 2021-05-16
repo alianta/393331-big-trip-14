@@ -1,7 +1,6 @@
-import FilterView from '../view/filter.js';
-import {render, RenderPosition, replace, remove} from '../utils/render.js';
-import {filter} from '../utils/filter.js';
-import {FilterType, UpdateType} from '../const.js';
+import FilterView from '../view/filters.js';
+import {render, replace, remove} from '../utils/render.js';
+import {FilterType, UpdateType, RenderPosition} from '../const.js';
 
 export default class Filter {
   constructor(filterContainer, filterModel, pointsModel) {
@@ -47,23 +46,18 @@ export default class Filter {
   }
 
   _getFilters() {
-    //const points = this._pointsModel.getPoints();
-
     return [
       {
         type: FilterType.EVERYTHING,
         name: 'Everything',
-        //count: filter[FilterType.ALL](tasks).length,
       },
       {
         type: FilterType.FUTURE,
         name: 'Future',
-       // count: filter[FilterType.OVERDUE](tasks).length,
       },
       {
         type: FilterType.PAST,
         name: 'Past',
-       // count: filter[FilterType.TODAY](tasks).length,
       },
     ];
   }

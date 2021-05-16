@@ -7,7 +7,6 @@ import TripInfo from '../view/trip-info.js';
 import {generateTripInfo} from '../mock/trip-info.js';
 import {render, remove} from '../utils/render.js';
 import Menu from '../view/menu.js';
-import Filters from '../view/filters.js';
 import PointPresenter from './point.js';
 import {sortTime, sortPrice} from '../utils/trip.js';
 
@@ -24,7 +23,6 @@ export default class Trip {
     this._tripRouteComponent = new TripRoute();
     this._tripEmptyComponent = new TripEmpty();
     this._tripInfoComponent = new TripInfo(generateTripInfo());
-    this._filterComponent = new Filters();
     this._menuComponent = new Menu();
 
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -33,7 +31,6 @@ export default class Trip {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._filterContainer = this._headerContainer.querySelector('.trip-controls__filters');
     this._navigationContainer = this._headerContainer.querySelector('.trip-controls__navigation');
     this._tripMainContainer = headerContainer.querySelector('.trip-main');
 
@@ -42,7 +39,6 @@ export default class Trip {
 
   init() {
     render(this._navigationContainer, this._menuComponent, RenderPosition.BEFOREEND);
-    render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
     this._renderTrip();
   }
 
