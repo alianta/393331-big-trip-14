@@ -41,11 +41,11 @@ export default class PointNew {
     document.removeEventListener('keydown', this._handlerEscKeyDown);
   }
 
-  _handleFormSubmit(task) {
+  _handleFormSubmit(point) {
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MAJOR,
-      Object.assign({id: nanoid()}, task),
+      Object.assign({id: nanoid()}, point),
     );
     this.destroy();
   }
