@@ -13,7 +13,7 @@ export default class PointNew {
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
-    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._handlerEscKeyDown = this._handlerEscKeyDown.bind(this);
   }
 
   init() {
@@ -27,7 +27,7 @@ export default class PointNew {
 
     render(this._pointListContainer, this._pointEditComponent, RenderPosition.AFTERBEGIN);
 
-    document.addEventListener('keydown', this._escKeyDownHandler);
+    document.addEventListener('keydown', this._handlerEscKeyDown);
   }
 
   destroy() {
@@ -38,7 +38,7 @@ export default class PointNew {
     remove(this._pointEditComponent);
     this._pointEditComponent = null;
 
-    document.removeEventListener('keydown', this._escKeyDownHandler);
+    document.removeEventListener('keydown', this._handlerEscKeyDown);
   }
 
   _handleFormSubmit(task) {
@@ -54,7 +54,7 @@ export default class PointNew {
     this.destroy();
   }
 
-  _escKeyDownHandler(evt) {
+  _handlerEscKeyDown(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.destroy();
