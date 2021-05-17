@@ -221,9 +221,13 @@ export default class TripRouteEditPoint extends SmartView{
   removeElement() {
     super.removeElement();
 
-    if (this._datepicker) {
-      this._datepicker.destroy();
-      this._datepicker = null;
+    if (this._datepickerOnDateStart) {
+      this._datepickerOnDateStart.destroy();
+      this._datepickerOnDateStart = null;
+    }
+    if (this._datepickerOnDateEnd) {
+      this._datepickerOnDateEnd.destroy();
+      this._datepickerOnDateEnd = null;
     }
   }
 
