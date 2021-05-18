@@ -7,7 +7,7 @@ import newPointView from './view/new-point-button.js';
 import {RenderPosition} from './const.js';
 import {render} from './utils/render.js';
 
-const POINT_COUNT = 2;
+const POINT_COUNT = 4;
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
 const pointsModel = new PointsModel();
 pointsModel.setPoints(tripRoute);

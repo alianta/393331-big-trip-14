@@ -55,7 +55,7 @@ export default class Trip {
   _getPoints() {
     const filterType = this._filterModel.getFilter();
     const points = this._pointsModel.getPoints();
-    const filtredPoints = filter[filterType](points);
+    const filtredPoints = filter[filterType](points).slice();
 
     switch (this._currentSortType) {
       case SortType.TIME:
