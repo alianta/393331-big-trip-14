@@ -3,6 +3,7 @@ import TripRouteEditPoint from '../view/trip-route-edit-point.js';
 import {render, replace, remove} from '../utils/render.js';
 import {RenderPosition} from '../const.js';
 import {UserAction, UpdateType} from '../const.js';
+import {isPointsEqual} from '../utils/common.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -71,7 +72,7 @@ export default class Point {
   }
 
   _handleFormSubmit(update) {
-    const isNoUpdate = JSON.stringify(this._point) === JSON.stringify(update);
+    const isNoUpdate = isPointsEqual(this._point,update);
 
     if(isNoUpdate){
       this._replaceFormToCard();

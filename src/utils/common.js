@@ -23,3 +23,38 @@ export const getRandomDayAndTime = () => {
   const randomTime = getRandomInteger(RANDOM_MIN_TIME, RANDOM_MAX_TIME);
   return dayjs().add(randomDate, 'day').add(randomTime, 'minute').toDate();
 };
+
+export const isPointsEqual = (pointA, pointB) => {
+
+  if(pointA.type !== pointB.type) {
+    return false;
+  }
+  if(pointA.destination !== pointB.destination) {
+    return false;
+  }
+  if(pointA.dateTimeStart !== pointB.dateTimeStart) {
+    return false;
+  }
+  if(pointA.dateTimeEnd !== pointB.dateTimeEnd) {
+    return false;
+  }
+  if(pointA.price !== pointB.price) {
+    return false;
+  }
+
+  if(!arrayEqual(pointA.offers, pointB.offers)) {
+    return false;
+  }
+  return true;
+};
+
+export const arrayEqual = (arrayA, arrayB) => {
+  if(arrayA.length !== arrayB.length)
+    return false;
+
+  for(let i = 0; i < arrayA.length; i++)
+    if(arrayA[i] !== arrayB[i])
+      return false;
+
+  return true;
+};
