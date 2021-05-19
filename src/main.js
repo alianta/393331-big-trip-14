@@ -6,6 +6,8 @@ import FilterModel from './model/filter.js';
 import newPointView from './view/new-point-button.js';
 import {RenderPosition} from './const.js';
 import {render} from './utils/render.js';
+import {MenuItem} from './const.js';
+import MenuView from './view/menu.js';
 
 const POINT_COUNT = 4;
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
@@ -17,13 +19,27 @@ const tripMainElement = document.querySelector('.trip-main');
 const siteMainElement = document.querySelector('.page-main');
 const tripEventsElement = siteMainElement.querySelector('.trip-events');
 
+const navigationElement = document.querySelector('.trip-controls__navigation');
+const menuComponent = new MenuView();
 const newPointComponent = new newPointView();
 render(tripMainElement, newPointComponent, RenderPosition.BEFOREEND);
-
+render(navigationElement, menuComponent, RenderPosition.BEFOREEND);
 const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, pointsModel, filterModel);
-tripPresener.init();
 const filterContainer = document.querySelector('.trip-controls__filters');
 const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
 filterPresenter.init();
-
+tripPresener.init();
 newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint();});
+
+const handleSiteMenuClick = (menuItem) => {
+  switch (menuItem) {
+    case MenuItem.TABLE:
+      tripPresener.init();
+      break;
+    case MenuItem.STATISTICS:
+      tripPresener.destroy();
+      break;
+  }
+};
+
+menuComponent.setMenuClickHandler(handleSiteMenuClick);
