@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {DESTINATIONS, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS, MIN_OFFER_COUNT, MAX_OFFER_COUNT} from '../const.js';
+import {DESTINATIONS, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS, MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
 import SmartView from './smart.js';
@@ -9,12 +9,27 @@ import {generateOffer} from '../mock/offer.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
+
+const BLANK_POINT = {
+  type: TYPES[0].name,
+  destination: '',
+  dateTimeStart: dayjs().toDate(),
+  dateTimeEnd: dayjs().toDate(),
+  price: '',
+  offers: new Array(0),
+  destinationDetails: {
+    description: '',
+    photos: new Array(0),
+  },
+  isFavorite: false,
+};
+
 /**
- * Функция создания блока разметки для блока редактирования точки маршрута
+ * Функция создания блока разметки для блока редактирования точки маршрута и блока создания точки маршрута
  * @param {object} point - объект с данными о точке маршрута
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
-const createTripRouteEditPointTemplate = (point) => {
+const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
   const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails} = point;
 
   return `<li class="trip-events__item">
@@ -72,7 +87,7 @@ const createTripRouteEditPointTemplate = (point) => {
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
-          ${createTripRouteOfferTemplate(offers)}
+          ${(offers)? createTripRouteOfferTemplate(offers):''}
         </div>
       </section>
 
@@ -92,7 +107,7 @@ const createTripRouteEditPointTemplate = (point) => {
 
 
 export default class TripRouteEditPoint extends SmartView{
-  constructor(point) {
+  constructor(point = BLANK_POINT) {
     super();
     this._data = point;
     this._element = null;
@@ -100,12 +115,14 @@ export default class TripRouteEditPoint extends SmartView{
     this._datepickerOnDateEnd = null;
 
     this._editClickHandler = this._editClickHandler.bind(this);
-    this._formSubmit = this._formSubmit.bind(this);
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
 
     this._changePointTypeHandler = this._changePointTypeHandler.bind(this);
     this._changeDestenationHandler = this._changeDestenationHandler.bind(this);
     this._dateTimeStartChangeHandler = this._dateTimeStartChangeHandler.bind(this);
     this._dateTimeEndChangeHandler = this._dateTimeEndChangeHandler.bind(this);
+    this._priceInputHandler = this._priceInputHandler.bind(this);
 
     this._setInnerHandlers();
     this._initDatepickers();
@@ -160,6 +177,9 @@ export default class TripRouteEditPoint extends SmartView{
     this.getElement()
       .querySelector('#event-destination-1')
       .addEventListener('change',this._changeDestenationHandler);
+    this.getElement()
+      .querySelector('#event-price-1')
+      .addEventListener('input', this._priceInputHandler);
   }
 
   _changePointTypeHandler (evt) {
@@ -172,6 +192,11 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   _changeDestenationHandler (evt) {
+    if(!DESTINATIONS.includes(evt.target.value)) {
+      evt.target.value = '';
+      return;
+    }
+
     this.updateData({
       destination: evt.target.value,
       destinationDetails: {
@@ -181,8 +206,29 @@ export default class TripRouteEditPoint extends SmartView{
     });
   }
 
+  _priceInputHandler(evt) {
+    evt.target.value = evt.target.value.replace(/\D/, '');
+    evt.preventDefault();
+    this.updateData({
+      price: evt.target.value,
+    }, true);
+  }
+
   getTemplate() {
     return createTripRouteEditPointTemplate(this._data);
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this._datepickerOnDateStart) {
+      this._datepickerOnDateStart.destroy();
+      this._datepickerOnDateStart = null;
+    }
+    if (this._datepickerOnDateEnd) {
+      this._datepickerOnDateEnd.destroy();
+      this._datepickerOnDateEnd = null;
+    }
   }
 
   restoreHandlers() {
@@ -190,15 +236,16 @@ export default class TripRouteEditPoint extends SmartView{
     this._initDatepickers();
     this.setEditClickHandler(this._callback.editClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   _editClickHandler(evt) {
     evt.preventDefault();
     this._callback.editClick();
   }
-  _formSubmit(evt) {
+  _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(this._data);
   }
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
@@ -206,6 +253,16 @@ export default class TripRouteEditPoint extends SmartView{
   }
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
-    this.getElement().querySelector('form').addEventListener('submit', this._formSubmit);
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
+  }
+
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
   }
 }

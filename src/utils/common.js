@@ -24,16 +24,37 @@ export const getRandomDayAndTime = () => {
   return dayjs().add(randomDate, 'day').add(randomTime, 'minute').toDate();
 };
 
-export const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
+export const isPointsEqual = (pointA, pointB) => {
 
-  if (index === -1) {
-    return items;
+  if(pointA.type !== pointB.type) {
+    return false;
+  }
+  if(pointA.destination !== pointB.destination) {
+    return false;
+  }
+  if(pointA.dateTimeStart !== pointB.dateTimeStart) {
+    return false;
+  }
+  if(pointA.dateTimeEnd !== pointB.dateTimeEnd) {
+    return false;
+  }
+  if(pointA.price !== pointB.price) {
+    return false;
   }
 
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
+  if(!arrayEqual(pointA.offers, pointB.offers)) {
+    return false;
+  }
+  return true;
+};
+
+export const arrayEqual = (arrayA, arrayB) => {
+  if(arrayA.length !== arrayB.length)
+    return false;
+
+  for(let i = 0; i < arrayA.length; i++)
+    if(arrayA[i] !== arrayB[i])
+      return false;
+
+  return true;
 };
