@@ -44,7 +44,6 @@ export default class Trip {
     this._clearTrip({resetSortType: true});
 
     remove(this._tripRouteComponent);
-    remove(this._tripInfoComponent);
 
     this._pointsModel.removeObserver(this._handleModelEvent);
     this._filterModel.removeObserver(this._handleModelEvent);
