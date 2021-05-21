@@ -2,18 +2,73 @@ import Abstract from './abstract';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-const renderMoneyChart = (moneyCtx, tasks) => {
+import {TYPES} from '../const.js';
+
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
+
+const createPointDuration = (dateTimeStart, dateTimeEnd) => { //вынести в утилиты отсюда и из trip-route-point.js
+  const duration = dayjs.duration(dayjs(dateTimeEnd).diff(dayjs(dateTimeStart)));
+  const durationDaysTemplate = (duration.days()==0) ? '' : duration.days() + 'D ';
+  const durationHoursTemplate = (duration.hours()==0) ? '' : duration.hours() + 'H ';
+  const durationMinutesTemplate = (duration.minutes()==0) ? '' : duration.minutes() + 'M';
+  return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
+};
+const valToFormat = (val) => {
+  const durationDaysTemplate = (dayjs.duration(val).days()==0) ? '' : dayjs.duration(val).days() + 'D ';
+  const durationHoursTemplate = (dayjs.duration(val).hours()==0) ? '' : dayjs.duration(val).hours() + 'H ';
+  const durationMinutesTemplate = (dayjs.duration(val).minutes()==0) ? '' : dayjs.duration(val).minutes() + 'M';
+  return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
+};
+
+const countTimeSpendByType = (points, type) => {
+  const pointsByType = points.filter((point) => point.type === type);
+  return pointsByType.reduce((prev, curr) => {return prev + dayjs.duration(dayjs(curr.dateTimeEnd).diff(dayjs(curr.dateTimeStart)));}, 0);
+};
+export const countTimeSpendByTypes = (points) => {
+  const prices =[];
+  TYPES.forEach((element) => prices.push(countTimeSpendByType(points,element.name)));
+  return prices;
+};
+
+const countPointsMoneyByType = (points, type) => {
+  const pointsByType = points.filter((point) => point.type === type);
+  return pointsByType.reduce((prev, curr) => {return prev + curr.price;}, 0);
+};
+const countTransportByType = (points, type) => {
+  const transportByType = points.filter((point) => point.type === type);
+  return transportByType.length;
+};
+
+export const countPointsMoneyByTypes = (points) => {
+  const prices =[];
+  TYPES.forEach((element) => prices.push(countPointsMoneyByType(points,element.name)));
+  return prices;
+};
+export const countTransportByTypes = (points) => {
+  const transport =[];
+  TYPES.forEach((element) => transport.push(countTransportByType(points,element.name)));
+  return transport;
+};
+
+export const getPointTypesInUpperCase = () => {
+  const pointTypes = [];
+  TYPES.forEach((element) => pointTypes.push(element.name.toUpperCase()));
+  return pointTypes;
+};
+
+const renderMoneyChart = (moneyCtx, points) => {
   const BAR_HEIGHT = 55;
   moneyCtx.height = BAR_HEIGHT * 5;
-  const val=[400, 300, 200, 160, 150, 100];
 
   return new Chart(moneyCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'TRANSPORT', 'DRIVE'],//заменить данными когда прийдут с сервера
+      labels: getPointTypesInUpperCase(),
       datasets: [{
-        data: [400, 300, 200, 160, 150, 100],//заменить данными
+        data: countPointsMoneyByTypes(points),
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
@@ -73,16 +128,16 @@ const renderMoneyChart = (moneyCtx, tasks) => {
   });
 };
 
-const renderTransportCtxChart = (typeCtx, tasks) => {
+const renderTransportCtxChart = (typeCtx, points) => {
   const BAR_HEIGHT = 55;
   typeCtx.height = BAR_HEIGHT * 5;
   return new Chart(typeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'TRANSPORT', 'DRIVE'],//заменить данными с сервера
+      labels: getPointTypesInUpperCase(),
       datasets: [{
-        data: [4, 3, 2, 1, 1, 1],//заменить данными
+        data: countTransportByTypes(points),//заменить данными
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
@@ -142,16 +197,16 @@ const renderTransportCtxChart = (typeCtx, tasks) => {
   });
 };
 
-const renderTimesChart = (timeCtx, tasks) => {
+const renderTimesChart = (timeCtx, points) => {
   const BAR_HEIGHT = 55;
   timeCtx.height = BAR_HEIGHT * 5;
   return new Chart(timeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'TRANSPORT', 'DRIVE'],//заменить данными с сервера
+      labels: getPointTypesInUpperCase(),
       datasets: [{
-        data: [4, 3, 2, 1, 1, 1],//заменить данными
+        data: countTimeSpendByTypes(points).forEach((val)=>{dayjs.duration(val).minutes();}),//заменить данными
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
@@ -166,7 +221,7 @@ const renderTimesChart = (timeCtx, tasks) => {
           color: '#000000',
           anchor: 'end',
           align: 'start',
-          formatter: (val) => `${val}D ${val}H ${val}M`,
+          formatter: (val) => `${valToFormat(val)}`,
         },
       },
       title: {
