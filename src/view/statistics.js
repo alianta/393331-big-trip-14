@@ -3,7 +3,6 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {durationFormat} from '../utils/common.js';
 import {countTimeSpendByTypes, countPointsMoneyByTypes, countTransportByTypes} from '../utils/trip.js';
-import {sortPrice} from '../utils/trip.js';
 
 const renderMoneyChart = (moneyCtx, points) => {
   const pointsByMoney = countPointsMoneyByTypes(points);
