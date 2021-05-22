@@ -15,7 +15,7 @@ const renderMoneyChart = (moneyCtx, points) => {
   });
 
   const BAR_HEIGHT = 55;
-  moneyCtx.height = BAR_HEIGHT * 5;
+  moneyCtx.height = BAR_HEIGHT * (names.length-1);
 
   return new Chart(moneyCtx, {
     plugins: [ChartDataLabels],
@@ -93,7 +93,7 @@ const renderTransportCtxChart = (typeCtx, points) => {
   });
 
   const BAR_HEIGHT = 55;
-  typeCtx.height = BAR_HEIGHT * 5;
+  typeCtx.height = BAR_HEIGHT * (names.length-1);
   return new Chart(typeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
@@ -170,7 +170,7 @@ const renderTimesChart = (timeCtx, points) => {
   });
 
   const BAR_HEIGHT = 55;
-  timeCtx.height = BAR_HEIGHT * 5;
+  timeCtx.height = BAR_HEIGHT * (names.length-1);
   return new Chart(timeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
