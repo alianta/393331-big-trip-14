@@ -1,14 +1,19 @@
 import Abstract from './abstract';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {durationFormat, getPointTypesInUpperCase} from '../utils/common.js';
+import {durationFormat} from '../utils/common.js';
 import {countTimeSpendByTypes, countPointsMoneyByTypes, countTransportByTypes} from '../utils/trip.js';
-
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-dayjs.extend(duration);
+import {sortPrice} from '../utils/trip.js';
 
 const renderMoneyChart = (moneyCtx, points) => {
+  const pointsByMoney = countPointsMoneyByTypes(points);
+  const money =[];
+  const names =[];
+  pointsByMoney.forEach((el)=>{
+    money.push(el.price);
+    names.push(el.name);
+  });
+
   const BAR_HEIGHT = 55;
   moneyCtx.height = BAR_HEIGHT * 5;
 
@@ -16,9 +21,9 @@ const renderMoneyChart = (moneyCtx, points) => {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: getPointTypesInUpperCase(),
+      labels: names,
       datasets: [{
-        data: countPointsMoneyByTypes(points),
+        data: money,
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
@@ -79,15 +84,23 @@ const renderMoneyChart = (moneyCtx, points) => {
 };
 
 const renderTransportCtxChart = (typeCtx, points) => {
+  const pointsByTransport = countTransportByTypes(points);
+  const count =[];
+  const names =[];
+  pointsByTransport.forEach((el)=>{
+    count.push(el.count);
+    names.push(el.name);
+  });
+
   const BAR_HEIGHT = 55;
   typeCtx.height = BAR_HEIGHT * 5;
   return new Chart(typeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: getPointTypesInUpperCase(),
+      labels: names,
       datasets: [{
-        data: countTransportByTypes(points),//заменить данными
+        data: count,//заменить данными
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
@@ -148,15 +161,23 @@ const renderTransportCtxChart = (typeCtx, points) => {
 };
 
 const renderTimesChart = (timeCtx, points) => {
+  const pointsByTime = countTimeSpendByTypes(points);
+  const time =[];
+  const names =[];
+  pointsByTime.forEach((el)=>{
+    time.push(el.time);
+    names.push(el.name);
+  });
+
   const BAR_HEIGHT = 55;
   timeCtx.height = BAR_HEIGHT * 5;
   return new Chart(timeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
-      labels: getPointTypesInUpperCase(),
+      labels: names,
       datasets: [{
-        data: countTimeSpendByTypes(points),
+        data: time,
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
@@ -240,12 +261,13 @@ export default class Statistics extends Abstract {
     super();
 
     this._data = points;
+    this._sortByMoneyData = this._data.slice().sort(sortPrice);
 
     this._moneyCtx = this.getElement().querySelector('.statistics__chart--money');
     this._transportCtx = this.getElement().querySelector('.statistics__chart--transport');
     this._timeCtx = this.getElement().querySelector('.statistics__chart--time');
 
-    this._moneyCart = renderMoneyChart(this._moneyCtx, this._data);
+    this._moneyCart = renderMoneyChart(this._moneyCtx, this._sortByMoneyData);
     this._transportCart = renderTransportCtxChart(this._transportCtx, this._data);
     this._timeCart = renderTimesChart(this._timeCtx, this._data);
   }

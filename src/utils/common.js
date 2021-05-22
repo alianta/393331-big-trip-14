@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import {TYPES} from '../const.js';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
 import {RANDOM_MIN_DAY, RANDOM_MAX_DAY, RANDOM_MIN_TIME, RANDOM_MAX_TIME} from '../const.js';
@@ -69,8 +68,8 @@ export const durationFormat = (val) => {
   return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
 };
 
-export const getPointTypesInUpperCase = () => {
+export const getPointTypesInUpperCase = (points) => {
   const pointTypes = [];
-  TYPES.forEach((element) => pointTypes.push(element.name.toUpperCase()));
+  points.forEach((element) => pointTypes.push(element.type.toUpperCase()));
   return pointTypes;
 };

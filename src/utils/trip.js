@@ -59,11 +59,6 @@ const countTimeSpendByType = (points, type) => {
   }
 };
 
-const countPointsMoneyByType = (points, type) => {
-  const pointsByType = points.filter((point) => point.type === type);
-  return pointsByType.reduce((prev, curr) => {return prev + curr.price;}, 0);
-};
-
 const countTransportByType = (points, type) => {
   const transportByType = points.filter((point) => point.type === type);
   return transportByType.length;
@@ -71,18 +66,33 @@ const countTransportByType = (points, type) => {
 
 export const countTimeSpendByTypes = (points) => {
   const times =[];
-  TYPES.forEach((element) => times.push(Math.abs(countTimeSpendByType(points,element.name))));
-  return times;
+  TYPES.forEach((element) => times.push(
+    {
+      time: Math.abs(countTimeSpendByType(points,element.name)),
+      name: element.name.toUpperCase(),
+    }));
+  const res = times.sort((elementA, elementB) => {return elementB.time - elementA.time;});
+  return res;
 };
 
 export const countPointsMoneyByTypes = (points) => {
   const prices =[];
-  TYPES.forEach((element) => prices.push(countPointsMoneyByType(points,element.name)));
-  return prices;
+  TYPES.forEach((element) => prices.push(
+    {
+      price: Math.round(Math.abs(countTimeSpendByType(points,element.name))),
+      name: element.name.toUpperCase(),
+    }));
+  const res = prices.sort(sortPrice);
+  return res;
 };
 
 export const countTransportByTypes = (points) => {
   const transport =[];
-  TYPES.forEach((element) => transport.push(countTransportByType(points,element.name)));
-  return transport;
+  TYPES.forEach((element) => transport.push(
+    {
+      count: countTransportByType(points,element.name),
+      name: element.name.toUpperCase(),
+    }));
+  const res = transport.sort((elementA, elementB) => {return elementB.count - elementA.count;});
+  return res;
 };

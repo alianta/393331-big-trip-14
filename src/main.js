@@ -5,7 +5,7 @@ import FilterPresenter from './presenter/filter.js';
 import FilterModel from './model/filter.js';
 import newPointView from './view/new-point-button.js';
 import {RenderPosition} from './const.js';
-import {render} from './utils/render.js';
+import {render, remove} from './utils/render.js';
 import {MenuItem} from './const.js';
 import MenuView from './view/menu.js';
 import StatisticsView from './view/statistics.js';
@@ -31,16 +31,19 @@ const filterContainer = document.querySelector('.trip-controls__filters');
 const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
 filterPresenter.init();
 tripPresener.init();
-render(pageBodyElement, new StatisticsView(pointsModel.getPoints()), RenderPosition.BEFOREEND);
 newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint();});
 
+let statisticsComponent = null;
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
+      remove(statisticsComponent);
       tripPresener.init();
       break;
     case MenuItem.STATISTICS:
       tripPresener.destroy();
+      statisticsComponent = new StatisticsView(pointsModel.getPoints());
+      render(pageBodyElement, statisticsComponent, RenderPosition.BEFOREEND);
       break;
   }
 };
