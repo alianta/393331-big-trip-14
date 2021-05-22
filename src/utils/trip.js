@@ -1,8 +1,6 @@
 import {getRandomInteger} from './common.js';
 import {DESTINATIONS, TYPES, DESTINATION_DESCRIPTIONS, MAX_NUMBER_PHOTO} from '../const.js';
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-dayjs.extend(duration);
 
 /**
  * Функция генерации случайного напрвления для точки маршрута
