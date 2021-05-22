@@ -100,7 +100,7 @@ const renderTypeChart = (typeCtx, points) => {
     data: {
       labels: names,
       datasets: [{
-        data: count,//заменить данными
+        data: count,
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
