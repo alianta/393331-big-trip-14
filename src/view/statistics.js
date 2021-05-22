@@ -83,7 +83,7 @@ const renderMoneyChart = (moneyCtx, points) => {
   });
 };
 
-const renderTransportCtxChart = (typeCtx, points) => {
+const renderTypeChart = (typeCtx, points) => {
   const pointsByTransport = countTransportByTypes(points);
   const count =[];
   const names =[];
@@ -263,19 +263,19 @@ export default class Statistics extends Abstract {
     this._data = points;
     this._sortByMoneyData = this._data.slice().sort(sortPrice);
 
-    this._moneyCtx = this.getElement().querySelector('.statistics__chart--money');
-    this._transportCtx = this.getElement().querySelector('.statistics__chart--transport');
-    this._timeCtx = this.getElement().querySelector('.statistics__chart--time');
+    this._moneyElement = this.getElement().querySelector('.statistics__chart--money');
+    this._transportElement = this.getElement().querySelector('.statistics__chart--transport');
+    this._timeElement = this.getElement().querySelector('.statistics__chart--time');
 
-    this._moneyCart = renderMoneyChart(this._moneyCtx, this._sortByMoneyData);
-    this._transportCart = renderTransportCtxChart(this._transportCtx, this._data);
-    this._timeCart = renderTimesChart(this._timeCtx, this._data);
+    this._moneyCart = renderMoneyChart(this._moneyElement, this._sortByMoneyData);
+    this._transportCart = renderTypeChart(this._transportElement, this._data);
+    this._timeCart = renderTimesChart(this._timeElement, this._data);
   }
 
   removeElement() {
     super.removeElement();
-    if (this._moneyCtx !== null) {
-      this._moneyCtx = null;
+    if (this._moneyElement !== null) {
+      this._moneyElement = null;
     }
   }
 
