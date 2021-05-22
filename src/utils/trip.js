@@ -1,6 +1,8 @@
 import {getRandomInteger} from './common.js';
 import {DESTINATIONS, TYPES, DESTINATION_DESCRIPTIONS, MAX_NUMBER_PHOTO} from '../const.js';
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 
 /**
  * Функция генерации случайного напрвления для точки маршрута
@@ -46,4 +48,41 @@ export const sortTime = (pointA, pointB) => {
 
 export const sortPrice = (pointA, pointB) => {
   return pointB.price - pointA.price;
+};
+
+const countTimeSpendByType = (points, type) => {
+  const pointsByType = points.filter((point) => point.type === type);
+  if(pointsByType.length!=0){
+    return pointsByType.reduce((prev, curr) => {return prev + dayjs.duration(dayjs(curr.dateTimeEnd).diff(dayjs(curr.dateTimeStart))).asMinutes();}, 0);
+  }else {
+    return dayjs.duration(0, 'minutes').asMinutes();
+  }
+};
+
+const countPointsMoneyByType = (points, type) => {
+  const pointsByType = points.filter((point) => point.type === type);
+  return pointsByType.reduce((prev, curr) => {return prev + curr.price;}, 0);
+};
+
+const countTransportByType = (points, type) => {
+  const transportByType = points.filter((point) => point.type === type);
+  return transportByType.length;
+};
+
+export const countTimeSpendByTypes = (points) => {
+  const times =[];
+  TYPES.forEach((element) => times.push(Math.abs(countTimeSpendByType(points,element.name))));
+  return times;
+};
+
+export const countPointsMoneyByTypes = (points) => {
+  const prices =[];
+  TYPES.forEach((element) => prices.push(countPointsMoneyByType(points,element.name)));
+  return prices;
+};
+
+export const countTransportByTypes = (points) => {
+  const transport =[];
+  TYPES.forEach((element) => transport.push(countTransportByType(points,element.name)));
+  return transport;
 };

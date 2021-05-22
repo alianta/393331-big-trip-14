@@ -1,62 +1,12 @@
 import Abstract from './abstract';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-
-import {TYPES} from '../const.js';
+import {durationFormat, getPointTypesInUpperCase} from '../utils/common.js';
+import {countTimeSpendByTypes, countPointsMoneyByTypes, countTransportByTypes} from '../utils/trip.js';
 
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 dayjs.extend(duration);
-
-const createPointDuration = (dateTimeStart, dateTimeEnd) => { //вынести в утилиты отсюда и из trip-route-point.js
-  const duration = dayjs.duration(dayjs(dateTimeEnd).diff(dayjs(dateTimeStart)));
-  const durationDaysTemplate = (duration.days()==0) ? '' : duration.days() + 'D ';
-  const durationHoursTemplate = (duration.hours()==0) ? '' : duration.hours() + 'H ';
-  const durationMinutesTemplate = (duration.minutes()==0) ? '' : duration.minutes() + 'M';
-  return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
-};
-const valToFormat = (val) => {
-  const durationDaysTemplate = (dayjs.duration(val).days()==0) ? '' : dayjs.duration(val).days() + 'D ';
-  const durationHoursTemplate = (dayjs.duration(val).hours()==0) ? '' : dayjs.duration(val).hours() + 'H ';
-  const durationMinutesTemplate = (dayjs.duration(val).minutes()==0) ? '' : dayjs.duration(val).minutes() + 'M';
-  return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
-};
-
-const countTimeSpendByType = (points, type) => {
-  const pointsByType = points.filter((point) => point.type === type);
-  return pointsByType.reduce((prev, curr) => {return prev + dayjs.duration(dayjs(curr.dateTimeEnd).diff(dayjs(curr.dateTimeStart)));}, 0);
-};
-export const countTimeSpendByTypes = (points) => {
-  const prices =[];
-  TYPES.forEach((element) => prices.push(countTimeSpendByType(points,element.name)));
-  return prices;
-};
-
-const countPointsMoneyByType = (points, type) => {
-  const pointsByType = points.filter((point) => point.type === type);
-  return pointsByType.reduce((prev, curr) => {return prev + curr.price;}, 0);
-};
-const countTransportByType = (points, type) => {
-  const transportByType = points.filter((point) => point.type === type);
-  return transportByType.length;
-};
-
-export const countPointsMoneyByTypes = (points) => {
-  const prices =[];
-  TYPES.forEach((element) => prices.push(countPointsMoneyByType(points,element.name)));
-  return prices;
-};
-export const countTransportByTypes = (points) => {
-  const transport =[];
-  TYPES.forEach((element) => transport.push(countTransportByType(points,element.name)));
-  return transport;
-};
-
-export const getPointTypesInUpperCase = () => {
-  const pointTypes = [];
-  TYPES.forEach((element) => pointTypes.push(element.name.toUpperCase()));
-  return pointTypes;
-};
 
 const renderMoneyChart = (moneyCtx, points) => {
   const BAR_HEIGHT = 55;
@@ -206,7 +156,7 @@ const renderTimesChart = (timeCtx, points) => {
     data: {
       labels: getPointTypesInUpperCase(),
       datasets: [{
-        data: countTimeSpendByTypes(points).forEach((val)=>{dayjs.duration(val).minutes();}),//заменить данными
+        data: countTimeSpendByTypes(points),
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
@@ -221,7 +171,7 @@ const renderTimesChart = (timeCtx, points) => {
           color: '#000000',
           anchor: 'end',
           align: 'start',
-          formatter: (val) => `${valToFormat(val)}`,
+          formatter: (val) => `${durationFormat(val)}`,
         },
       },
       title: {
@@ -253,7 +203,7 @@ const renderTimesChart = (timeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: 50,
+          minBarLength: 70,
         }],
       },
       legend: {

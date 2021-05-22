@@ -10,7 +10,7 @@ import {MenuItem} from './const.js';
 import MenuView from './view/menu.js';
 import StatisticsView from './view/statistics.js';
 
-const POINT_COUNT = 4;
+const POINT_COUNT = 20;
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
 const pointsModel = new PointsModel();
 pointsModel.setPoints(tripRoute);
@@ -30,7 +30,7 @@ const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, poin
 const filterContainer = document.querySelector('.trip-controls__filters');
 const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
 filterPresenter.init();
-//tripPresener.init();
+tripPresener.init();
 render(pageBodyElement, new StatisticsView(pointsModel.getPoints()), RenderPosition.BEFOREEND);
 newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint();});
 
