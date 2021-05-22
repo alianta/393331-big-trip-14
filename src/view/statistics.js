@@ -261,13 +261,12 @@ export default class Statistics extends Abstract {
     super();
 
     this._data = points;
-    this._sortByMoneyData = this._data.slice().sort(sortPrice);
 
     this._moneyElement = this.getElement().querySelector('.statistics__chart--money');
     this._transportElement = this.getElement().querySelector('.statistics__chart--transport');
     this._timeElement = this.getElement().querySelector('.statistics__chart--time');
 
-    this._moneyCart = renderMoneyChart(this._moneyElement, this._sortByMoneyData);
+    this._moneyCart = renderMoneyChart(this._moneyElement, this._data);
     this._transportCart = renderTypeChart(this._transportElement, this._data);
     this._timeCart = renderTimesChart(this._timeElement, this._data);
   }
