@@ -61,10 +61,10 @@ export const arrayEqual = (arrayA, arrayB) => {
   return true;
 };
 
-export const durationFormat = (val) => {
-  const durationDaysTemplate = (dayjs.duration(val, 'minutes').days()==0) ? '' : dayjs.duration(val,'minutes').days() + 'D ';
-  const durationHoursTemplate = dayjs.duration(val,'minutes').format('HH') + 'H ';
-  const durationMinutesTemplate = dayjs.duration(val,'minutes').format('MM') + 'M';
+export const durationFormat = (duration) => {
+  const durationDaysTemplate = dayjs.duration(duration, 'minutes').days() === 0 ? '' : dayjs.duration(duration, 'minutes').days() + 'D ';
+  const durationHoursTemplate = dayjs.duration(duration, 'minutes').format('HH') + 'H ';
+  const durationMinutesTemplate = dayjs.duration(duration, 'minutes').format('MM') + 'M';
   return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
 };
 
