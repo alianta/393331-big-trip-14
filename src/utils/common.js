@@ -67,9 +67,3 @@ export const durationFormat = (duration) => {
   const durationMinutesTemplate = dayjs.duration(duration, 'minutes').format('MM') + 'M';
   return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
 };
-
-export const getPointTypesInUpperCase = (points) => {
-  const pointTypes = [];
-  points.forEach((element) => pointTypes.push(element.type.toUpperCase()));
-  return pointTypes;
-};
