@@ -272,8 +272,17 @@ export default class Statistics extends Abstract {
 
   removeElement() {
     super.removeElement();
-    if (this._moneyElement !== null) {
-      this._moneyElement = null;
+    if (this._moneyCart !== null) {
+      this._moneyCart.destroy();
+      this._moneyCart = null;
+    }
+    if (this._transportCart !== null) {
+      this._transportCart.destroy();
+      this._transportCart = null;
+    }
+    if (this._timeCart !== null) {
+      this._timeCart.destroy();
+      this._timeCart = null;
     }
   }
 
