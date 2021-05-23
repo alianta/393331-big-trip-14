@@ -5,10 +5,10 @@ import FilterPresenter from './presenter/filter.js';
 import FilterModel from './model/filter.js';
 import newPointView from './view/new-point-button.js';
 import {RenderPosition} from './const.js';
-import {render, remove} from './utils/render.js';
+import {render} from './utils/render.js';
 import {MenuItem} from './const.js';
 import MenuView from './view/menu.js';
-import StatisticsView from './view/statistics.js';
+import StatisticPresenter from './presenter/statistics.js';
 
 const POINT_COUNT = 20;
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
@@ -32,18 +32,17 @@ const filterPresenter = new FilterPresenter(filterContainer, filterModel, points
 filterPresenter.init();
 tripPresener.init();
 newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint();});
+const statisticPresener = new StatisticPresenter(pageBodyElement, pointsModel.getPoints());
 
-let statisticsComponent = null;
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
-      remove(statisticsComponent);
+      statisticPresener.destroy();
       tripPresener.init();
       break;
     case MenuItem.STATISTICS:
       tripPresener.destroy();
-      statisticsComponent = new StatisticsView(pointsModel.getPoints());
-      render(pageBodyElement, statisticsComponent, RenderPosition.BEFOREEND);
+      statisticPresener.init();
       break;
   }
 };

@@ -1,4 +1,3 @@
-
 import SortView from '../view/sorting.js';
 import TripRoute from '../view/trip-route.js';
 import TripEmpty from '../view/trip-empty.js';
