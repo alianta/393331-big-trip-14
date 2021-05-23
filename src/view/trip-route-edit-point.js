@@ -144,6 +144,7 @@ export default class TripRouteEditPoint extends SmartView{
         enableTime: true,
         dateFormat: 'd/m/y H:i',
         defaultDate: this._data.dateTimeStart,
+        maxDate: this._data.dateTimeEnd,
         onClose: this._dateTimeStartChangeHandler,
       },
     );
@@ -153,6 +154,7 @@ export default class TripRouteEditPoint extends SmartView{
         enableTime: true,
         dateFormat: 'd/m/y H:i',
         defaultDate: this._data.dateTimeEnd,
+        minDate: this._data.dateTimeStart,
         onClose: this._dateTimeEndChangeHandler,
       },
     );
