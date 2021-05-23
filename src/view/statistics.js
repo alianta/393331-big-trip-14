@@ -4,6 +4,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {durationFormat} from '../utils/common.js';
 import {countTimeSpendByTypes, countPointsMoneyByTypes, countTransportByTypes} from '../utils/trip.js';
 
+const BAR_HEIGHT = 55;
+
 const renderMoneyChart = (moneyCtx, points) => {
   const pointsByMoney = countPointsMoneyByTypes(points);
   const money =[];
@@ -13,7 +15,6 @@ const renderMoneyChart = (moneyCtx, points) => {
     names.push(el.name);
   });
 
-  const BAR_HEIGHT = 55;
   moneyCtx.height = BAR_HEIGHT * (names.length-1);
 
   return new Chart(moneyCtx, {
@@ -91,7 +92,6 @@ const renderTypeChart = (typeCtx, points) => {
     names.push(el.name);
   });
 
-  const BAR_HEIGHT = 55;
   typeCtx.height = BAR_HEIGHT * (names.length-1);
   return new Chart(typeCtx, {
     plugins: [ChartDataLabels],
@@ -168,7 +168,6 @@ const renderTimesChart = (timeCtx, points) => {
     names.push(el.name);
   });
 
-  const BAR_HEIGHT = 55;
   timeCtx.height = BAR_HEIGHT * (names.length-1);
   return new Chart(timeCtx, {
     plugins: [ChartDataLabels],
