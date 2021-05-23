@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 import {RANDOM_MIN_DAY, RANDOM_MAX_DAY, RANDOM_MIN_TIME, RANDOM_MAX_TIME} from '../const.js';
 /**
  * Функция из интернета по генерации случайного числа из диапазона
@@ -18,10 +20,13 @@ export const getRandomInteger = (a = 0, b = 1) => {
  * Функция генерация случайной даты со временем
  * @returns - случайная дата и время
  */
-export const getRandomDayAndTime = () => {
+export const getRandomDayAndTime = (startDate = null) => {
   const randomDate = getRandomInteger(RANDOM_MIN_DAY, RANDOM_MAX_DAY);
   const randomTime = getRandomInteger(RANDOM_MIN_TIME, RANDOM_MAX_TIME);
-  return dayjs().add(randomDate, 'day').add(randomTime, 'minute').toDate();
+  if(startDate === null) {
+    return dayjs().add(randomDate, 'day').add(randomTime, 'minute').toDate();
+  }
+  return dayjs(startDate).add(randomDate, 'day').add(randomTime, 'minute').toDate();
 };
 
 export const isPointsEqual = (pointA, pointB) => {
@@ -57,4 +62,19 @@ export const arrayEqual = (arrayA, arrayB) => {
       return false;
 
   return true;
+};
+
+export const durationFormat = (duration) => {
+  const durationDaysTemplate = dayjs.duration(duration, 'minutes').days() === 0 ? '' : dayjs.duration(duration, 'minutes').days() + 'D ';
+  const durationHoursTemplate = dayjs.duration(duration, 'minutes').format('HH') + 'H ';
+  const durationMinutesTemplate = dayjs.duration(duration, 'minutes').format('MM') + 'M';
+  return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
+};
+
+export const getDuration = (dateTimeStart, dateTimeEnd) => {
+  const duration = dayjs.duration(dayjs(dateTimeEnd).diff(dayjs(dateTimeStart)));
+  const durationDaysTemplate = (duration.days()==0) ? '' : duration.days() + 'D ';
+  const durationHoursTemplate = (duration.hours()==0) ? '' : duration.hours() + 'H ';
+  const durationMinutesTemplate = (duration.minutes()==0) ? '' : duration.minutes() + 'M';
+  return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
 };

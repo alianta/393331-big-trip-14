@@ -9,12 +9,14 @@ import {nanoid} from 'nanoid';
  * @returns - объект с данными о точки маршрута
  */
 export const generateTripPoint = () => {
+  const dateTimeStart = getRandomDayAndTime();
+  const dateTimeEnd = getRandomDayAndTime(dateTimeStart);
   return {
     id: nanoid(),
     type: getRandomPointType(),
     destination: getRandomDestination(),
-    dateTimeStart: getRandomDayAndTime(),
-    dateTimeEnd: getRandomDayAndTime(),
+    dateTimeStart: dateTimeStart,
+    dateTimeEnd: dateTimeEnd,
     price: getRandomInteger(MIN_PRICE, MAX_PRICE),
     offers:new Array(getRandomInteger(MIN_OFFER_COUNT, MAX_OFFER_COUNT)).fill().map(generateOffer),
     destinationDetails: {

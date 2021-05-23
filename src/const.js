@@ -1,8 +1,8 @@
 export const MIN_PRICE = 1;
 export const MAX_PRICE = 20000;
-export const RANDOM_MIN_DAY = -10;
+export const RANDOM_MIN_DAY = 0;
 export const RANDOM_MAX_DAY = 10;
-export const RANDOM_MIN_TIME = -1000;
+export const RANDOM_MIN_TIME = 0;
 export const RANDOM_MAX_TIME = 1000;
 export const MIN_OFFER_COUNT = 0;
 export const MAX_OFFER_COUNT = 5;
@@ -128,4 +128,9 @@ export const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PAST: 'past',
+};
+
+export const MenuItem = {
+  TABLE: 'Table',
+  STATISTICS: 'Stats',
 };

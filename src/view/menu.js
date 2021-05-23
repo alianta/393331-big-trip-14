@@ -12,7 +12,29 @@ const createMenuTemplate = () => {
 };
 
 export default class Menu extends AbstractView{
+  constructor() {
+    super();
+
+    this._menuClickHandler = this._menuClickHandler.bind(this);
+  }
+
   getTemplate() {
     return createMenuTemplate();
+  }
+
+  _setInactiveMenu() {
+    const item = this.getElement().querySelector('.trip-tabs__btn--active');
+    item.classList.remove('trip-tabs__btn--active');
+  }
+  _menuClickHandler(evt) {
+    evt.preventDefault();
+    this._setInactiveMenu();
+    evt.target.classList.add('trip-tabs__btn--active');
+    this._callback.menuClick(evt.target.text);
+  }
+
+  setMenuClickHandler(callback) {
+    this._callback.menuClick = callback;
+    this.getElement().addEventListener('click', this._menuClickHandler);
   }
 }
