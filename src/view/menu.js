@@ -1,5 +1,4 @@
 import AbstractView from './abstract.js';
-import {MenuItem} from '../const.js';
 
 /**
  * Функция создания блока разметки для блока меню
@@ -24,10 +23,8 @@ export default class Menu extends AbstractView{
   }
 
   _setInactiveMenu() {
-    const items = this.getElement().querySelectorAll('.trip-tabs__btn');
-    items.forEach((item) => {
-      item.classList.remove('trip-tabs__btn--active');
-    });
+    const item = this.getElement().querySelector('.trip-tabs__btn--active');
+    item.classList.remove('trip-tabs__btn--active');
   }
   _menuClickHandler(evt) {
     evt.preventDefault();
