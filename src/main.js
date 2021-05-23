@@ -9,8 +9,21 @@ import {render} from './utils/render.js';
 import {MenuItem} from './const.js';
 import MenuView from './view/menu.js';
 import StatisticPresenter from './presenter/statistics.js';
+import Api from './api.js';
 
 const POINT_COUNT = 20;
+const AUTHORIZATION = 'Basic 13579zaqwsx24680';
+const END_POINT = 'https://14.ecmascript.pages.academy/big-trip/';
+
+const api = new Api(END_POINT, AUTHORIZATION);
+api.getPoints().then((tasks) => {
+  console.log(tasks);
+  // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
+  // а ещё на сервере используется snake_case, а у нас camelCase.
+  // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
+  // Есть вариант получше - паттерн "Адаптер"
+});
+
 const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
 const pointsModel = new PointsModel();
 pointsModel.setPoints(tripRoute);
