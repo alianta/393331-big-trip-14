@@ -8,12 +8,8 @@ const BAR_HEIGHT = 55;
 
 const renderMoneyChart = (moneyCtx, points) => {
   const pointsByMoney = countPointsMoneyByTypes(points);
-  const money =[];
-  const names =[];
-  pointsByMoney.map((el)=>{
-    money.push(el.price);
-    names.push(el.name);
-  });
+  const money = pointsByMoney.map((el) => el.price);
+  const names = pointsByMoney.map((el) => el.name);
 
   moneyCtx.height = BAR_HEIGHT * (names.length-1);
 
@@ -85,12 +81,8 @@ const renderMoneyChart = (moneyCtx, points) => {
 
 const renderTypeChart = (typeCtx, points) => {
   const pointsByTransport = countTransportByTypes(points);
-  const count =[];
-  const names =[];
-  pointsByTransport.map((el)=>{
-    count.push(el.count);
-    names.push(el.name);
-  });
+  const count = pointsByTransport.map((el) => el.count);
+  const names = pointsByTransport.map((el) => el.name);
 
   typeCtx.height = BAR_HEIGHT * (names.length-1);
   return new Chart(typeCtx, {
@@ -161,12 +153,8 @@ const renderTypeChart = (typeCtx, points) => {
 
 const renderTimesChart = (timeCtx, points) => {
   const pointsByTime = countTimeSpendByTypes(points);
-  const time =[];
-  const names =[];
-  pointsByTime.map((el)=>{
-    time.push(el.time);
-    names.push(el.name);
-  });
+  const time = pointsByTime.map((el) => el.time);
+  const names = pointsByTime.map((el) => el.name);
 
   timeCtx.height = BAR_HEIGHT * (names.length-1);
   return new Chart(timeCtx, {

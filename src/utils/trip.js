@@ -62,34 +62,31 @@ const countTransportByType = (points, type) => {
 };
 
 export const countTimeSpendByTypes = (points) => {
-  const times =[];
-  TYPES.map((element) => times.push(
-    {
+  const times = TYPES.map((element) => {
+    return {
       time: countTimeSpendByType(points,element.name),
       name: element.name.toUpperCase(),
-    }));
-  const res = times.sort((elementA, elementB) => elementB.time - elementA.time);
-  return res;
+    };
+  }).sort((elementA, elementB) => elementB.time - elementA.time);
+  return times;
 };
 
 export const countPointsMoneyByTypes = (points) => {
-  const prices =[];
-  TYPES.map((element) => prices.push(
-    {
+  const prices = TYPES.map((element) => {
+    return {
       price: Math.round(Math.abs(countTimeSpendByType(points,element.name))),
       name: element.name.toUpperCase(),
-    }));
-  const res = prices.sort(sortPrice);
-  return res;
+    };
+  }).sort(sortPrice);
+  return prices;
 };
 
 export const countTransportByTypes = (points) => {
-  const transport =[];
-  TYPES.map((element) => transport.push(
-    {
+  const transport = TYPES.map((element) => {
+    return {
       count: countTransportByType(points,element.name),
       name: element.name.toUpperCase(),
-    }));
-  const res = transport.sort((elementA, elementB) => elementB.count - elementA.count);
-  return res;
+    };
+  }).sort((elementA, elementB) => elementB.count - elementA.count);
+  return transport;
 };
