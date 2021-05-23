@@ -20,10 +20,13 @@ export const getRandomInteger = (a = 0, b = 1) => {
  * Функция генерация случайной даты со временем
  * @returns - случайная дата и время
  */
-export const getRandomDayAndTime = () => {
+export const getRandomDayAndTime = (startDate = null) => {
   const randomDate = getRandomInteger(RANDOM_MIN_DAY, RANDOM_MAX_DAY);
   const randomTime = getRandomInteger(RANDOM_MIN_TIME, RANDOM_MAX_TIME);
-  return dayjs().add(randomDate, 'day').add(randomTime, 'minute').toDate();
+  if(startDate === null) {
+    return dayjs().add(randomDate, 'day').add(randomTime, 'minute').toDate();
+  }
+  return dayjs(startDate).add(randomDate, 'day').add(randomTime, 'minute').toDate();
 };
 
 export const isPointsEqual = (pointA, pointB) => {
