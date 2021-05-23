@@ -8,7 +8,7 @@ const renderMoneyChart = (moneyCtx, points) => {
   const pointsByMoney = countPointsMoneyByTypes(points);
   const money =[];
   const names =[];
-  pointsByMoney.forEach((el)=>{
+  pointsByMoney.map((el)=>{
     money.push(el.price);
     names.push(el.name);
   });
@@ -86,7 +86,7 @@ const renderTypeChart = (typeCtx, points) => {
   const pointsByTransport = countTransportByTypes(points);
   const count =[];
   const names =[];
-  pointsByTransport.forEach((el)=>{
+  pointsByTransport.map((el)=>{
     count.push(el.count);
     names.push(el.name);
   });
@@ -163,7 +163,7 @@ const renderTimesChart = (timeCtx, points) => {
   const pointsByTime = countTimeSpendByTypes(points);
   const time =[];
   const names =[];
-  pointsByTime.forEach((el)=>{
+  pointsByTime.map((el)=>{
     time.push(el.time);
     names.push(el.name);
   });
