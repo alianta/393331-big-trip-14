@@ -1,32 +1,26 @@
-import {generateTripPoint} from './mock/trip-point.js';
+//import {generateTripPoint} from './mock/trip-point.js';
 import TripPresenter from './presenter/trip.js';
 import PointsModel from './model/points.js';
 import FilterPresenter from './presenter/filter.js';
 import FilterModel from './model/filter.js';
 import newPointView from './view/new-point-button.js';
-import {RenderPosition} from './const.js';
+import {RenderPosition, UpdateType} from './const.js';
 import {render} from './utils/render.js';
 import {MenuItem} from './const.js';
 import MenuView from './view/menu.js';
 import StatisticPresenter from './presenter/statistics.js';
 import Api from './api.js';
 
-const POINT_COUNT = 20;
+//const POINT_COUNT = 20;
 const AUTHORIZATION = 'Basic 13579zaqwsx24680';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip/';
 
 const api = new Api(END_POINT, AUTHORIZATION);
-api.getPoints().then((tasks) => {
-  console.log(tasks);
-  // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
-  // а ещё на сервере используется snake_case, а у нас camelCase.
-  // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
-  // Есть вариант получше - паттерн "Адаптер"
-});
 
-const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
+
+//const tripRoute = new Array(POINT_COUNT).fill().map(generateTripPoint);
 const pointsModel = new PointsModel();
-pointsModel.setPoints(tripRoute);
+//pointsModel.setPoints(tripRoute);
 const filterModel = new FilterModel();
 const siteHeaderElement = document.querySelector('.page-header');
 const tripMainElement = document.querySelector('.trip-main');
@@ -61,3 +55,11 @@ const handleSiteMenuClick = (menuItem) => {
 };
 
 menuComponent.setMenuClickHandler(handleSiteMenuClick);
+
+api.getPoints()
+  .then((points) => {
+    pointsModel.setPoints(UpdateType.INIT, points);
+  })
+  .catch(() => {
+    pointsModel.setPoints(UpdateType.INIT, []);
+  });
