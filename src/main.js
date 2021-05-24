@@ -10,6 +10,8 @@ import {MenuItem} from './const.js';
 import MenuView from './view/menu.js';
 import StatisticPresenter from './presenter/statistics.js';
 import Api from './api.js';
+import DestinationsModel from './model/destinations.js';
+import OffersModel from './model/offers.js';
 
 const AUTHORIZATION = 'Basic 13579zaqwsx24680';
 const END_POINT = 'https://14.ecmascript.pages.academy/big-trip/';
@@ -18,6 +20,8 @@ const api = new Api(END_POINT, AUTHORIZATION);
 
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
+const destinationsModel = new DestinationsModel();
+const offersModel = new OffersModel();
 const siteHeaderElement = document.querySelector('.page-header');
 const tripMainElement = document.querySelector('.trip-main');
 const siteMainElement = document.querySelector('.page-main');
@@ -53,10 +57,12 @@ const handleSiteMenuClick = (menuItem) => {
 menuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 api.getOffers()
-  .then(() => {
+  .then((offers) => {
+    offersModel.setOffers(offers);
     return api.getDestinations();
   })
-  .then(() => {
+  .then((destinations) => {
+    destinationsModel.setDestinations(destinations);
     return api.getPoints();
   })
   .then((points) => {
@@ -65,3 +71,4 @@ api.getOffers()
   .catch(() => {
     pointsModel.setPoints(UpdateType.INIT, []);
   });
+

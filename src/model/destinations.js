@@ -10,6 +10,10 @@ export default class Destinations extends Observer {
     return this._destinations;
   }
 
+  setDestinations(destinations) {
+    this._destinations = destinations;
+  }
+
   static adaptToClient(destination) {
     const adaptedDestination = Object.assign(
       {},

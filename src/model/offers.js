@@ -10,6 +10,10 @@ export default class Offers extends Observer {
     return this._offers;
   }
 
+  setOffers(offers) {
+    this._offers = offers;
+  }
+
   static adaptToClient(offer) {
     const adaptedOffer = Object.assign(
       {},
