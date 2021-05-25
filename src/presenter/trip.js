@@ -12,7 +12,7 @@ import PointNewPresenter from './point-new.js';
 import LoadingView from '../view/loading.js';
 
 export default class Trip {
-  constructor(tripContainer, headerContainer, pointsModel, filterModel, destinationsModel) {
+  constructor(tripContainer, headerContainer, pointsModel, filterModel, destinationsModel, offersModel) {
     this._pointsModel = pointsModel;
     this._filterModel = filterModel;
     this._tripContainer = tripContainer;
@@ -21,6 +21,7 @@ export default class Trip {
     this._currentSortType = SortType.DAY;
     this._isLoading = true;
     this._destinationsModel = destinationsModel;
+    this._offersModel = offersModel;
 
     this._tripRouteComponent = new TripRoute();
     this._tripEmptyComponent = new TripEmpty();
@@ -55,7 +56,7 @@ export default class Trip {
   createPoint() {
     this._currentSortType = SortType.DAY;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this._pointNewPresenter.init();
+    this._pointNewPresenter.init(this._offersModel.getOffers());
   }
 
   _getPoints() {
@@ -96,7 +97,7 @@ export default class Trip {
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
-        this._pointPresenter[data.id].init(data, this._destinationsModel);
+        this._pointPresenter[data.id].init(data, this._destinationsModel, this._offersModel);
         break;
       case UpdateType.MAJOR:
         this._clearTrip({resetSortType: true});
@@ -158,8 +159,7 @@ export default class Trip {
 
   _renderPoint(listContainer, point) {
     const pointPresenter = new PointPresenter(listContainer, this._handleViewAction, this._handleModeChange);
-    const dest  = this._destinationsModel.getDestinations();
-    pointPresenter.init(point, dest);
+    pointPresenter.init(point, this._destinationsModel.getDestinations(), this._offersModel.getOffers());
     this._pointPresenter[point.id] = pointPresenter;
   }
 

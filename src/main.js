@@ -32,7 +32,7 @@ const menuComponent = new MenuView();
 const newPointComponent = new newPointView();
 render(tripMainElement, newPointComponent, RenderPosition.BEFOREEND);
 render(navigationElement, menuComponent, RenderPosition.BEFOREEND);
-const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, pointsModel, filterModel, destinationsModel);
+const tripPresener = new TripPresenter(tripEventsElement, siteHeaderElement, pointsModel, filterModel, destinationsModel, offersModel);
 const filterContainer = document.querySelector('.trip-controls__filters');
 const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
 filterPresenter.init();

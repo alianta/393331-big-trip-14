@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import Observer from '../utils/observer.js';
 
 export default class Offers extends Observer {
@@ -20,7 +21,11 @@ export default class Offers extends Observer {
       offer,
       {
         name: offer.type,
-        offers: offer.offers.map((item) => ({text: item.title, price: item.price})),
+        offers: offer.offers.map((item) => ({
+          id: nanoid(),
+          text: item.title,
+          price: item.price,
+        })),
       },
     );
 

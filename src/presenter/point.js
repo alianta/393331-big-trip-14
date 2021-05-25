@@ -26,15 +26,16 @@ export default class Point {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
-  init(point, destinations) {
+  init(point, destinations, offers) {
     this._point = point;
     this._destinations = destinations;
+    this._offers = offers;
 
     const prevPointComponent = this._pointComponent;
     const prevPointEditComponent = this._pointEditComponent;
 
     this._pointComponent = new TripRoutePoint(point);
-    this._pointEditComponent = new TripRouteEditPoint(point, this._destinations);
+    this._pointEditComponent = new TripRouteEditPoint(this._offers, point, this._destinations);
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);

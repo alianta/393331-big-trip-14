@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import {MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
+import {createTripRouteDestinationTemplate} from './trip-route-destination.js';
 import SmartView from './smart.js';
 import {getRandomInteger} from '../utils/common.js';
 import {generateOffer} from '../mock/offer.js';
@@ -16,10 +17,7 @@ const BLANK_POINT = {
   dateTimeEnd: dayjs().toDate(),
   price: '',
   offers: new Array(0),
-  destinationDetails: {
-    description: '',
-    photos: new Array(0),
-  },
+  destinationDetails: null,
   isFavorite: false,
 };
 
@@ -28,7 +26,7 @@ const BLANK_POINT = {
  * @param {object} point - объект с данными о точке маршрута
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
-const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[]) => {
+const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], offersList=[]) => {
   const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails} = point;
 
   return `<li class="trip-events__item">
@@ -82,23 +80,8 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[]) =>
       </button>
     </header>
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-        <div class="event__available-offers">
-          ${(offers)? createTripRouteOfferTemplate(offers):''}
-        </div>
-      </section>
-
-      <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destinationDetails.description}</p>
-        <div class="event__photos-container">
-        <div class="event__photos-tape">
-          ${destinationDetails.photos.map((photo) => `<img class="event__photo" src="${photo}" alt="Event photo">`).join('')}
-        </div>
-      </div>
-      </section>
+      ${createTripRouteOfferTemplate(offers, offersList, type)}
+      ${createTripRouteDestinationTemplate(destinationDetails)}
     </section>
   </form>
 </li>`;
@@ -106,13 +89,14 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[]) =>
 
 
 export default class TripRouteEditPoint extends SmartView{
-  constructor(point = BLANK_POINT, destinations) {
+  constructor(offers, point = BLANK_POINT, destinations =[]) {
     super();
     this._data = point;
     this._element = null;
     this._datepickerOnDateStart = null;
     this._datepickerOnDateEnd = null;
     this._destinations = destinations;
+    this._offers = offers;
 
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -215,7 +199,7 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   getTemplate() {
-    return createTripRouteEditPointTemplate(this._data, this._destinations);
+    return createTripRouteEditPointTemplate(this._data, this._destinations, this._offers);
   }
 
   removeElement() {
