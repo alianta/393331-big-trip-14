@@ -89,7 +89,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
 
 
 export default class TripRouteEditPoint extends SmartView{
-  constructor(offers, point = BLANK_POINT, destinations =[]) {
+  constructor(offers, destinations, point = BLANK_POINT) {
     super();
     this._data = point;
     this._element = null;
