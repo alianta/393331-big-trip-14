@@ -1,9 +1,8 @@
 import dayjs from 'dayjs';
-import {DESTINATIONS, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS, MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
+import {MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import {createTripRouteOfferTemplate} from './trip-route-offer.js';
 import SmartView from './smart.js';
-import {getRandomDestinationDescription, generatePhoto} from '../utils/trip.js';
 import {getRandomInteger} from '../utils/common.js';
 import {generateOffer} from '../mock/offer.js';
 import flatpickr from 'flatpickr';
@@ -29,7 +28,7 @@ const BLANK_POINT = {
  * @param {object} point - объект с данными о точке маршрута
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
-const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
+const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[]) => {
   const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails} = point;
 
   return `<li class="trip-events__item">
@@ -56,7 +55,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${DESTINATIONS.map((dest) => `<option value="${dest}"></option>`).join('')}
+          ${destinations.map((destination) => `<option value="${destination.name}"></option>`).join('')}
         </datalist>
       </div>
 
@@ -107,12 +106,13 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
 
 
 export default class TripRouteEditPoint extends SmartView{
-  constructor(point = BLANK_POINT) {
+  constructor(point = BLANK_POINT, destinations) {
     super();
     this._data = point;
     this._element = null;
     this._datepickerOnDateStart = null;
     this._datepickerOnDateEnd = null;
+    this._destinations = destinations;
 
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -194,17 +194,15 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   _changeDestenationHandler (evt) {
-    if(!DESTINATIONS.includes(evt.target.value)) {
+    const destinationIndex = this._destinations.map((destination) => (destination.name)).indexOf(evt.target.value);
+    if(destinationIndex === -1) {
       evt.target.value = '';
       return;
     }
 
     this.updateData({
       destination: evt.target.value,
-      destinationDetails: {
-        description: getRandomDestinationDescription(),
-        photos: new Array(getRandomInteger(MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS)).fill().map(generatePhoto),
-      },
+      destinationDetails: this._destinations[destinationIndex].destinationDetails,
     });
   }
 
@@ -217,7 +215,7 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   getTemplate() {
-    return createTripRouteEditPointTemplate(this._data);
+    return createTripRouteEditPointTemplate(this._data, this._destinations);
   }
 
   removeElement() {

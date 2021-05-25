@@ -1,4 +1,3 @@
-//import {generateTripPoint} from './mock/trip-point.js';
 import TripPresenter from './presenter/trip.js';
 import PointsModel from './model/points.js';
 import FilterPresenter from './presenter/filter.js';
@@ -33,7 +32,7 @@ const menuComponent = new MenuView();
 const newPointComponent = new newPointView();
 render(tripMainElement, newPointComponent, RenderPosition.BEFOREEND);
 render(navigationElement, menuComponent, RenderPosition.BEFOREEND);
-const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, pointsModel, filterModel);
+const tripPresener = new TripPresenter(tripEventsElement,siteHeaderElement, pointsModel, filterModel, destinationsModel);
 const filterContainer = document.querySelector('.trip-controls__filters');
 const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
 filterPresenter.init();
@@ -71,4 +70,3 @@ api.getOffers()
   .catch(() => {
     pointsModel.setPoints(UpdateType.INIT, []);
   });
-
