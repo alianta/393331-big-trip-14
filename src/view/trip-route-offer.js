@@ -8,8 +8,8 @@ const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType
   return offersList[offerIndex].offers.map((offer) => {
     const isChecked = (currentOffers.find((currentOffer) => currentOffer.name === offer.text))? 'checked':'';
     return `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.type}-1" type="checkbox" name="event-offer-${offer.type}" ${isChecked}>
-    <label class="event__offer-label" for="event-offer-${offer.type}-1">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${offer.id}" ${isChecked}>
+    <label class="event__offer-label" for="event-offer-${offer.id}-1">
       <span class="event__offer-title">${offer.text}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${offer.price}</span>
