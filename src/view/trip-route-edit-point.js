@@ -107,6 +107,7 @@ export default class TripRouteEditPoint extends SmartView{
     this._dateTimeStartChangeHandler = this._dateTimeStartChangeHandler.bind(this);
     this._dateTimeEndChangeHandler = this._dateTimeEndChangeHandler.bind(this);
     this._priceInputHandler = this._priceInputHandler.bind(this);
+    this._changeOffersHandler = this._changeOffersHandler.bind(this);
 
     this._setInnerHandlers();
     this._initDatepickers();
@@ -166,6 +167,9 @@ export default class TripRouteEditPoint extends SmartView{
     this.getElement()
       .querySelector('#event-price-1')
       .addEventListener('input', this._priceInputHandler);
+    this.getElement()
+      .querySelector('.event__details')
+      .addEventListener('click', this._changeOffersHandler);
   }
 
   _changePointTypeHandler (evt) {
@@ -196,6 +200,29 @@ export default class TripRouteEditPoint extends SmartView{
     this.updateData({
       price: parseInt(evt.target.value),
     }, true);
+  }
+
+  _changeOffersHandler(evt) {
+    if(evt.target.tagName === 'INPUT'){
+      const name = event.target.labels[0].querySelector('.event__offer-title').innerText;
+      const offerIndex = this._data.offers.findIndex((offer) => offer.name === name);
+      let newOffers = this._data.offers.slice();
+
+      if(evt.target.checked) {
+        const offerListIndex = this._offers.findIndex((offer) => offer.name === this._data.type);
+        const newOfferIndex = this._offers[offerListIndex].offers.findIndex((offer) => offer.text === name);
+        const newOffer = this._offers[offerListIndex].offers[newOfferIndex];
+        newOffers.push({name: newOffer.text, price: newOffer.price});
+      } else {
+        newOffers = [
+          ...newOffers.slice(0, offerIndex),
+          ...newOffers.slice(offerIndex + 1),
+        ];
+      }
+      this.updateData({
+        offers: newOffers,
+      }, true);
+    }
   }
 
   getTemplate() {
