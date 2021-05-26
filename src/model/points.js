@@ -18,6 +18,8 @@ export default class Points extends Observer {
   updatePoint(updateType, update) {
     const index = this._points.findIndex((point) => point.id === update.id);
 
+    console.log('update=');
+    console.log(update);
     if (index === -1) {
       throw new Error('Can\'t update unexisting point');
     }
@@ -92,7 +94,7 @@ export default class Points extends Observer {
         'is_favorite': point.isFavorite,
         'offers': point.offers.map((item) => ({title: item.name, price: item.price})),
         'destination': {
-          'description': point.estinationDetails.description,
+          'description': point.destinationDetails.description,
           'name': point.destination,
           'pictures': point.destinationDetails.photos.map((item) => ({'src': item, 'description': ''})),
         },
@@ -103,6 +105,7 @@ export default class Points extends Observer {
     delete adaptedPoint.dateTimeEnd;
     delete adaptedPoint.price;
     delete adaptedPoint.isFavorite;
+    delete adaptedPoint.destinationDetails;
 
     return adaptedPoint;
   }

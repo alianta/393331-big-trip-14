@@ -171,7 +171,7 @@ export default class TripRouteEditPoint extends SmartView{
   _changePointTypeHandler (evt) {
     if(evt.target.tagName === 'INPUT'){
       this.updateData({
-        type: evt.target.value,
+        type: evt.target.value.toLowerCase(),
         offers:new Array(getRandomInteger(MIN_OFFER_COUNT, MAX_OFFER_COUNT)).fill().map(generateOffer),
       });
     }
@@ -194,7 +194,7 @@ export default class TripRouteEditPoint extends SmartView{
     evt.target.value = evt.target.value.replace(/\D/, '');
     evt.preventDefault();
     this.updateData({
-      price: evt.target.value,
+      price: parseInt(evt.target.value),
     }, true);
   }
 
