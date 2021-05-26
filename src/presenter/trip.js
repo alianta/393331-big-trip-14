@@ -6,7 +6,7 @@ import TripInfo from '../view/trip-info.js';
 import {generateTripInfo} from '../mock/trip-info.js';
 import {render, remove} from '../utils/render.js';
 import PointPresenter from './point.js';
-import {sortTime, sortPrice} from '../utils/trip.js';
+import {sortTime, sortPrice, sortDay} from '../utils/trip.js';
 import {filter} from '../utils/filter.js';
 import PointNewPresenter from './point-new.js';
 import LoadingView from '../view/loading.js';
@@ -66,6 +66,8 @@ export default class Trip {
     const filtredPoints = filter[filterType](points).slice();
 
     switch (this._currentSortType) {
+      case SortType.DAY:
+        return filtredPoints.sort(sortDay);
       case SortType.TIME:
         return filtredPoints.sort(sortTime);
       case SortType.PRICE:
