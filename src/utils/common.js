@@ -66,15 +66,15 @@ export const arrayEqual = (arrayA, arrayB) => {
 
 export const durationFormat = (duration) => {
   const durationDaysTemplate = dayjs.duration(duration, 'minutes').days() === 0 ? '' : dayjs.duration(duration, 'minutes').days() + 'D ';
-  const durationHoursTemplate = dayjs.duration(duration, 'minutes').format('HH') + 'H ';
-  const durationMinutesTemplate = dayjs.duration(duration, 'minutes').format('MM') + 'M';
+  const durationHoursTemplate = (dayjs.duration(duration, 'minutes').hours() === 0 && durationDaysTemplate === '') ? '' : dayjs.duration(duration, 'minutes').format('HH') + 'H ';
+  const durationMinutesTemplate = dayjs.duration(duration, 'minutes').format('mm') + 'M';
   return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
 };
 
 export const getDuration = (dateTimeStart, dateTimeEnd) => {
   const duration = dayjs.duration(dayjs(dateTimeEnd).diff(dayjs(dateTimeStart)));
-  const durationDaysTemplate = (duration.days()==0) ? '' : duration.days() + 'D ';
-  const durationHoursTemplate = (duration.hours()==0) ? '' : duration.hours() + 'H ';
-  const durationMinutesTemplate = (duration.minutes()==0) ? '' : duration.minutes() + 'M';
+  const durationDaysTemplate = (duration.days()==0) ? '' : duration.format('DD') + 'D ';
+  const durationHoursTemplate = (duration.hours()==0 && durationDaysTemplate==='') ? '' : duration.format('HH') + 'H ';
+  const durationMinutesTemplate = duration.format('mm') + 'M';
   return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
 };
