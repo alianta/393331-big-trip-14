@@ -276,4 +276,10 @@ export default class TripRouteEditPoint extends SmartView{
     this._callback.deleteClick = callback;
     this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
   }
+
+  reset(point) {
+    this.updateData(
+      point,
+    );
+  }
 }
