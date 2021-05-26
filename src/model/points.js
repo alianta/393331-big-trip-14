@@ -17,9 +17,6 @@ export default class Points extends Observer {
 
   updatePoint(updateType, update) {
     const index = this._points.findIndex((point) => point.id === update.id);
-
-    console.log('update=');
-    console.log(update);
     if (index === -1) {
       throw new Error('Can\'t update unexisting point');
     }
