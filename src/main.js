@@ -38,7 +38,7 @@ const filterPresenter = new FilterPresenter(filterContainer, filterModel, points
 filterPresenter.init();
 tripPresener.init();
 newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint();});
-const statisticPresener = new StatisticPresenter(pageBodyElement, pointsModel.getPoints());
+const statisticPresener = new StatisticPresenter(pageBodyElement, pointsModel);
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
