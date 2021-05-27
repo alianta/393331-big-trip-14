@@ -6,7 +6,7 @@ import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const BLANK_POINT = {
-  type: TYPES[0].name,
+  type: TYPES[0].name.toLowerCase(),
   destination: '',
   dateTimeStart: dayjs().toDate(),
   dateTimeEnd: dayjs().toDate(),

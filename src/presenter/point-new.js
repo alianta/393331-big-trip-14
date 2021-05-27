@@ -2,7 +2,6 @@ import TripRouteEditPoint from '../view/trip-route-edit-point.js';
 import {render, remove} from '../utils/render.js';
 import {RenderPosition} from '../const.js';
 import {UserAction, UpdateType} from '../const.js';
-import {nanoid} from 'nanoid';
 
 export default class PointNew {
   constructor(pointListContainer, changeData) {
@@ -47,7 +46,7 @@ export default class PointNew {
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MAJOR,
-      Object.assign({id: nanoid()}, point),
+      point,
     );
     this.destroy();
   }

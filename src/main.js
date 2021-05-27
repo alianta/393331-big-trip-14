@@ -13,7 +13,7 @@ import DestinationsModel from './model/destinations.js';
 import OffersModel from './model/offers.js';
 
 const AUTHORIZATION = 'Basic 13579zaqwsx24680';
-const END_POINT = 'https://14.ecmascript.pages.academy/big-trip/';
+const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const api = new Api(END_POINT, AUTHORIZATION);
 
