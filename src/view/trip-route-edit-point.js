@@ -1,9 +1,7 @@
 import dayjs from 'dayjs';
-import {MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
+import {TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import SmartView from './smart.js';
-import {getRandomInteger} from '../utils/common.js';
-import {generateOffer} from '../mock/offer.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
@@ -28,7 +26,7 @@ const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType
   return offersList[offerIndex].offers.map((offer) => {
     const isChecked = (currentOffers.find((currentOffer) => currentOffer.name === offer.text))? 'checked':'';
     return `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${offer.id}" ${isChecked}>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" value="${offer.text}" name="event-offer-${offer.id}" ${isChecked}>
     <label class="event__offer-label" for="event-offer-${offer.id}-1">
       <span class="event__offer-title">${offer.text}</span>
       &plus;&euro;&nbsp;
@@ -228,7 +226,7 @@ export default class TripRouteEditPoint extends SmartView{
     if(evt.target.tagName === 'INPUT'){
       this.updateData({
         type: evt.target.value.toLowerCase(),
-        offers:new Array(getRandomInteger(MIN_OFFER_COUNT, MAX_OFFER_COUNT)).fill().map(generateOffer),
+        offers:new Array(0),
       });
     }
   }
@@ -256,7 +254,7 @@ export default class TripRouteEditPoint extends SmartView{
 
   _changeOffersHandler(evt) {
     if(evt.target.tagName === 'INPUT'){
-      const name = event.target.labels[0].querySelector('.event__offer-title').innerText;
+      const name = evt.target.value;
       const offerIndex = this._data.offers.findIndex((offer) => offer.name === name);
       let newOffers = this._data.offers.slice();
 
