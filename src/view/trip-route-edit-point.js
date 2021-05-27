@@ -1,14 +1,11 @@
 import dayjs from 'dayjs';
 import {MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
-import {createTripRouteOfferTemplate} from './trip-route-offer.js';
-import {createTripRouteDestinationTemplate} from './trip-route-destination.js';
 import SmartView from './smart.js';
 import {getRandomInteger} from '../utils/common.js';
 import {generateOffer} from '../mock/offer.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-
 
 const BLANK_POINT = {
   type: TYPES[0].name,
@@ -19,6 +16,61 @@ const BLANK_POINT = {
   offers: new Array(0),
   destinationDetails: null,
   isFavorite: false,
+};
+
+const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType) => {
+  currentType = currentType.toLowerCase();
+  const offerIndex = offersList.map((offer) => (offer.name)).indexOf(currentType);
+
+  if(offersList[offerIndex].offers.length === 0) {
+    return '';
+  }
+  return offersList[offerIndex].offers.map((offer) => {
+    const isChecked = (currentOffers.find((currentOffer) => currentOffer.name === offer.text))? 'checked':'';
+    return `<div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${offer.id}" ${isChecked}>
+    <label class="event__offer-label" for="event-offer-${offer.id}-1">
+      <span class="event__offer-title">${offer.text}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+    </label>
+  </div>`;
+  }).join('');
+};
+/**
+ * Функция создания разметки дополнительный опций маршрута
+ * @param {array} currentOffers - массив объектов, поедставляющий собой выбранные дополнительные опции маршрута
+ * @returns - строка, содержащая разметку дополнительных опций маршрута
+ */
+const createTripRouteOfferTemplate = (currentOffers, offersList, currentType) => {
+  const templateList = createTripRouteOfferTemplateList(currentOffers, offersList, currentType);
+  if(templateList === '') {
+    return '';
+  }
+  return `<section class="event__section  event__section--offers">
+          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+          <div class="event__available-offers">
+            ${templateList}
+          </div>
+        </section>`;
+};
+
+
+const createTripRouteDestinationTemplate = (destinationDetails) => {
+  if (destinationDetails === null){
+    return '';
+  }
+
+  return `<section class="event__section  event__section--destination">
+  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+  <p class="event__destination-description">${destinationDetails.description}</p>
+  <div class="event__photos-container">
+  <div class="event__photos-tape">
+    ${destinationDetails.photos.map((photo) => `<img class="event__photo" src="${photo}" alt="Event photo">`).join('')}
+  </div>
+</div>
+</section>`;
 };
 
 /**
