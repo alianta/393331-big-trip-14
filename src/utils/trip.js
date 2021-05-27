@@ -76,10 +76,18 @@ export const countTimeSpendByTypes = (points) => {
   return times;
 };
 
-export const countPointsMoneyByTypes = (points) => {
+const countPriceByType = (points, type) => {
+  const pointsByType = points.filter((point) => point.type === type);
+  if(pointsByType.length !== 0){
+    return pointsByType.reduce((prev, curr) => {return prev + curr.price;}, 0);
+  }
+  return 0;
+};
+
+export const countPriceByTypes = (points) => {
   const prices = TYPES.map((element) => {
     return {
-      price: Math.round(Math.abs(countTimeSpendByType(points,element.name.toLowerCase()))),
+      price: countPriceByType(points,element.name.toLowerCase()),
       name: element.name.toUpperCase(),
     };
   }).sort(sortPrice);
