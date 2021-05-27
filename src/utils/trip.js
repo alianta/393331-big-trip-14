@@ -45,7 +45,7 @@ export const sortTime = (pointA, pointB) => {
 };
 
 export const sortDay = (pointA, pointB) => {
-  const res = dayjs(pointB.dateTimeStart) - dayjs(pointA.dateTimeStart);
+  const res = pointB.dateTimeStart - pointA.dateTimeStart;
   return res;
 };
 
