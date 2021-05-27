@@ -55,18 +55,14 @@ const handleSiteMenuClick = (menuItem) => {
 
 menuComponent.setMenuClickHandler(handleSiteMenuClick);
 
-api.getOffers()
-  .then((offers) => {
-    offersModel.setOffers(offers);
-    return api.getDestinations();
-  })
-  .then((destinations) => {
-    destinationsModel.setDestinations(destinations);
-    return api.getPoints();
-  })
-  .then((points) => {
-    pointsModel.setPoints(UpdateType.INIT, points);
-  })
-  .catch(() => {
-    pointsModel.setPoints(UpdateType.INIT, []);
-  });
+Promise.all([
+  api.getOffers(),
+  api.getDestinations(),
+  api.getPoints(),
+]).then((data) => {
+  offersModel.setOffers(data[0]);
+  destinationsModel.setDestinations(data[1]);
+  pointsModel.setPoints(UpdateType.INIT, data[2]);
+}).catch(() => {
+  pointsModel.setPoints(UpdateType.INIT, []);
+});
