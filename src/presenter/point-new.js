@@ -16,12 +16,14 @@ export default class PointNew {
     this._handlerEscKeyDown = this._handlerEscKeyDown.bind(this);
   }
 
-  init() {
+  init(destinations, offers) {
+    this._offers = offers;
+    this._destinations = destinations;
     if (this._pointEditComponent !== null) {
       return;
     }
 
-    this._pointEditComponent = new TripRouteEditPoint();
+    this._pointEditComponent = new TripRouteEditPoint(this._offers, this._destinations);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 

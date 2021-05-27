@@ -16,7 +16,6 @@ const getRandomOffer = () => {
 export const generateOffer = () => {
   const offer = getRandomOffer();
   return {
-    type: offer.type,
     name: offer.name,
     price: offer.price,
   };

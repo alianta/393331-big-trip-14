@@ -1,14 +1,9 @@
 import dayjs from 'dayjs';
-import {DESTINATIONS, MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS, MIN_OFFER_COUNT, MAX_OFFER_COUNT, TYPES} from '../const.js';
+import {TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
-import {createTripRouteOfferTemplate} from './trip-route-offer.js';
 import SmartView from './smart.js';
-import {getRandomDestinationDescription, generatePhoto} from '../utils/trip.js';
-import {getRandomInteger} from '../utils/common.js';
-import {generateOffer} from '../mock/offer.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-
 
 const BLANK_POINT = {
   type: TYPES[0].name,
@@ -17,11 +12,63 @@ const BLANK_POINT = {
   dateTimeEnd: dayjs().toDate(),
   price: '',
   offers: new Array(0),
-  destinationDetails: {
-    description: '',
-    photos: new Array(0),
-  },
+  destinationDetails: null,
   isFavorite: false,
+};
+
+const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType) => {
+  currentType = currentType.toLowerCase();
+  const offerIndex = offersList.map((offer) => (offer.name)).indexOf(currentType);
+
+  if(offersList[offerIndex].offers.length === 0) {
+    return '';
+  }
+  return offersList[offerIndex].offers.map((offer) => {
+    const isChecked = (currentOffers.find((currentOffer) => currentOffer.name === offer.text))? 'checked':'';
+    return `<div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" value="${offer.text}" name="event-offer-${offer.id}" ${isChecked}>
+    <label class="event__offer-label" for="event-offer-${offer.id}-1">
+      <span class="event__offer-title">${offer.text}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+    </label>
+  </div>`;
+  }).join('');
+};
+/**
+ * Функция создания разметки дополнительный опций маршрута
+ * @param {array} currentOffers - массив объектов, поедставляющий собой выбранные дополнительные опции маршрута
+ * @returns - строка, содержащая разметку дополнительных опций маршрута
+ */
+const createTripRouteOfferTemplate = (currentOffers, offersList, currentType) => {
+  const templateList = createTripRouteOfferTemplateList(currentOffers, offersList, currentType);
+  if(templateList === '') {
+    return '';
+  }
+  return `<section class="event__section  event__section--offers">
+          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+          <div class="event__available-offers">
+            ${templateList}
+          </div>
+        </section>`;
+};
+
+
+const createTripRouteDestinationTemplate = (destinationDetails) => {
+  if (destinationDetails === null){
+    return '';
+  }
+
+  return `<section class="event__section  event__section--destination">
+  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+  <p class="event__destination-description">${destinationDetails.description}</p>
+  <div class="event__photos-container">
+  <div class="event__photos-tape">
+    ${destinationDetails.photos.map((photo) => `<img class="event__photo" src="${photo}" alt="Event photo">`).join('')}
+  </div>
+</div>
+</section>`;
 };
 
 /**
@@ -29,7 +76,7 @@ const BLANK_POINT = {
  * @param {object} point - объект с данными о точке маршрута
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
-const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
+const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], offersList=[]) => {
   const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails} = point;
 
   return `<li class="trip-events__item">
@@ -56,7 +103,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${DESTINATIONS.map((dest) => `<option value="${dest}"></option>`).join('')}
+          ${destinations.map((destination) => `<option value="${destination.name}"></option>`).join('')}
         </datalist>
       </div>
 
@@ -83,23 +130,8 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
       </button>
     </header>
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-        <div class="event__available-offers">
-          ${(offers)? createTripRouteOfferTemplate(offers):''}
-        </div>
-      </section>
-
-      <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destinationDetails.description}</p>
-        <div class="event__photos-container">
-        <div class="event__photos-tape">
-          ${destinationDetails.photos.map((photo) => `<img class="event__photo" src="${photo}" alt="Event photo">`).join('')}
-        </div>
-      </div>
-      </section>
+      ${createTripRouteOfferTemplate(offers, offersList, type)}
+      ${createTripRouteDestinationTemplate(destinationDetails)}
     </section>
   </form>
 </li>`;
@@ -107,12 +139,14 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT) => {
 
 
 export default class TripRouteEditPoint extends SmartView{
-  constructor(point = BLANK_POINT) {
+  constructor(offers, destinations, point = BLANK_POINT) {
     super();
     this._data = point;
     this._element = null;
     this._datepickerOnDateStart = null;
     this._datepickerOnDateEnd = null;
+    this._destinations = destinations;
+    this._offers = offers;
 
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -123,6 +157,7 @@ export default class TripRouteEditPoint extends SmartView{
     this._dateTimeStartChangeHandler = this._dateTimeStartChangeHandler.bind(this);
     this._dateTimeEndChangeHandler = this._dateTimeEndChangeHandler.bind(this);
     this._priceInputHandler = this._priceInputHandler.bind(this);
+    this._changeOffersHandler = this._changeOffersHandler.bind(this);
 
     this._setInnerHandlers();
     this._initDatepickers();
@@ -182,29 +217,30 @@ export default class TripRouteEditPoint extends SmartView{
     this.getElement()
       .querySelector('#event-price-1')
       .addEventListener('input', this._priceInputHandler);
+    this.getElement()
+      .querySelector('.event__details')
+      .addEventListener('click', this._changeOffersHandler);
   }
 
   _changePointTypeHandler (evt) {
     if(evt.target.tagName === 'INPUT'){
       this.updateData({
-        type: evt.target.value,
-        offers:new Array(getRandomInteger(MIN_OFFER_COUNT, MAX_OFFER_COUNT)).fill().map(generateOffer),
+        type: evt.target.value.toLowerCase(),
+        offers:new Array(0),
       });
     }
   }
 
   _changeDestenationHandler (evt) {
-    if(!DESTINATIONS.includes(evt.target.value)) {
+    const destinationIndex = this._destinations.map((destination) => (destination.name)).indexOf(evt.target.value);
+    if(destinationIndex === -1) {
       evt.target.value = '';
       return;
     }
 
     this.updateData({
       destination: evt.target.value,
-      destinationDetails: {
-        description: getRandomDestinationDescription(),
-        photos: new Array(getRandomInteger(MIN_COUNT_PHOTOS, MAX_COUNT_PHOTOS)).fill().map(generatePhoto),
-      },
+      destinationDetails: this._destinations[destinationIndex].destinationDetails,
     });
   }
 
@@ -212,12 +248,35 @@ export default class TripRouteEditPoint extends SmartView{
     evt.target.value = evt.target.value.replace(/\D/, '');
     evt.preventDefault();
     this.updateData({
-      price: evt.target.value,
+      price: parseInt(evt.target.value),
     }, true);
   }
 
+  _changeOffersHandler(evt) {
+    if(evt.target.tagName === 'INPUT'){
+      const name = evt.target.value;
+      const offerIndex = this._data.offers.findIndex((offer) => offer.name === name);
+      let newOffers = this._data.offers.slice();
+
+      if(evt.target.checked) {
+        const offerListIndex = this._offers.findIndex((offer) => offer.name === this._data.type);
+        const newOfferIndex = this._offers[offerListIndex].offers.findIndex((offer) => offer.text === name);
+        const newOffer = this._offers[offerListIndex].offers[newOfferIndex];
+        newOffers.push({name: newOffer.text, price: newOffer.price});
+      } else {
+        newOffers = [
+          ...newOffers.slice(0, offerIndex),
+          ...newOffers.slice(offerIndex + 1),
+        ];
+      }
+      this.updateData({
+        offers: newOffers,
+      }, true);
+    }
+  }
+
   getTemplate() {
-    return createTripRouteEditPointTemplate(this._data);
+    return createTripRouteEditPointTemplate(this._data, this._destinations, this._offers);
   }
 
   removeElement() {
@@ -266,5 +325,9 @@ export default class TripRouteEditPoint extends SmartView{
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
     this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
+  }
+
+  reset(point) {
+    this.updateData(point);
   }
 }

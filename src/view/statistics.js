@@ -2,12 +2,12 @@ import Abstract from './abstract';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {durationFormat} from '../utils/common.js';
-import {countTimeSpendByTypes, countPointsMoneyByTypes, countTransportByTypes} from '../utils/trip.js';
+import {countTimeSpendByTypes, countTransportByTypes, countPriceByTypes} from '../utils/trip.js';
 
 const BAR_HEIGHT = 55;
 
 const renderMoneyChart = (moneyCtx, points) => {
-  const pointsByMoney = countPointsMoneyByTypes(points);
+  const pointsByMoney = countPriceByTypes(points);
   const money = pointsByMoney.map((el) => el.price);
   const names = pointsByMoney.map((el) => el.name);
 

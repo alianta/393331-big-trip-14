@@ -122,6 +122,7 @@ export const UserAction = {
 export const UpdateType = {
   PATCH: 'PATCH',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 export const FilterType = {
