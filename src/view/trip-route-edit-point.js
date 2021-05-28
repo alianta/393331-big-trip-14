@@ -16,7 +16,7 @@ const BLANK_POINT = {
   isFavorite: false,
 };
 
-const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType) => {
+const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType, isDisabled) => {
   currentType = currentType.toLowerCase();
   const offerIndex = offersList.map((offer) => (offer.name)).indexOf(currentType);
 
@@ -26,7 +26,7 @@ const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType
   return offersList[offerIndex].offers.map((offer) => {
     const isChecked = (currentOffers.find((currentOffer) => currentOffer.name === offer.text))? 'checked':'';
     return `<div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" value="${offer.text}" name="event-offer-${offer.id}" ${isChecked}>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" value="${offer.text}" name="event-offer-${offer.id}" ${isChecked} ${isDisabled ? 'disabled' : ''}>
     <label class="event__offer-label" for="event-offer-${offer.id}-1">
       <span class="event__offer-title">${offer.text}</span>
       &plus;&euro;&nbsp;
@@ -40,8 +40,8 @@ const createTripRouteOfferTemplateList = (currentOffers, offersList, currentType
  * @param {array} currentOffers - массив объектов, поедставляющий собой выбранные дополнительные опции маршрута
  * @returns - строка, содержащая разметку дополнительных опций маршрута
  */
-const createTripRouteOfferTemplate = (currentOffers, offersList, currentType) => {
-  const templateList = createTripRouteOfferTemplateList(currentOffers, offersList, currentType);
+const createTripRouteOfferTemplate = (currentOffers, offersList, currentType, isDisabled) => {
+  const templateList = createTripRouteOfferTemplateList(currentOffers, offersList, currentType, isDisabled);
   if(templateList === '') {
     return '';
   }
@@ -77,7 +77,18 @@ const createTripRouteDestinationTemplate = (destinationDetails) => {
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
 const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], offersList=[]) => {
-  const {type, destination, dateTimeStart, dateTimeEnd, price, offers, destinationDetails} = point;
+  const {
+    type,
+    destination,
+    dateTimeStart,
+    dateTimeEnd,
+    price,
+    offers,
+    destinationDetails,
+    isDisabled,
+    isSaving,
+    isDeleting,
+  } = point;
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -87,7 +98,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? 'disabled' : ''}>
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
@@ -101,7 +112,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
         <label class="event__label  event__type-output" for="event-destination-1">
         ${type}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1" ${isDisabled ? 'disabled' : ''}>
         <datalist id="destination-list-1">
           ${destinations.map((destination) => `<option value="${destination.name}"></option>`).join('')}
         </datalist>
@@ -120,17 +131,17 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}" ${isDisabled ? 'disabled' : ''}>
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
+      <button class="event__reset-btn" type="reset">${isDeleting ? 'Deleting...' : 'Delete'}</button>
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
     </header>
     <section class="event__details">
-      ${createTripRouteOfferTemplate(offers, offersList, type)}
+      ${createTripRouteOfferTemplate(offers, offersList, type, isDisabled)}
       ${createTripRouteDestinationTemplate(destinationDetails)}
     </section>
   </form>
@@ -141,7 +152,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
 export default class TripRouteEditPoint extends SmartView{
   constructor(offers, destinations, point = BLANK_POINT) {
     super();
-    this._data = point;
+    this._data = TripRouteEditPoint.parsePointToData(point);
     this._element = null;
     this._datepickerOnDateStart = null;
     this._datepickerOnDateEnd = null;
@@ -306,7 +317,7 @@ export default class TripRouteEditPoint extends SmartView{
   }
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(this._data);
+    this._callback.formSubmit(TripRouteEditPoint.parseDataToPoint(this._data));
   }
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
@@ -319,7 +330,7 @@ export default class TripRouteEditPoint extends SmartView{
 
   _formDeleteClickHandler(evt) {
     evt.preventDefault();
-    this._callback.deleteClick(this._data);
+    this._callback.deleteClick(TripRouteEditPoint.parseDataToPoint(this._data));
   }
 
   setDeleteClickHandler(callback) {
@@ -328,6 +339,30 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   reset(point) {
-    this.updateData(point);
+    //this.updateData(point);
+    this.updateData(
+      TripRouteEditPoint.parsePointToData(point),
+    );
+  }
+
+  static parsePointToData(point) {
+    return Object.assign(
+      {},
+      point,
+      {
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      },
+    );
+  }
+
+  static parseDataToPoint(data) {
+    data = Object.assign({}, data);
+    delete data.isDisabled;
+    delete data.isSaving;
+    delete data.isDeleting;
+
+    return data;
   }
 }
