@@ -71,6 +71,14 @@ const createTripRouteDestinationTemplate = (destinationDetails) => {
 </section>`;
 };
 
+const createDaleteOrCancelTemplate = (isDeleting, isCancelButton) => {
+  if(isCancelButton) {
+    return '<button class="event__reset-btn" type="reset">Cancel</button>';
+  } else {
+    return `<button class="event__reset-btn" type="reset">${isDeleting ? 'Deleting...' : 'Delete'}</button>`;
+  }
+};
+
 /**
  * Функция создания блока разметки для блока редактирования точки маршрута и блока создания точки маршрута
  * @param {object} point - объект с данными о точке маршрута
@@ -135,7 +143,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
-      <button class="event__reset-btn" type="reset">${isDeleting ? 'Deleting...' : 'Delete'}</button>
+      ${(destination === '')? createDaleteOrCancelTemplate(isDeleting, true):createDaleteOrCancelTemplate(isDeleting, false)}
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>
