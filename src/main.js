@@ -40,7 +40,6 @@ const handlePointNewFormClose = () => {
   newPointComponent.getElement().disabled = false;
 };
 
-
 filterPresenter.init();
 tripPresener.init();
 newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint(handlePointNewFormClose);});
