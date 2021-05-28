@@ -59,8 +59,6 @@ export default class Point {
     }
 
     if (this._mode === Mode.EDITING){
-      //replace(this._pointEditComponent, prevPointEditComponent);
-
       replace(this._pointComponent, prevPointEditComponent);
       this._mode = Mode.DEFAULT;
     }
