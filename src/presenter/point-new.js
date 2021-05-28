@@ -2,7 +2,6 @@ import TripRouteEditPoint from '../view/trip-route-edit-point.js';
 import {render, remove} from '../utils/render.js';
 import {RenderPosition} from '../const.js';
 import {UserAction, UpdateType} from '../const.js';
-import {nanoid} from 'nanoid';
 
 export default class PointNew {
   constructor(pointListContainer, changeData) {
@@ -16,7 +15,8 @@ export default class PointNew {
     this._handlerEscKeyDown = this._handlerEscKeyDown.bind(this);
   }
 
-  init(destinations, offers) {
+  init(destinations, offers, callback) {
+    this._destroyCallback = callback;
     this._offers = offers;
     this._destinations = destinations;
     if (this._pointEditComponent !== null) {
@@ -36,6 +36,9 @@ export default class PointNew {
     if (this._pointEditComponent === null) {
       return;
     }
+    if (this._destroyCallback !== null) {
+      this._destroyCallback();
+    }
 
     remove(this._pointEditComponent);
     this._pointEditComponent = null;
@@ -47,9 +50,8 @@ export default class PointNew {
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MAJOR,
-      Object.assign({id: nanoid()}, point),
+      point,
     );
-    this.destroy();
   }
 
   _handleDeleteClick() {
@@ -61,5 +63,24 @@ export default class PointNew {
       evt.preventDefault();
       this.destroy();
     }
+  }
+
+  setSaving() {
+    this._pointEditComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this._pointEditComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this._pointEditComponent.shake(resetFormState);
   }
 }
