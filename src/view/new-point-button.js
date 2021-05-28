@@ -17,6 +17,7 @@ export default class NewPointButton extends AbstractView {
 
   _newPointButtonClickHandler(evt) {
     evt.preventDefault();
+    evt.target.disabled = true;
     this._callback.newPointButtonClick(evt.target.value);
   }
 

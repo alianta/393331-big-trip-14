@@ -54,10 +54,10 @@ export default class Trip {
     this._filterModel.removeObserver(this._handleModelEvent);
   }
 
-  createPoint() {
+  createPoint(callback) {
     this._currentSortType = SortType.DAY;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this._pointNewPresenter.init(this._destinationsModel.getDestinations(), this._offersModel.getOffers());
+    this._pointNewPresenter.init(this._destinationsModel.getDestinations(), this._offersModel.getOffers(), callback);
   }
 
   _getPoints() {

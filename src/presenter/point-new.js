@@ -15,7 +15,8 @@ export default class PointNew {
     this._handlerEscKeyDown = this._handlerEscKeyDown.bind(this);
   }
 
-  init(destinations, offers) {
+  init(destinations, offers, callback) {
+    this._destroyCallback = callback;
     this._offers = offers;
     this._destinations = destinations;
     if (this._pointEditComponent !== null) {
@@ -34,6 +35,9 @@ export default class PointNew {
   destroy() {
     if (this._pointEditComponent === null) {
       return;
+    }
+    if (this._destroyCallback !== null) {
+      this._destroyCallback();
     }
 
     remove(this._pointEditComponent);

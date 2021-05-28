@@ -35,9 +35,15 @@ render(navigationElement, menuComponent, RenderPosition.BEFOREEND);
 const tripPresener = new TripPresenter(tripEventsElement, siteHeaderElement, pointsModel, filterModel, destinationsModel, offersModel, api);
 const filterContainer = document.querySelector('.trip-controls__filters');
 const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
+
+const handlePointNewFormClose = () => {
+  newPointComponent.getElement().disabled = false;
+};
+
+
 filterPresenter.init();
 tripPresener.init();
-newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint();});
+newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint(handlePointNewFormClose);});
 const statisticPresener = new StatisticPresenter(pageBodyElement, pointsModel);
 
 const handleSiteMenuClick = (menuItem) => {
