@@ -48,7 +48,6 @@ export default class PointNew {
       UpdateType.MAJOR,
       point,
     );
-    this.destroy();
   }
 
   _handleDeleteClick() {
@@ -60,5 +59,12 @@ export default class PointNew {
       evt.preventDefault();
       this.destroy();
     }
+  }
+
+  setSaving() {
+    this._pointEditComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
   }
 }
