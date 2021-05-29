@@ -103,7 +103,7 @@ export default class Point {
   }
 
   _handleEditClick() {
-    if(this._mode === 'DEFAULT') {
+    if(this._mode === Mode.DEFAULT) {
       this._replaceCardToForm();
     } else {
       this._pointEditComponent.reset(this._point);
