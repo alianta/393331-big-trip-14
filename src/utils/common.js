@@ -73,8 +73,8 @@ export const durationFormat = (duration) => {
 
 export const getDuration = (dateTimeStart, dateTimeEnd) => {
   const duration = dayjs.duration(dayjs(dateTimeEnd).diff(dayjs(dateTimeStart)));
-  const durationDaysTemplate = (duration.days()==0) ? '' : duration.format('DD') + 'D ';
-  const durationHoursTemplate = (duration.hours()==0 && durationDaysTemplate==='') ? '' : duration.format('HH') + 'H ';
+  const durationDaysTemplate = (duration.days() === 0) ? '' : duration.format('DD') + 'D ';
+  const durationHoursTemplate = (duration.hours() === 0 && durationDaysTemplate ==='') ? '' : duration.format('HH') + 'H ';
   const durationMinutesTemplate = duration.format('mm') + 'M';
   return durationDaysTemplate + durationHoursTemplate + durationMinutesTemplate;
 };
