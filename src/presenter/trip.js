@@ -2,8 +2,6 @@ import SortView from '../view/sorting.js';
 import TripRoute from '../view/trip-route.js';
 import TripEmpty from '../view/trip-empty.js';
 import {RenderPosition, SortType, UpdateType, UserAction, FilterType} from '../const.js';
-import TripInfo from '../view/trip-info.js';
-import {generateTripInfo} from '../mock/trip-info.js';
 import {render, remove} from '../utils/render.js';
 import PointPresenter, {State as PointPresenterViewState} from './point.js';
 import {sortTime, sortPrice, sortDay} from '../utils/trip.js';
@@ -26,7 +24,6 @@ export default class Trip {
 
     this._tripRouteComponent = new TripRoute();
     this._tripEmptyComponent = new TripEmpty();
-    this._tripInfoComponent = new TripInfo(generateTripInfo());
     this._loadingComponent = new LoadingView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -177,10 +174,6 @@ export default class Trip {
     }
   }
 
-  _renderTripInformation() {
-    render(this._tripMainContainer, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
-  }
-
   _renderPoint(listContainer, point) {
     const pointPresenter = new PointPresenter(listContainer, this._handleViewAction, this._handleModeChange);
     pointPresenter.init(point, this._destinationsModel.getDestinations(), this._offersModel.getOffers());
@@ -210,7 +203,6 @@ export default class Trip {
       return;
     }
 
-    this._renderTripInformation();
     this._renderSort();
     this._renderTripRouteBlock();
     this._renderPoints(this._getPoints());
