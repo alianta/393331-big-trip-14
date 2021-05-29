@@ -119,7 +119,7 @@ export default class Point {
     } else {
       this._changeData(
         UserAction.UPDATE_POINT,
-        UpdateType.MAJOR,
+        UpdateType.MINOR,
         update,
       );
 

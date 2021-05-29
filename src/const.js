@@ -70,6 +70,7 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+  MINOR: 'MINOR',
 };
 
 export const FilterType = {

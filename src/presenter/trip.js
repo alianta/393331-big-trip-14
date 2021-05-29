@@ -124,6 +124,10 @@ export default class Trip {
         this._clearTrip({resetSortType: true});
         this._renderTrip();
         break;
+      case UpdateType.MINOR:
+        this._clearTrip();
+        this._renderTrip();
+        break;
       case UpdateType.INIT:
         this._isLoading = false;
         remove(this._loadingComponent);
