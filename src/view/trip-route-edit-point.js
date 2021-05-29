@@ -316,7 +316,9 @@ export default class TripRouteEditPoint extends SmartView{
   restoreHandlers() {
     this._setInnerHandlers();
     this._initDatepickers();
-    this.setEditClickHandler(this._callback.editClick);
+    if(!this._data.destination === '') {
+      this.setEditClickHandler(this._callback.editClick);
+    }
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
   }
