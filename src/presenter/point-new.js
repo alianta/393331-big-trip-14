@@ -47,6 +47,11 @@ export default class PointNew {
   }
 
   _handleFormSubmit(point) {
+    if(point.price === '' || point.destination === '') {
+      this.setAborting();
+      return;
+    }
+
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MAJOR,
