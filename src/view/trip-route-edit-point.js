@@ -348,9 +348,7 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   reset(point) {
-    this.updateData(
-      TripRouteEditPoint.parsePointToData(point),
-    );
+    this.updateData(TripRouteEditPoint.parsePointToData(point));
   }
 
   static parsePointToData(point) {
