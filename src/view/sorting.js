@@ -14,7 +14,7 @@ const createSortingTemplate = (currentSortType) => {
 
   <div class="trip-sort__item  trip-sort__item--event">
     <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" disabled>
-    <label class="trip-sort__btn" for="sort-event">Event</label>
+    <label class="trip-sort__btn" for="sort-event" data-sort-type="">Event</label>
   </div>
 
   <div class="trip-sort__item  trip-sort__item--time">
@@ -29,7 +29,7 @@ const createSortingTemplate = (currentSortType) => {
 
   <div class="trip-sort__item  trip-sort__item--offer">
     <input id="sort-offer" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-offer" disabled>
-    <label class="trip-sort__btn" for="sort-offer">Offers</label>
+    <label class="trip-sort__btn" for="sort-offer" data-sort-type="">Offers</label>
   </div>
 </form>`;
 };
@@ -46,7 +46,7 @@ export default class Sorting extends AbstractView{
   }
 
   _sortTypeChangeHandler(evt) {
-    if (evt.target.tagName !== 'LABEL') {
+    if (evt.target.tagName !== 'LABEL' || evt.target.dataset.sortType === '') {
       return;
     }
     this._callback.sortTypeChange(evt.target.dataset.sortType);
