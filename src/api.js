@@ -14,6 +14,12 @@ const SuccessHTTPStatusRange = {
   MAX: 299,
 };
 
+const Endpoint = {
+  POINTS: 'points',
+  DESTINATIONS: 'destinations',
+  OFFERS: 'offers',
+};
+
 export default class Api {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
@@ -21,26 +27,26 @@ export default class Api {
   }
 
   getPoints() {
-    return this._load({url: 'points'})
+    return this._load({url: Endpoint.POINTS})
       .then(Api.toJSON)
       .then((tasks) => tasks.map(PointsModel.adaptToClient));
   }
 
   getDestinations() {
-    return this._load({url: 'destinations'})
+    return this._load({url: Endpoint.DESTINATIONS})
       .then(Api.toJSON)
       .then((destinations) => destinations.map(DestinationsModel.adaptToClient));
   }
 
   getOffers() {
-    return this._load({url: 'offers'})
+    return this._load({url: Endpoint.OFFERS})
       .then(Api.toJSON)
       .then((offers) => offers.map(OffersModel.adaptToClient));
   }
 
   updatePoint(point) {
     return this._load({
-      url: `points/${point.id}`,
+      url: `${Endpoint.POINTS}/${point.id}`,
       method: Method.PUT,
       body: JSON.stringify(PointsModel.adaptToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
@@ -51,7 +57,7 @@ export default class Api {
 
   addPoint(point) {
     return this._load({
-      url: 'points',
+      url: Endpoint.POINTS,
       method: Method.POST,
       body: JSON.stringify(PointsModel.adaptToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
@@ -62,7 +68,7 @@ export default class Api {
 
   deletePoint(point) {
     return this._load({
-      url: `points/${point.id}`,
+      url: `${Endpoint.POINTS}/${point.id}`,
       method: Method.DELETE,
     });
   }
