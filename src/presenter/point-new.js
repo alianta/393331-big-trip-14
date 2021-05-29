@@ -12,7 +12,7 @@ export default class PointNew {
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
-    this._handlerEscKeyDown = this._handlerEscKeyDown.bind(this);
+    this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
   }
 
   init(destinations, offers, callback) {
@@ -29,7 +29,7 @@ export default class PointNew {
 
     render(this._pointListContainer, this._pointEditComponent, RenderPosition.AFTERBEGIN);
 
-    document.addEventListener('keydown', this._handlerEscKeyDown);
+    document.addEventListener('keydown', this._handleEscKeyDown);
   }
 
   destroy() {
@@ -43,7 +43,7 @@ export default class PointNew {
     remove(this._pointEditComponent);
     this._pointEditComponent = null;
 
-    document.removeEventListener('keydown', this._handlerEscKeyDown);
+    document.removeEventListener('keydown', this._handleEscKeyDown);
   }
 
   _handleFormSubmit(point) {
@@ -63,7 +63,7 @@ export default class PointNew {
     this.destroy();
   }
 
-  _handlerEscKeyDown(evt) {
+  _handleEscKeyDown(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
       this.destroy();
