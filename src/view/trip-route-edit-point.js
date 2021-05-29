@@ -144,9 +144,10 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
 
       <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
       ${(destination === '')? createDaleteOrCancelTemplate(isDeleting, true):createDaleteOrCancelTemplate(isDeleting, false)}
+      ${(destination === '')? '': `
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
-      </button>
+      </button>`}
     </header>
     <section class="event__details">
       ${createTripRouteOfferTemplate(offers, offersList, type, isDisabled)}
