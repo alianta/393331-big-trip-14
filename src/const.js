@@ -1,44 +1,14 @@
 export const TYPES = [
-  {
-    name: 'Taxi',
-    offerTypeNames: ['comfort', 'luggage', 'meal', 'seats', 'train'],
-  },
-  {
-    name: 'Bus',
-    offerTypeNames: ['comfort', 'meal', 'seats', 'train'],
-  },
-  {
-    name: 'Train',
-    offerTypeNames: ['comfort', 'luggage', 'train'],
-  },
-  {
-    name: 'Ship',
-    offerTypeNames: ['meal', 'seats'],
-  },
-  {
-    name: 'Transport',
-    offerTypeNames: ['comfort', 'seats', 'train'],
-  },
-  {
-    name: 'Drive',
-    offerTypeNames: ['luggage', 'seats'],
-  },
-  {
-    name: 'Flight',
-    offerTypeNames: ['meal', 'seats'],
-  },
-  {
-    name: 'Check-in',
-    offerTypeNames: ['comfort', 'luggage', 'meal'],
-  },
-  {
-    name: 'Sightseeing',
-    offerTypeNames: ['comfort', 'meal'],
-  },
-  {
-    name: 'Restaurant',
-    offerTypeNames: ['comfort', 'meal', 'seats'],
-  },
+  'Taxi',
+  'Bus',
+  'Train',
+  'Ship',
+  'Transport',
+  'Drive',
+  'Flight',
+  'Check-in',
+  'Sightseeing',
+  'Restaurant',
 ];
 export const DESTINATIONS = [
   'Amsterdam',

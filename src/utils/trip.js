@@ -32,8 +32,8 @@ const countTransportByType = (points, type) => {
 export const countTimeSpendByTypes = (points) => {
   const times = TYPES.map((element) => {
     return {
-      time: countTimeSpendByType(points,element.name.toLowerCase()),
-      name: element.name.toUpperCase(),
+      time: countTimeSpendByType(points,element.toLowerCase()),
+      name: element.toUpperCase(),
     };
   }).sort((elementA, elementB) => elementB.time - elementA.time);
   return times;
@@ -50,8 +50,8 @@ const countPriceByType = (points, type) => {
 export const countPriceByTypes = (points) => {
   const prices = TYPES.map((element) => {
     return {
-      price: countPriceByType(points,element.name.toLowerCase()),
-      name: element.name.toUpperCase(),
+      price: countPriceByType(points,element.toLowerCase()),
+      name: element.toUpperCase(),
     };
   }).sort(sortPrice);
   return prices;
@@ -60,8 +60,8 @@ export const countPriceByTypes = (points) => {
 export const countTransportByTypes = (points) => {
   const transport = TYPES.map((element) => {
     return {
-      count: countTransportByType(points,element.name.toLowerCase()),
-      name: element.name.toUpperCase(),
+      count: countTransportByType(points,element.toLowerCase()),
+      name: element.toUpperCase(),
     };
   }).sort((elementA, elementB) => elementB.count - elementA.count);
   return transport;

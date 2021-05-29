@@ -1,12 +1,13 @@
 import dayjs from 'dayjs';
-import {TYPES} from '../const.js';
 import {createTripRouteTypesTemplate} from './trip-route-types.js';
 import SmartView from './smart.js';
 import flatpickr from 'flatpickr';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
+const DEFAULT_POINT_TYPE = 'taxi';
+
 const BLANK_POINT = {
-  type: TYPES[0].name.toLowerCase(),
+  type: DEFAULT_POINT_TYPE,
   destination: '',
   dateTimeStart: dayjs().toDate(),
   dateTimeEnd: dayjs().toDate(),
