@@ -27,6 +27,9 @@ export default class Menu extends AbstractView{
     item.classList.remove('trip-tabs__btn--active');
   }
   _menuClickHandler(evt) {
+    if(evt.target.classList.contains('trip-tabs__btn--active')) {
+      return;
+    }
     evt.preventDefault();
     this._setInactiveMenu();
     evt.target.classList.add('trip-tabs__btn--active');
