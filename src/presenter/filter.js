@@ -3,25 +3,25 @@ import {render, replace, remove} from '../utils/render.js';
 import {FilterType, UpdateType, RenderPosition} from '../const.js';
 
 export default class Filter {
-  constructor(filterContainer, filterModel, pointsModel) {
+  constructor(filterContainer, filter, points) {
     this._filterContainer = filterContainer;
-    this._filterModel = filterModel;
-    this._pointsModel = pointsModel;
+    this._filterData = filter;
+    this._pointsData = points;
 
     this._filterComponent = null;
 
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
 
-    this._pointsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+    this._pointsData.addObserver(this._handleModelEvent);
+    this._filterData.addObserver(this._handleModelEvent);
   }
 
   init() {
     const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new FilterView(filters, this._filterModel.getFilter());
+    this._filterComponent = new FilterView(filters, this._filterData.getFilter());
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
@@ -38,11 +38,11 @@ export default class Filter {
   }
 
   _handleFilterTypeChange(filterType) {
-    if (this._filterModel.getFilter() === filterType) {
+    if (this._filterData.getFilter() === filterType) {
       return;
     }
 
-    this._filterModel.setFilter(UpdateType.MAJOR, filterType);
+    this._filterData.setFilter(UpdateType.MAJOR, filterType);
   }
 
   _getFilters() {

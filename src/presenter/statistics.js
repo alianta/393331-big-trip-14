@@ -3,17 +3,17 @@ import {render, remove} from '../utils/render.js';
 import {RenderPosition} from '../const.js';
 
 export default class Statistics {
-  constructor(statisticContainer, pointsModel) {
+  constructor(statisticContainer, points) {
     this._statisticContainer = statisticContainer;
     this._statisticComponent = null;
-    this._pointsModel = pointsModel;
+    this._pointsData = points;
   }
 
   init() {
     if (this._statisticComponent !== null) {
       return;
     }
-    this._data = this._pointsModel.getPoints();
+    this._data = this._pointsData.getPoints();
     this._statisticComponent = new StatisticsView(this._data);
     render(this._statisticContainer, this._statisticComponent, RenderPosition.BEFOREEND);
   }

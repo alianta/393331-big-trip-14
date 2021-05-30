@@ -17,10 +17,10 @@ const END_POINT = 'https://14.ecmascript.pages.academy/big-trip';
 
 const api = new Api(END_POINT, AUTHORIZATION);
 
-const pointsModel = new PointsModel();
-const filterModel = new FilterModel();
-const destinationsModel = new DestinationsModel();
-const offersModel = new OffersModel();
+const pointsData = new PointsModel();
+const filterData = new FilterModel();
+const destinationsData = new DestinationsModel();
+const offersData = new OffersModel();
 const siteHeaderElement = document.querySelector('.page-header');
 const tripMainElement = document.querySelector('.trip-main');
 const siteMainElement = document.querySelector('.page-main');
@@ -30,10 +30,10 @@ const pageBodyElement = siteMainElement.querySelector('.page-body__container');
 const navigationElement = document.querySelector('.trip-controls__navigation');
 const menuComponent = new MenuView();
 const newPointComponent = new NewPointView();
-const tripPresener = new TripPresenter(tripEventsElement, siteHeaderElement, pointsModel, filterModel, destinationsModel, offersModel, api);
+const trip = new TripPresenter(tripEventsElement, siteHeaderElement, pointsData, filterData, destinationsData, offersData, api);
 const filterContainer = document.querySelector('.trip-controls__filters');
-const filterPresenter = new FilterPresenter(filterContainer, filterModel, pointsModel);
-const statisticPresener = new StatisticPresenter(pageBodyElement, pointsModel);
+const filter = new FilterPresenter(filterContainer, filterData, pointsData);
+const statistic = new StatisticPresenter(pageBodyElement, pointsData);
 
 const handlePointNewFormClose = () => {
   newPointComponent.getElement().disabled = false;
@@ -42,12 +42,12 @@ const handlePointNewFormClose = () => {
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
-      statisticPresener.destroy();
-      tripPresener.init();
+      statistic.destroy();
+      trip.init();
       break;
     case MenuItem.STATISTICS:
-      tripPresener.destroy();
-      statisticPresener.init();
+      trip.destroy();
+      statistic.init();
       break;
   }
 };
@@ -55,9 +55,9 @@ const handleSiteMenuClick = (menuItem) => {
 render(tripMainElement, newPointComponent, RenderPosition.BEFOREEND);
 render(navigationElement, menuComponent, RenderPosition.BEFOREEND);
 
-filterPresenter.init();
-tripPresener.init();
-newPointComponent.setNewPointButtonClickHandler(()=>{tripPresener.createPoint(handlePointNewFormClose);});
+filter.init();
+trip.init();
+newPointComponent.setNewPointButtonClickHandler(()=>{trip.createPoint(handlePointNewFormClose);});
 
 menuComponent.setMenuClickHandler(handleSiteMenuClick);
 
@@ -66,9 +66,9 @@ Promise.all([
   api.getDestinations(),
   api.getPoints(),
 ]).then((data) => {
-  offersModel.setOffers(data[0]);
-  destinationsModel.setDestinations(data[1]);
-  pointsModel.setPoints(UpdateType.INIT, data[2]);
+  offersData.setOffers(data[0]);
+  destinationsData.setDestinations(data[1]);
+  pointsData.setPoints(UpdateType.INIT, data[2]);
 }).catch(() => {
-  pointsModel.setPoints(UpdateType.INIT, []);
+  pointsData.setPoints(UpdateType.INIT, []);
 });
