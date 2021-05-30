@@ -9,11 +9,11 @@ import AbstractView from './abstract.js';
 const createTripInfoPoints = (trip) => {
   if(trip.length > 3){
     return `${trip[0]} &mdash;...&mdash; ${trip[trip.length-1]}`;
-  } else if (trip.length === 3){
-    return `${trip[0]} &mdash; ${trip[1]} &mdash; ${trip[2]}`;
-  } else {
-    return `${trip[0]} &mdash; ${trip[1]}`;
   }
+  if (trip.length === 3){
+    return `${trip[0]} &mdash; ${trip[1]} &mdash; ${trip[2]}`;
+  }
+  return `${trip[0]} &mdash; ${trip[1]}`;
 };
 
 /**
