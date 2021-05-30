@@ -10,12 +10,6 @@ export const TYPES = [
   'Sightseeing',
   'Restaurant',
 ];
-export const DESTINATIONS = [
-  'Amsterdam',
-  'Geneva',
-  'Chamonix',
-];
-
 
 export const RenderPosition = {
   AFTERBEGIN: 'afterbegin',
