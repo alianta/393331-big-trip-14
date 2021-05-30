@@ -27,12 +27,15 @@ export const isPointsEqual = (pointA, pointB) => {
 };
 
 export const arrayEqual = (arrayA, arrayB) => {
-  if(arrayA.length !== arrayB.length)
+  if(arrayA.length !== arrayB.length){
     return false;
+  }
 
-  for(let i = 0; i < arrayA.length; i++)
-    if(arrayA[i] !== arrayB[i])
+  for(let i = 0; i < arrayA.length; i++){
+    if(arrayA[i] !== arrayB[i]) {
       return false;
+    }
+  }
 
   return true;
 };
