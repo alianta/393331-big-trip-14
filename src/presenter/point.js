@@ -41,7 +41,7 @@ export default class Point {
     const prevPointEditComponent = this._pointEditComponent;
 
     this._pointComponent = new TripRoutePoint(point);
-    this._pointEditComponent = new TripRouteEditPoint(this._offers, this._destinations, point);
+    this._pointEditComponent = new TripRouteEditPoint(this._offers, this._destinations, false,  point);
 
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);

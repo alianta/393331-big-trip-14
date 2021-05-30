@@ -85,7 +85,7 @@ const createDaleteOrCancelTemplate = (isDeleting, isCancelButton) => {
  * @param {object} point - объект с данными о точке маршрута
  * @returns - строка, содержащая разметку для блока редактирования точки маршрута
  */
-const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], offersList=[]) => {
+const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], offersList=[], isAdding=false) => {
   const {
     type,
     destination,
@@ -98,7 +98,6 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
     isSaving,
     isDeleting,
   } = point;
-
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -144,8 +143,8 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
-      ${(destination === '')? createDaleteOrCancelTemplate(isDeleting, true):createDaleteOrCancelTemplate(isDeleting, false)}
-      ${(destination === '')? '': `
+      ${(isAdding)? createDaleteOrCancelTemplate(isDeleting, true):createDaleteOrCancelTemplate(isDeleting, false)}
+      ${(isAdding)? '': `
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>`}
@@ -160,7 +159,7 @@ const createTripRouteEditPointTemplate = (point=BLANK_POINT, destinations=[], of
 
 
 export default class TripRouteEditPoint extends SmartView{
-  constructor(offers, destinations, point = BLANK_POINT) {
+  constructor(offers, destinations, isAdding, point = BLANK_POINT) {
     super();
     this._data = TripRouteEditPoint.parsePointToData(point);
     this._element = null;
@@ -168,10 +167,12 @@ export default class TripRouteEditPoint extends SmartView{
     this._datepickerOnDateEnd = null;
     this._destinations = destinations;
     this._offers = offers;
+    this._isAdding = isAdding;
 
     this._editClickHandler = this._editClickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
+    this._formCancelClickHandler = this._formCancelClickHandler.bind(this);
 
     this._changePointTypeHandler = this._changePointTypeHandler.bind(this);
     this._changeDestenationHandler = this._changeDestenationHandler.bind(this);
@@ -297,7 +298,7 @@ export default class TripRouteEditPoint extends SmartView{
   }
 
   getTemplate() {
-    return createTripRouteEditPointTemplate(this._data, this._destinations, this._offers);
+    return createTripRouteEditPointTemplate(this._data, this._destinations, this._offers, this._isAdding);
   }
 
   removeElement() {
@@ -316,11 +317,15 @@ export default class TripRouteEditPoint extends SmartView{
   restoreHandlers() {
     this._setInnerHandlers();
     this._initDatepickers();
-    if(this._data.destination !== '') {
+    if(!this._isAdding) {
       this.setEditClickHandler(this._callback.editClick);
     }
     this.setFormSubmitHandler(this._callback.formSubmit);
-    this.setDeleteClickHandler(this._callback.deleteClick);
+    if(this._isAdding) {
+      this.setCancelClickHandler(this._callback.cancelClick);
+    } else{
+      this.setDeleteClickHandler(this._callback.deleteClick);
+    }
   }
 
   _editClickHandler(evt) {
@@ -344,10 +349,19 @@ export default class TripRouteEditPoint extends SmartView{
     evt.preventDefault();
     this._callback.deleteClick(TripRouteEditPoint.parseDataToPoint(this._data));
   }
+  _formCancelClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.cancelClick(TripRouteEditPoint.parseDataToPoint(this._data));
+  }
 
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
     this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
+  }
+
+  setCancelClickHandler(callback) {
+    this._callback.cancelClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formCancelClickHandler);
   }
 
   reset(point) {

@@ -11,7 +11,7 @@ export default class PointNew {
     this._pointEditComponent = null;
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-    this._handleDeleteClick = this._handleDeleteClick.bind(this);
+    this._handleCancelClick = this._handleCancelClick.bind(this);
     this._handleEscKeyDown = this._handleEscKeyDown.bind(this);
   }
 
@@ -23,9 +23,9 @@ export default class PointNew {
       return;
     }
 
-    this._pointEditComponent = new TripRouteEditPoint(this._offers, this._destinations);
+    this._pointEditComponent = new TripRouteEditPoint(this._offers, this._destinations, true);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
+    this._pointEditComponent.setCancelClickHandler(this._handleCancelClick);
 
     render(this._pointListContainer, this._pointEditComponent, RenderPosition.AFTERBEGIN);
 
@@ -59,7 +59,7 @@ export default class PointNew {
     );
   }
 
-  _handleDeleteClick() {
+  _handleCancelClick() {
     this.destroy();
   }
 
